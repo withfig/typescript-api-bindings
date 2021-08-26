@@ -31,7 +31,7 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "typescript-api-bindings",
+  "name": "@mschrage/typescript-api-bindings",
   "author": "matt@fig.io",
   "module": "dist/typescript-api-bindings.esm.js",
   "size-limit": [
