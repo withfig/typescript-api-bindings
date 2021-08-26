@@ -62,7 +62,11 @@ export interface ClientOriginatedMessage {
         $case: "positionWindowRequest";
         positionWindowRequest: PositionWindowRequest;
       }
-    | { $case: "ptyRequest"; ptyRequest: PseudoterminalExecuteRequest };
+    | { $case: "ptyRequest"; ptyRequest: PseudoterminalExecuteRequest }
+    | {
+        $case: "pseudoterminalWriteRequest";
+        pseudoterminalWriteRequest: PseudoterminalWriteRequest;
+      };
 }
 
 export interface ServerOriginatedMessage {
@@ -162,6 +166,12 @@ export const ClientOriginatedMessage = {
         writer.uint32(818).fork()
       ).ldelim();
     }
+    if (message.submessage?.$case === "pseudoterminalWriteRequest") {
+      PseudoterminalWriteRequest.encode(
+        message.submessage.pseudoterminalWriteRequest,
+        writer.uint32(826).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -199,6 +209,15 @@ export const ClientOriginatedMessage = {
           message.submessage = {
             $case: "ptyRequest",
             ptyRequest: PseudoterminalExecuteRequest.decode(
+              reader,
+              reader.uint32()
+            ),
+          };
+          break;
+        case 103:
+          message.submessage = {
+            $case: "pseudoterminalWriteRequest",
+            pseudoterminalWriteRequest: PseudoterminalWriteRequest.decode(
               reader,
               reader.uint32()
             ),
@@ -245,6 +264,17 @@ export const ClientOriginatedMessage = {
         ptyRequest: PseudoterminalExecuteRequest.fromJSON(object.ptyRequest),
       };
     }
+    if (
+      object.pseudoterminalWriteRequest !== undefined &&
+      object.pseudoterminalWriteRequest !== null
+    ) {
+      message.submessage = {
+        $case: "pseudoterminalWriteRequest",
+        pseudoterminalWriteRequest: PseudoterminalWriteRequest.fromJSON(
+          object.pseudoterminalWriteRequest
+        ),
+      };
+    }
     return message;
   },
 
@@ -264,6 +294,13 @@ export const ClientOriginatedMessage = {
     message.submessage?.$case === "ptyRequest" &&
       (obj.ptyRequest = message.submessage?.ptyRequest
         ? PseudoterminalExecuteRequest.toJSON(message.submessage?.ptyRequest)
+        : undefined);
+    message.submessage?.$case === "pseudoterminalWriteRequest" &&
+      (obj.pseudoterminalWriteRequest = message.submessage
+        ?.pseudoterminalWriteRequest
+        ? PseudoterminalWriteRequest.toJSON(
+            message.submessage?.pseudoterminalWriteRequest
+          )
         : undefined);
     return obj;
   },
@@ -310,6 +347,18 @@ export const ClientOriginatedMessage = {
         $case: "ptyRequest",
         ptyRequest: PseudoterminalExecuteRequest.fromPartial(
           object.submessage.ptyRequest
+        ),
+      };
+    }
+    if (
+      object.submessage?.$case === "pseudoterminalWriteRequest" &&
+      object.submessage?.pseudoterminalWriteRequest !== undefined &&
+      object.submessage?.pseudoterminalWriteRequest !== null
+    ) {
+      message.submessage = {
+        $case: "pseudoterminalWriteRequest",
+        pseudoterminalWriteRequest: PseudoterminalWriteRequest.fromPartial(
+          object.submessage.pseudoterminalWriteRequest
         ),
       };
     }
