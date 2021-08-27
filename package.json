@@ -33,14 +33,14 @@
   },
   "name": "@withfig/api-bindings",
   "author": "matt@fig.io",
-  "module": "dist/typescript-api-bindings.esm.js",
+  "module": "dist/api-bindings.esm.js",
   "size-limit": [
     {
-      "path": "dist/typescript-api-bindings.cjs.production.min.js",
+      "path": "dist/api-bindings.cjs.production.min.js",
       "limit": "10 KB"
     },
     {
-      "path": "dist/typescript-api-bindings.esm.js",
+      "path": "dist/api-bindings.esm.js",
       "limit": "10 KB"
     }
   ],
