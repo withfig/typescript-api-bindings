@@ -84,6 +84,7 @@ export interface ServerOriginatedMessage {
   id?: number | undefined;
   submessage?:
     | { $case: "error"; error: string }
+    | { $case: "success"; success: boolean }
     | {
         $case: "positionWindowResponse";
         positionWindowResponse: PositionWindowResponse;
@@ -91,6 +92,11 @@ export interface ServerOriginatedMessage {
     | {
         $case: "pseudoterminalExecuteResponse";
         pseudoterminalExecuteResponse: PseudoterminalExecuteResponse;
+      }
+    | { $case: "readFileResponse"; readFileResponse: ReadFileResponse }
+    | {
+        $case: "contentsOfDirectoryResponse";
+        contentsOfDirectoryResponse: ContentsOfDirectoryResponse;
       }
     | { $case: "notification"; notification: Notification };
 }
@@ -594,6 +600,9 @@ export const ServerOriginatedMessage = {
     if (message.submessage?.$case === "error") {
       writer.uint32(18).string(message.submessage.error);
     }
+    if (message.submessage?.$case === "success") {
+      writer.uint32(24).bool(message.submessage.success);
+    }
     if (message.submessage?.$case === "positionWindowResponse") {
       PositionWindowResponse.encode(
         message.submessage.positionWindowResponse,
@@ -604,6 +613,18 @@ export const ServerOriginatedMessage = {
       PseudoterminalExecuteResponse.encode(
         message.submessage.pseudoterminalExecuteResponse,
         writer.uint32(810).fork()
+      ).ldelim();
+    }
+    if (message.submessage?.$case === "readFileResponse") {
+      ReadFileResponse.encode(
+        message.submessage.readFileResponse,
+        writer.uint32(818).fork()
+      ).ldelim();
+    }
+    if (message.submessage?.$case === "contentsOfDirectoryResponse") {
+      ContentsOfDirectoryResponse.encode(
+        message.submessage.contentsOfDirectoryResponse,
+        writer.uint32(826).fork()
       ).ldelim();
     }
     if (message.submessage?.$case === "notification") {
@@ -633,6 +654,9 @@ export const ServerOriginatedMessage = {
         case 2:
           message.submessage = { $case: "error", error: reader.string() };
           break;
+        case 3:
+          message.submessage = { $case: "success", success: reader.bool() };
+          break;
         case 100:
           message.submessage = {
             $case: "positionWindowResponse",
@@ -646,6 +670,21 @@ export const ServerOriginatedMessage = {
           message.submessage = {
             $case: "pseudoterminalExecuteResponse",
             pseudoterminalExecuteResponse: PseudoterminalExecuteResponse.decode(
+              reader,
+              reader.uint32()
+            ),
+          };
+          break;
+        case 102:
+          message.submessage = {
+            $case: "readFileResponse",
+            readFileResponse: ReadFileResponse.decode(reader, reader.uint32()),
+          };
+          break;
+        case 103:
+          message.submessage = {
+            $case: "contentsOfDirectoryResponse",
+            contentsOfDirectoryResponse: ContentsOfDirectoryResponse.decode(
               reader,
               reader.uint32()
             ),
@@ -675,6 +714,12 @@ export const ServerOriginatedMessage = {
     if (object.error !== undefined && object.error !== null) {
       message.submessage = { $case: "error", error: String(object.error) };
     }
+    if (object.success !== undefined && object.success !== null) {
+      message.submessage = {
+        $case: "success",
+        success: Boolean(object.success),
+      };
+    }
     if (
       object.positionWindowResponse !== undefined &&
       object.positionWindowResponse !== null
@@ -697,6 +742,26 @@ export const ServerOriginatedMessage = {
         ),
       };
     }
+    if (
+      object.readFileResponse !== undefined &&
+      object.readFileResponse !== null
+    ) {
+      message.submessage = {
+        $case: "readFileResponse",
+        readFileResponse: ReadFileResponse.fromJSON(object.readFileResponse),
+      };
+    }
+    if (
+      object.contentsOfDirectoryResponse !== undefined &&
+      object.contentsOfDirectoryResponse !== null
+    ) {
+      message.submessage = {
+        $case: "contentsOfDirectoryResponse",
+        contentsOfDirectoryResponse: ContentsOfDirectoryResponse.fromJSON(
+          object.contentsOfDirectoryResponse
+        ),
+      };
+    }
     if (object.notification !== undefined && object.notification !== null) {
       message.submessage = {
         $case: "notification",
@@ -711,6 +776,8 @@ export const ServerOriginatedMessage = {
     message.id !== undefined && (obj.id = message.id);
     message.submessage?.$case === "error" &&
       (obj.error = message.submessage?.error);
+    message.submessage?.$case === "success" &&
+      (obj.success = message.submessage?.success);
     message.submessage?.$case === "positionWindowResponse" &&
       (obj.positionWindowResponse = message.submessage?.positionWindowResponse
         ? PositionWindowResponse.toJSON(
@@ -722,6 +789,17 @@ export const ServerOriginatedMessage = {
         ?.pseudoterminalExecuteResponse
         ? PseudoterminalExecuteResponse.toJSON(
             message.submessage?.pseudoterminalExecuteResponse
+          )
+        : undefined);
+    message.submessage?.$case === "readFileResponse" &&
+      (obj.readFileResponse = message.submessage?.readFileResponse
+        ? ReadFileResponse.toJSON(message.submessage?.readFileResponse)
+        : undefined);
+    message.submessage?.$case === "contentsOfDirectoryResponse" &&
+      (obj.contentsOfDirectoryResponse = message.submessage
+        ?.contentsOfDirectoryResponse
+        ? ContentsOfDirectoryResponse.toJSON(
+            message.submessage?.contentsOfDirectoryResponse
           )
         : undefined);
     message.submessage?.$case === "notification" &&
@@ -748,6 +826,16 @@ export const ServerOriginatedMessage = {
       message.submessage = { $case: "error", error: object.submessage.error };
     }
     if (
+      object.submessage?.$case === "success" &&
+      object.submessage?.success !== undefined &&
+      object.submessage?.success !== null
+    ) {
+      message.submessage = {
+        $case: "success",
+        success: object.submessage.success,
+      };
+    }
+    if (
       object.submessage?.$case === "positionWindowResponse" &&
       object.submessage?.positionWindowResponse !== undefined &&
       object.submessage?.positionWindowResponse !== null
@@ -770,6 +858,30 @@ export const ServerOriginatedMessage = {
           PseudoterminalExecuteResponse.fromPartial(
             object.submessage.pseudoterminalExecuteResponse
           ),
+      };
+    }
+    if (
+      object.submessage?.$case === "readFileResponse" &&
+      object.submessage?.readFileResponse !== undefined &&
+      object.submessage?.readFileResponse !== null
+    ) {
+      message.submessage = {
+        $case: "readFileResponse",
+        readFileResponse: ReadFileResponse.fromPartial(
+          object.submessage.readFileResponse
+        ),
+      };
+    }
+    if (
+      object.submessage?.$case === "contentsOfDirectoryResponse" &&
+      object.submessage?.contentsOfDirectoryResponse !== undefined &&
+      object.submessage?.contentsOfDirectoryResponse !== null
+    ) {
+      message.submessage = {
+        $case: "contentsOfDirectoryResponse",
+        contentsOfDirectoryResponse: ContentsOfDirectoryResponse.fromPartial(
+          object.submessage.contentsOfDirectoryResponse
+        ),
       };
     }
     if (
