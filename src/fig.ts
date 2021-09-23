@@ -60,6 +60,68 @@ export function modifiersToJSON(object: Modifiers): string {
   }
 }
 
+export enum NotificationType {
+  ALL = 0,
+  NOTIFY_ON_EDITBUFFFER_CHANGE = 1,
+  NOTIFY_ON_SETTINGS_CHANGE = 2,
+  NOTIFY_ON_PROMPT = 3,
+  NOTIFY_ON_LOCATION_CHANGE = 4,
+  NOTIFY_ON_PROCESS_CHANGED = 5,
+  NOTIFY_ON_KEYBINDING_PRESSED = 6,
+  UNRECOGNIZED = -1,
+}
+
+export function notificationTypeFromJSON(object: any): NotificationType {
+  switch (object) {
+    case 0:
+    case "ALL":
+      return NotificationType.ALL;
+    case 1:
+    case "NOTIFY_ON_EDITBUFFFER_CHANGE":
+      return NotificationType.NOTIFY_ON_EDITBUFFFER_CHANGE;
+    case 2:
+    case "NOTIFY_ON_SETTINGS_CHANGE":
+      return NotificationType.NOTIFY_ON_SETTINGS_CHANGE;
+    case 3:
+    case "NOTIFY_ON_PROMPT":
+      return NotificationType.NOTIFY_ON_PROMPT;
+    case 4:
+    case "NOTIFY_ON_LOCATION_CHANGE":
+      return NotificationType.NOTIFY_ON_LOCATION_CHANGE;
+    case 5:
+    case "NOTIFY_ON_PROCESS_CHANGED":
+      return NotificationType.NOTIFY_ON_PROCESS_CHANGED;
+    case 6:
+    case "NOTIFY_ON_KEYBINDING_PRESSED":
+      return NotificationType.NOTIFY_ON_KEYBINDING_PRESSED;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return NotificationType.UNRECOGNIZED;
+  }
+}
+
+export function notificationTypeToJSON(object: NotificationType): string {
+  switch (object) {
+    case NotificationType.ALL:
+      return "ALL";
+    case NotificationType.NOTIFY_ON_EDITBUFFFER_CHANGE:
+      return "NOTIFY_ON_EDITBUFFFER_CHANGE";
+    case NotificationType.NOTIFY_ON_SETTINGS_CHANGE:
+      return "NOTIFY_ON_SETTINGS_CHANGE";
+    case NotificationType.NOTIFY_ON_PROMPT:
+      return "NOTIFY_ON_PROMPT";
+    case NotificationType.NOTIFY_ON_LOCATION_CHANGE:
+      return "NOTIFY_ON_LOCATION_CHANGE";
+    case NotificationType.NOTIFY_ON_PROCESS_CHANGED:
+      return "NOTIFY_ON_PROCESS_CHANGED";
+    case NotificationType.NOTIFY_ON_KEYBINDING_PRESSED:
+      return "NOTIFY_ON_KEYBINDING_PRESSED";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 export interface ClientOriginatedMessage {
   id?: number | undefined;
   submessage?:
@@ -77,6 +139,10 @@ export interface ClientOriginatedMessage {
     | {
         $case: "contentsOfDirectoryRequest";
         contentsOfDirectoryRequest: ContentsOfDirectoryRequest;
+      }
+    | {
+        $case: "notificationRequest";
+        notificationRequest: NotificationRequest;
       };
 }
 
@@ -165,6 +231,19 @@ export interface Window {
   currentScreen?: Screen | undefined;
 }
 
+export interface TextUpdate {
+  insertion?: string | undefined;
+  deletion?: number | undefined;
+  offset?: number | undefined;
+  immediate?: boolean | undefined;
+}
+
+export interface InsertTextRequest {
+  type?:
+    | { $case: "text"; text: string }
+    | { $case: "update"; update: TextUpdate };
+}
+
 export interface PseudoterminalWriteRequest {
   input?:
     | { $case: "text"; text: string }
@@ -217,6 +296,11 @@ export interface ContentsOfDirectoryRequest {
 
 export interface ContentsOfDirectoryResponse {
   fileNames: string[];
+}
+
+export interface NotificationRequest {
+  subscribe?: boolean | undefined;
+  type?: NotificationType | undefined;
 }
 
 export interface Notification {
@@ -323,6 +407,12 @@ export const ClientOriginatedMessage = {
         writer.uint32(850).fork()
       ).ldelim();
     }
+    if (message.submessage?.$case === "notificationRequest") {
+      NotificationRequest.encode(
+        message.submessage.notificationRequest,
+        writer.uint32(858).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -384,6 +474,15 @@ export const ClientOriginatedMessage = {
           message.submessage = {
             $case: "contentsOfDirectoryRequest",
             contentsOfDirectoryRequest: ContentsOfDirectoryRequest.decode(
+              reader,
+              reader.uint32()
+            ),
+          };
+          break;
+        case 107:
+          message.submessage = {
+            $case: "notificationRequest",
+            notificationRequest: NotificationRequest.decode(
               reader,
               reader.uint32()
             ),
@@ -461,6 +560,17 @@ export const ClientOriginatedMessage = {
         ),
       };
     }
+    if (
+      object.notificationRequest !== undefined &&
+      object.notificationRequest !== null
+    ) {
+      message.submessage = {
+        $case: "notificationRequest",
+        notificationRequest: NotificationRequest.fromJSON(
+          object.notificationRequest
+        ),
+      };
+    }
     return message;
   },
 
@@ -498,6 +608,10 @@ export const ClientOriginatedMessage = {
         ? ContentsOfDirectoryRequest.toJSON(
             message.submessage?.contentsOfDirectoryRequest
           )
+        : undefined);
+    message.submessage?.$case === "notificationRequest" &&
+      (obj.notificationRequest = message.submessage?.notificationRequest
+        ? NotificationRequest.toJSON(message.submessage?.notificationRequest)
         : undefined);
     return obj;
   },
@@ -580,6 +694,18 @@ export const ClientOriginatedMessage = {
         $case: "contentsOfDirectoryRequest",
         contentsOfDirectoryRequest: ContentsOfDirectoryRequest.fromPartial(
           object.submessage.contentsOfDirectoryRequest
+        ),
+      };
+    }
+    if (
+      object.submessage?.$case === "notificationRequest" &&
+      object.submessage?.notificationRequest !== undefined &&
+      object.submessage?.notificationRequest !== null
+    ) {
+      message.submessage = {
+        $case: "notificationRequest",
+        notificationRequest: NotificationRequest.fromPartial(
+          object.submessage.notificationRequest
         ),
       };
     }
@@ -1836,6 +1962,186 @@ export const Window = {
   },
 };
 
+const baseTextUpdate: object = {};
+
+export const TextUpdate = {
+  encode(
+    message: TextUpdate,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.insertion !== undefined) {
+      writer.uint32(10).string(message.insertion);
+    }
+    if (message.deletion !== undefined) {
+      writer.uint32(16).int64(message.deletion);
+    }
+    if (message.offset !== undefined) {
+      writer.uint32(24).int64(message.offset);
+    }
+    if (message.immediate !== undefined) {
+      writer.uint32(32).bool(message.immediate);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): TextUpdate {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseTextUpdate } as TextUpdate;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.insertion = reader.string();
+          break;
+        case 2:
+          message.deletion = longToNumber(reader.int64() as Long);
+          break;
+        case 3:
+          message.offset = longToNumber(reader.int64() as Long);
+          break;
+        case 4:
+          message.immediate = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TextUpdate {
+    const message = { ...baseTextUpdate } as TextUpdate;
+    if (object.insertion !== undefined && object.insertion !== null) {
+      message.insertion = String(object.insertion);
+    }
+    if (object.deletion !== undefined && object.deletion !== null) {
+      message.deletion = Number(object.deletion);
+    }
+    if (object.offset !== undefined && object.offset !== null) {
+      message.offset = Number(object.offset);
+    }
+    if (object.immediate !== undefined && object.immediate !== null) {
+      message.immediate = Boolean(object.immediate);
+    }
+    return message;
+  },
+
+  toJSON(message: TextUpdate): unknown {
+    const obj: any = {};
+    message.insertion !== undefined && (obj.insertion = message.insertion);
+    message.deletion !== undefined && (obj.deletion = message.deletion);
+    message.offset !== undefined && (obj.offset = message.offset);
+    message.immediate !== undefined && (obj.immediate = message.immediate);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<TextUpdate>): TextUpdate {
+    const message = { ...baseTextUpdate } as TextUpdate;
+    if (object.insertion !== undefined && object.insertion !== null) {
+      message.insertion = object.insertion;
+    }
+    if (object.deletion !== undefined && object.deletion !== null) {
+      message.deletion = object.deletion;
+    }
+    if (object.offset !== undefined && object.offset !== null) {
+      message.offset = object.offset;
+    }
+    if (object.immediate !== undefined && object.immediate !== null) {
+      message.immediate = object.immediate;
+    }
+    return message;
+  },
+};
+
+const baseInsertTextRequest: object = {};
+
+export const InsertTextRequest = {
+  encode(
+    message: InsertTextRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.type?.$case === "text") {
+      writer.uint32(10).string(message.type.text);
+    }
+    if (message.type?.$case === "update") {
+      TextUpdate.encode(message.type.update, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): InsertTextRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseInsertTextRequest } as InsertTextRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.type = { $case: "text", text: reader.string() };
+          break;
+        case 2:
+          message.type = {
+            $case: "update",
+            update: TextUpdate.decode(reader, reader.uint32()),
+          };
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): InsertTextRequest {
+    const message = { ...baseInsertTextRequest } as InsertTextRequest;
+    if (object.text !== undefined && object.text !== null) {
+      message.type = { $case: "text", text: String(object.text) };
+    }
+    if (object.update !== undefined && object.update !== null) {
+      message.type = {
+        $case: "update",
+        update: TextUpdate.fromJSON(object.update),
+      };
+    }
+    return message;
+  },
+
+  toJSON(message: InsertTextRequest): unknown {
+    const obj: any = {};
+    message.type?.$case === "text" && (obj.text = message.type?.text);
+    message.type?.$case === "update" &&
+      (obj.update = message.type?.update
+        ? TextUpdate.toJSON(message.type?.update)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<InsertTextRequest>): InsertTextRequest {
+    const message = { ...baseInsertTextRequest } as InsertTextRequest;
+    if (
+      object.type?.$case === "text" &&
+      object.type?.text !== undefined &&
+      object.type?.text !== null
+    ) {
+      message.type = { $case: "text", text: object.type.text };
+    }
+    if (
+      object.type?.$case === "update" &&
+      object.type?.update !== undefined &&
+      object.type?.update !== null
+    ) {
+      message.type = {
+        $case: "update",
+        update: TextUpdate.fromPartial(object.type.update),
+      };
+    }
+    return message;
+  },
+};
+
 const basePseudoterminalWriteRequest: object = {};
 
 export const PseudoterminalWriteRequest = {
@@ -2661,6 +2967,77 @@ export const ContentsOfDirectoryResponse = {
       for (const e of object.fileNames) {
         message.fileNames.push(e);
       }
+    }
+    return message;
+  },
+};
+
+const baseNotificationRequest: object = {};
+
+export const NotificationRequest = {
+  encode(
+    message: NotificationRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.subscribe !== undefined) {
+      writer.uint32(8).bool(message.subscribe);
+    }
+    if (message.type !== undefined) {
+      writer.uint32(16).int32(message.type);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): NotificationRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseNotificationRequest } as NotificationRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.subscribe = reader.bool();
+          break;
+        case 2:
+          message.type = reader.int32() as any;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): NotificationRequest {
+    const message = { ...baseNotificationRequest } as NotificationRequest;
+    if (object.subscribe !== undefined && object.subscribe !== null) {
+      message.subscribe = Boolean(object.subscribe);
+    }
+    if (object.type !== undefined && object.type !== null) {
+      message.type = notificationTypeFromJSON(object.type);
+    }
+    return message;
+  },
+
+  toJSON(message: NotificationRequest): unknown {
+    const obj: any = {};
+    message.subscribe !== undefined && (obj.subscribe = message.subscribe);
+    message.type !== undefined &&
+      (obj.type =
+        message.type !== undefined
+          ? notificationTypeToJSON(message.type)
+          : undefined);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<NotificationRequest>): NotificationRequest {
+    const message = { ...baseNotificationRequest } as NotificationRequest;
+    if (object.subscribe !== undefined && object.subscribe !== null) {
+      message.subscribe = object.subscribe;
+    }
+    if (object.type !== undefined && object.type !== null) {
+      message.type = object.type;
     }
     return message;
   },
