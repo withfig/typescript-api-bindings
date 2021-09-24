@@ -7,6 +7,13 @@ import {
   
 import { sendMessage } from "./core"
 
+export type NotificationHandler = (notification: Notification) => boolean | undefined;
+export interface Subscription {
+  unsubscribe() : void
+}
+
+const handlers: Partial<Record<NotificationType, NotificationHandler[]>> = {};
+
 export const _unsubscribe = (type: NotificationType, handler?: NotificationHandler) => {
 
 
@@ -33,10 +40,8 @@ export const _unsubscribe = (type: NotificationType, handler?: NotificationHandl
   })
 
 }
-export type NotificationHandler = (notification: Notification) => boolean | undefined;
-const handlers: Partial<Record<NotificationType, NotificationHandler[]>> = {};
 
-export const _subscribe = (request: NotificationRequest, handler: NotificationHandler) => {
+export const _subscribe = (request: NotificationRequest, handler: NotificationHandler): Subscription | undefined =>  {
 
   const type = request.type
 
