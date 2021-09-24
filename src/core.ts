@@ -14,12 +14,16 @@ const FigProtoMessageRecieved = "FigProtoMessageRecieved";
 
 type shouldKeepListening = boolean;
 
-type APIResponseHandler = (
+export type APIResponseHandler = (
   response: ServerOriginatedMessage["submessage"]
 ) => shouldKeepListening | void;
 
 let messageId = 0;
 const handlers: Record<number, APIResponseHandler> = {};
+
+export const setHandlerForId = (handler: APIResponseHandler, id: number) => {
+    handlers[id] = handler;
+}
 
 export const sendMessage = (
   message: ClientOriginatedMessage["submessage"],
