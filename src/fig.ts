@@ -152,7 +152,11 @@ export interface ClientOriginatedMessage {
         $case: "updateSettingsPropertyRequest";
         updateSettingsPropertyRequest: UpdateSettingsPropertyRequest;
       }
-    | { $case: "insertTextRequest"; insertTextRequest: InsertTextRequest };
+    | { $case: "insertTextRequest"; insertTextRequest: InsertTextRequest }
+    | {
+        $case: "updateApplicationPropertiesRequest";
+        updateApplicationPropertiesRequest: UpdateApplicationPropertiesRequest;
+      };
 }
 
 export interface ServerOriginatedMessage {
@@ -325,6 +329,10 @@ export interface UpdateSettingsPropertyRequest {
   value?: string | undefined;
 }
 
+export interface UpdateApplicationPropertiesRequest {
+  interceptBoundKeystrokes?: boolean | undefined;
+}
+
 export interface NotificationRequest {
   subscribe?: boolean | undefined;
   type?: NotificationType | undefined;
@@ -460,6 +468,12 @@ export const ClientOriginatedMessage = {
         writer.uint32(882).fork()
       ).ldelim();
     }
+    if (message.submessage?.$case === "updateApplicationPropertiesRequest") {
+      UpdateApplicationPropertiesRequest.encode(
+        message.submessage.updateApplicationPropertiesRequest,
+        writer.uint32(890).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -560,6 +574,16 @@ export const ClientOriginatedMessage = {
               reader,
               reader.uint32()
             ),
+          };
+          break;
+        case 111:
+          message.submessage = {
+            $case: "updateApplicationPropertiesRequest",
+            updateApplicationPropertiesRequest:
+              UpdateApplicationPropertiesRequest.decode(
+                reader,
+                reader.uint32()
+              ),
           };
           break;
         default:
@@ -681,6 +705,18 @@ export const ClientOriginatedMessage = {
         insertTextRequest: InsertTextRequest.fromJSON(object.insertTextRequest),
       };
     }
+    if (
+      object.updateApplicationPropertiesRequest !== undefined &&
+      object.updateApplicationPropertiesRequest !== null
+    ) {
+      message.submessage = {
+        $case: "updateApplicationPropertiesRequest",
+        updateApplicationPropertiesRequest:
+          UpdateApplicationPropertiesRequest.fromJSON(
+            object.updateApplicationPropertiesRequest
+          ),
+      };
+    }
     return message;
   },
 
@@ -743,6 +779,13 @@ export const ClientOriginatedMessage = {
     message.submessage?.$case === "insertTextRequest" &&
       (obj.insertTextRequest = message.submessage?.insertTextRequest
         ? InsertTextRequest.toJSON(message.submessage?.insertTextRequest)
+        : undefined);
+    message.submessage?.$case === "updateApplicationPropertiesRequest" &&
+      (obj.updateApplicationPropertiesRequest = message.submessage
+        ?.updateApplicationPropertiesRequest
+        ? UpdateApplicationPropertiesRequest.toJSON(
+            message.submessage?.updateApplicationPropertiesRequest
+          )
         : undefined);
     return obj;
   },
@@ -875,6 +918,19 @@ export const ClientOriginatedMessage = {
         insertTextRequest: InsertTextRequest.fromPartial(
           object.submessage.insertTextRequest
         ),
+      };
+    }
+    if (
+      object.submessage?.$case === "updateApplicationPropertiesRequest" &&
+      object.submessage?.updateApplicationPropertiesRequest !== undefined &&
+      object.submessage?.updateApplicationPropertiesRequest !== null
+    ) {
+      message.submessage = {
+        $case: "updateApplicationPropertiesRequest",
+        updateApplicationPropertiesRequest:
+          UpdateApplicationPropertiesRequest.fromPartial(
+            object.submessage.updateApplicationPropertiesRequest
+          ),
       };
     }
     return message;
@@ -3401,6 +3457,80 @@ export const UpdateSettingsPropertyRequest = {
     }
     if (object.value !== undefined && object.value !== null) {
       message.value = object.value;
+    }
+    return message;
+  },
+};
+
+const baseUpdateApplicationPropertiesRequest: object = {};
+
+export const UpdateApplicationPropertiesRequest = {
+  encode(
+    message: UpdateApplicationPropertiesRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.interceptBoundKeystrokes !== undefined) {
+      writer.uint32(8).bool(message.interceptBoundKeystrokes);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): UpdateApplicationPropertiesRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseUpdateApplicationPropertiesRequest,
+    } as UpdateApplicationPropertiesRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.interceptBoundKeystrokes = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateApplicationPropertiesRequest {
+    const message = {
+      ...baseUpdateApplicationPropertiesRequest,
+    } as UpdateApplicationPropertiesRequest;
+    if (
+      object.interceptBoundKeystrokes !== undefined &&
+      object.interceptBoundKeystrokes !== null
+    ) {
+      message.interceptBoundKeystrokes = Boolean(
+        object.interceptBoundKeystrokes
+      );
+    }
+    return message;
+  },
+
+  toJSON(message: UpdateApplicationPropertiesRequest): unknown {
+    const obj: any = {};
+    message.interceptBoundKeystrokes !== undefined &&
+      (obj.interceptBoundKeystrokes = message.interceptBoundKeystrokes);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<UpdateApplicationPropertiesRequest>
+  ): UpdateApplicationPropertiesRequest {
+    const message = {
+      ...baseUpdateApplicationPropertiesRequest,
+    } as UpdateApplicationPropertiesRequest;
+    if (
+      object.interceptBoundKeystrokes !== undefined &&
+      object.interceptBoundKeystrokes !== null
+    ) {
+      message.interceptBoundKeystrokes = object.interceptBoundKeystrokes;
     }
     return message;
   },
