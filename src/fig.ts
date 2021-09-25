@@ -151,7 +151,8 @@ export interface ClientOriginatedMessage {
     | {
         $case: "updateSettingsPropertyRequest";
         updateSettingsPropertyRequest: UpdateSettingsPropertyRequest;
-      };
+      }
+    | { $case: "insertTextRequest"; insertTextRequest: InsertTextRequest };
 }
 
 export interface ServerOriginatedMessage {
@@ -369,6 +370,7 @@ export interface SettingsChangedNotification {
 
 export interface ShellPromptReturnedNotification {
   sessionId?: string | undefined;
+  shell?: Process | undefined;
 }
 
 export interface LocationChangedNotification {
@@ -450,6 +452,12 @@ export const ClientOriginatedMessage = {
       UpdateSettingsPropertyRequest.encode(
         message.submessage.updateSettingsPropertyRequest,
         writer.uint32(874).fork()
+      ).ldelim();
+    }
+    if (message.submessage?.$case === "insertTextRequest") {
+      InsertTextRequest.encode(
+        message.submessage.insertTextRequest,
+        writer.uint32(882).fork()
       ).ldelim();
     }
     return writer;
@@ -540,6 +548,15 @@ export const ClientOriginatedMessage = {
           message.submessage = {
             $case: "updateSettingsPropertyRequest",
             updateSettingsPropertyRequest: UpdateSettingsPropertyRequest.decode(
+              reader,
+              reader.uint32()
+            ),
+          };
+          break;
+        case 110:
+          message.submessage = {
+            $case: "insertTextRequest",
+            insertTextRequest: InsertTextRequest.decode(
               reader,
               reader.uint32()
             ),
@@ -655,6 +672,15 @@ export const ClientOriginatedMessage = {
         ),
       };
     }
+    if (
+      object.insertTextRequest !== undefined &&
+      object.insertTextRequest !== null
+    ) {
+      message.submessage = {
+        $case: "insertTextRequest",
+        insertTextRequest: InsertTextRequest.fromJSON(object.insertTextRequest),
+      };
+    }
     return message;
   },
 
@@ -713,6 +739,10 @@ export const ClientOriginatedMessage = {
         ? UpdateSettingsPropertyRequest.toJSON(
             message.submessage?.updateSettingsPropertyRequest
           )
+        : undefined);
+    message.submessage?.$case === "insertTextRequest" &&
+      (obj.insertTextRequest = message.submessage?.insertTextRequest
+        ? InsertTextRequest.toJSON(message.submessage?.insertTextRequest)
         : undefined);
     return obj;
   },
@@ -833,6 +863,18 @@ export const ClientOriginatedMessage = {
           UpdateSettingsPropertyRequest.fromPartial(
             object.submessage.updateSettingsPropertyRequest
           ),
+      };
+    }
+    if (
+      object.submessage?.$case === "insertTextRequest" &&
+      object.submessage?.insertTextRequest !== undefined &&
+      object.submessage?.insertTextRequest !== null
+    ) {
+      message.submessage = {
+        $case: "insertTextRequest",
+        insertTextRequest: InsertTextRequest.fromPartial(
+          object.submessage.insertTextRequest
+        ),
       };
     }
     return message;
@@ -3911,6 +3953,9 @@ export const ShellPromptReturnedNotification = {
     if (message.sessionId !== undefined) {
       writer.uint32(10).string(message.sessionId);
     }
+    if (message.shell !== undefined) {
+      Process.encode(message.shell, writer.uint32(18).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -3929,6 +3974,9 @@ export const ShellPromptReturnedNotification = {
         case 1:
           message.sessionId = reader.string();
           break;
+        case 2:
+          message.shell = Process.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -3944,12 +3992,17 @@ export const ShellPromptReturnedNotification = {
     if (object.sessionId !== undefined && object.sessionId !== null) {
       message.sessionId = String(object.sessionId);
     }
+    if (object.shell !== undefined && object.shell !== null) {
+      message.shell = Process.fromJSON(object.shell);
+    }
     return message;
   },
 
   toJSON(message: ShellPromptReturnedNotification): unknown {
     const obj: any = {};
     message.sessionId !== undefined && (obj.sessionId = message.sessionId);
+    message.shell !== undefined &&
+      (obj.shell = message.shell ? Process.toJSON(message.shell) : undefined);
     return obj;
   },
 
@@ -3961,6 +4014,9 @@ export const ShellPromptReturnedNotification = {
     } as ShellPromptReturnedNotification;
     if (object.sessionId !== undefined && object.sessionId !== null) {
       message.sessionId = object.sessionId;
+    }
+    if (object.shell !== undefined && object.shell !== null) {
+      message.shell = Process.fromPartial(object.shell);
     }
     return message;
   },
