@@ -154,8 +154,8 @@ export interface ClientOriginatedMessage {
       }
     | { $case: "insertTextRequest"; insertTextRequest: InsertTextRequest }
     | {
-        $case: "updateApplicationPropertiesReuest";
-        updateApplicationPropertiesReuest: UpdateApplicationPropertiesRequest;
+        $case: "updateApplicationPropertiesRequest";
+        updateApplicationPropertiesRequest: UpdateApplicationPropertiesRequest;
       };
 }
 
@@ -468,9 +468,9 @@ export const ClientOriginatedMessage = {
         writer.uint32(882).fork()
       ).ldelim();
     }
-    if (message.submessage?.$case === "updateApplicationPropertiesReuest") {
+    if (message.submessage?.$case === "updateApplicationPropertiesRequest") {
       UpdateApplicationPropertiesRequest.encode(
-        message.submessage.updateApplicationPropertiesReuest,
+        message.submessage.updateApplicationPropertiesRequest,
         writer.uint32(890).fork()
       ).ldelim();
     }
@@ -578,8 +578,8 @@ export const ClientOriginatedMessage = {
           break;
         case 111:
           message.submessage = {
-            $case: "updateApplicationPropertiesReuest",
-            updateApplicationPropertiesReuest:
+            $case: "updateApplicationPropertiesRequest",
+            updateApplicationPropertiesRequest:
               UpdateApplicationPropertiesRequest.decode(
                 reader,
                 reader.uint32()
@@ -706,14 +706,14 @@ export const ClientOriginatedMessage = {
       };
     }
     if (
-      object.updateApplicationPropertiesReuest !== undefined &&
-      object.updateApplicationPropertiesReuest !== null
+      object.updateApplicationPropertiesRequest !== undefined &&
+      object.updateApplicationPropertiesRequest !== null
     ) {
       message.submessage = {
-        $case: "updateApplicationPropertiesReuest",
-        updateApplicationPropertiesReuest:
+        $case: "updateApplicationPropertiesRequest",
+        updateApplicationPropertiesRequest:
           UpdateApplicationPropertiesRequest.fromJSON(
-            object.updateApplicationPropertiesReuest
+            object.updateApplicationPropertiesRequest
           ),
       };
     }
@@ -780,11 +780,11 @@ export const ClientOriginatedMessage = {
       (obj.insertTextRequest = message.submessage?.insertTextRequest
         ? InsertTextRequest.toJSON(message.submessage?.insertTextRequest)
         : undefined);
-    message.submessage?.$case === "updateApplicationPropertiesReuest" &&
-      (obj.updateApplicationPropertiesReuest = message.submessage
-        ?.updateApplicationPropertiesReuest
+    message.submessage?.$case === "updateApplicationPropertiesRequest" &&
+      (obj.updateApplicationPropertiesRequest = message.submessage
+        ?.updateApplicationPropertiesRequest
         ? UpdateApplicationPropertiesRequest.toJSON(
-            message.submessage?.updateApplicationPropertiesReuest
+            message.submessage?.updateApplicationPropertiesRequest
           )
         : undefined);
     return obj;
@@ -921,15 +921,15 @@ export const ClientOriginatedMessage = {
       };
     }
     if (
-      object.submessage?.$case === "updateApplicationPropertiesReuest" &&
-      object.submessage?.updateApplicationPropertiesReuest !== undefined &&
-      object.submessage?.updateApplicationPropertiesReuest !== null
+      object.submessage?.$case === "updateApplicationPropertiesRequest" &&
+      object.submessage?.updateApplicationPropertiesRequest !== undefined &&
+      object.submessage?.updateApplicationPropertiesRequest !== null
     ) {
       message.submessage = {
-        $case: "updateApplicationPropertiesReuest",
-        updateApplicationPropertiesReuest:
+        $case: "updateApplicationPropertiesRequest",
+        updateApplicationPropertiesRequest:
           UpdateApplicationPropertiesRequest.fromPartial(
-            object.submessage.updateApplicationPropertiesReuest
+            object.submessage.updateApplicationPropertiesRequest
           ),
       };
     }
