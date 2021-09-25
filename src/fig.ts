@@ -140,9 +140,14 @@ export interface ClientOriginatedMessage {
         $case: "contentsOfDirectoryRequest";
         contentsOfDirectoryRequest: ContentsOfDirectoryRequest;
       }
+    | { $case: "notificationRequest"; notificationRequest: NotificationRequest }
     | {
-        $case: "notificationRequest";
-        notificationRequest: NotificationRequest;
+        $case: "getSettingsPropertyRequest";
+        getSettingsPropertyRequest: GetSettingsPropertyRequest;
+      }
+    | {
+        $case: "updateSettingsPropertyRequest";
+        updateSettingsPropertyRequest: UpdateSettingsPropertyRequest;
       };
 }
 
@@ -163,6 +168,10 @@ export interface ServerOriginatedMessage {
     | {
         $case: "contentsOfDirectoryResponse";
         contentsOfDirectoryResponse: ContentsOfDirectoryResponse;
+      }
+    | {
+        $case: "getSettingsPropertyResponse";
+        getSettingsPropertyResponse: GetSettingsPropertyResponse;
       }
     | { $case: "notification"; notification: Notification };
 }
@@ -298,6 +307,20 @@ export interface ContentsOfDirectoryResponse {
   fileNames: string[];
 }
 
+export interface GetSettingsPropertyRequest {
+  key?: string | undefined;
+}
+
+export interface GetSettingsPropertyResponse {
+  jsonBlob?: string | undefined;
+  isDefault?: boolean | undefined;
+}
+
+export interface UpdateSettingsPropertyRequest {
+  key?: string | undefined;
+  value?: string | undefined;
+}
+
 export interface NotificationRequest {
   subscribe?: boolean | undefined;
   type?: NotificationType | undefined;
@@ -413,6 +436,18 @@ export const ClientOriginatedMessage = {
         writer.uint32(858).fork()
       ).ldelim();
     }
+    if (message.submessage?.$case === "getSettingsPropertyRequest") {
+      GetSettingsPropertyRequest.encode(
+        message.submessage.getSettingsPropertyRequest,
+        writer.uint32(866).fork()
+      ).ldelim();
+    }
+    if (message.submessage?.$case === "updateSettingsPropertyRequest") {
+      UpdateSettingsPropertyRequest.encode(
+        message.submessage.updateSettingsPropertyRequest,
+        writer.uint32(874).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -483,6 +518,24 @@ export const ClientOriginatedMessage = {
           message.submessage = {
             $case: "notificationRequest",
             notificationRequest: NotificationRequest.decode(
+              reader,
+              reader.uint32()
+            ),
+          };
+          break;
+        case 108:
+          message.submessage = {
+            $case: "getSettingsPropertyRequest",
+            getSettingsPropertyRequest: GetSettingsPropertyRequest.decode(
+              reader,
+              reader.uint32()
+            ),
+          };
+          break;
+        case 109:
+          message.submessage = {
+            $case: "updateSettingsPropertyRequest",
+            updateSettingsPropertyRequest: UpdateSettingsPropertyRequest.decode(
               reader,
               reader.uint32()
             ),
@@ -571,6 +624,28 @@ export const ClientOriginatedMessage = {
         ),
       };
     }
+    if (
+      object.getSettingsPropertyRequest !== undefined &&
+      object.getSettingsPropertyRequest !== null
+    ) {
+      message.submessage = {
+        $case: "getSettingsPropertyRequest",
+        getSettingsPropertyRequest: GetSettingsPropertyRequest.fromJSON(
+          object.getSettingsPropertyRequest
+        ),
+      };
+    }
+    if (
+      object.updateSettingsPropertyRequest !== undefined &&
+      object.updateSettingsPropertyRequest !== null
+    ) {
+      message.submessage = {
+        $case: "updateSettingsPropertyRequest",
+        updateSettingsPropertyRequest: UpdateSettingsPropertyRequest.fromJSON(
+          object.updateSettingsPropertyRequest
+        ),
+      };
+    }
     return message;
   },
 
@@ -612,6 +687,20 @@ export const ClientOriginatedMessage = {
     message.submessage?.$case === "notificationRequest" &&
       (obj.notificationRequest = message.submessage?.notificationRequest
         ? NotificationRequest.toJSON(message.submessage?.notificationRequest)
+        : undefined);
+    message.submessage?.$case === "getSettingsPropertyRequest" &&
+      (obj.getSettingsPropertyRequest = message.submessage
+        ?.getSettingsPropertyRequest
+        ? GetSettingsPropertyRequest.toJSON(
+            message.submessage?.getSettingsPropertyRequest
+          )
+        : undefined);
+    message.submessage?.$case === "updateSettingsPropertyRequest" &&
+      (obj.updateSettingsPropertyRequest = message.submessage
+        ?.updateSettingsPropertyRequest
+        ? UpdateSettingsPropertyRequest.toJSON(
+            message.submessage?.updateSettingsPropertyRequest
+          )
         : undefined);
     return obj;
   },
@@ -709,6 +798,31 @@ export const ClientOriginatedMessage = {
         ),
       };
     }
+    if (
+      object.submessage?.$case === "getSettingsPropertyRequest" &&
+      object.submessage?.getSettingsPropertyRequest !== undefined &&
+      object.submessage?.getSettingsPropertyRequest !== null
+    ) {
+      message.submessage = {
+        $case: "getSettingsPropertyRequest",
+        getSettingsPropertyRequest: GetSettingsPropertyRequest.fromPartial(
+          object.submessage.getSettingsPropertyRequest
+        ),
+      };
+    }
+    if (
+      object.submessage?.$case === "updateSettingsPropertyRequest" &&
+      object.submessage?.updateSettingsPropertyRequest !== undefined &&
+      object.submessage?.updateSettingsPropertyRequest !== null
+    ) {
+      message.submessage = {
+        $case: "updateSettingsPropertyRequest",
+        updateSettingsPropertyRequest:
+          UpdateSettingsPropertyRequest.fromPartial(
+            object.submessage.updateSettingsPropertyRequest
+          ),
+      };
+    }
     return message;
   },
 };
@@ -751,6 +865,12 @@ export const ServerOriginatedMessage = {
       ContentsOfDirectoryResponse.encode(
         message.submessage.contentsOfDirectoryResponse,
         writer.uint32(826).fork()
+      ).ldelim();
+    }
+    if (message.submessage?.$case === "getSettingsPropertyResponse") {
+      GetSettingsPropertyResponse.encode(
+        message.submessage.getSettingsPropertyResponse,
+        writer.uint32(834).fork()
       ).ldelim();
     }
     if (message.submessage?.$case === "notification") {
@@ -811,6 +931,15 @@ export const ServerOriginatedMessage = {
           message.submessage = {
             $case: "contentsOfDirectoryResponse",
             contentsOfDirectoryResponse: ContentsOfDirectoryResponse.decode(
+              reader,
+              reader.uint32()
+            ),
+          };
+          break;
+        case 104:
+          message.submessage = {
+            $case: "getSettingsPropertyResponse",
+            getSettingsPropertyResponse: GetSettingsPropertyResponse.decode(
               reader,
               reader.uint32()
             ),
@@ -888,6 +1017,17 @@ export const ServerOriginatedMessage = {
         ),
       };
     }
+    if (
+      object.getSettingsPropertyResponse !== undefined &&
+      object.getSettingsPropertyResponse !== null
+    ) {
+      message.submessage = {
+        $case: "getSettingsPropertyResponse",
+        getSettingsPropertyResponse: GetSettingsPropertyResponse.fromJSON(
+          object.getSettingsPropertyResponse
+        ),
+      };
+    }
     if (object.notification !== undefined && object.notification !== null) {
       message.submessage = {
         $case: "notification",
@@ -926,6 +1066,13 @@ export const ServerOriginatedMessage = {
         ?.contentsOfDirectoryResponse
         ? ContentsOfDirectoryResponse.toJSON(
             message.submessage?.contentsOfDirectoryResponse
+          )
+        : undefined);
+    message.submessage?.$case === "getSettingsPropertyResponse" &&
+      (obj.getSettingsPropertyResponse = message.submessage
+        ?.getSettingsPropertyResponse
+        ? GetSettingsPropertyResponse.toJSON(
+            message.submessage?.getSettingsPropertyResponse
           )
         : undefined);
     message.submessage?.$case === "notification" &&
@@ -1007,6 +1154,18 @@ export const ServerOriginatedMessage = {
         $case: "contentsOfDirectoryResponse",
         contentsOfDirectoryResponse: ContentsOfDirectoryResponse.fromPartial(
           object.submessage.contentsOfDirectoryResponse
+        ),
+      };
+    }
+    if (
+      object.submessage?.$case === "getSettingsPropertyResponse" &&
+      object.submessage?.getSettingsPropertyResponse !== undefined &&
+      object.submessage?.getSettingsPropertyResponse !== null
+    ) {
+      message.submessage = {
+        $case: "getSettingsPropertyResponse",
+        getSettingsPropertyResponse: GetSettingsPropertyResponse.fromPartial(
+          object.submessage.getSettingsPropertyResponse
         ),
       };
     }
@@ -2967,6 +3126,227 @@ export const ContentsOfDirectoryResponse = {
       for (const e of object.fileNames) {
         message.fileNames.push(e);
       }
+    }
+    return message;
+  },
+};
+
+const baseGetSettingsPropertyRequest: object = {};
+
+export const GetSettingsPropertyRequest = {
+  encode(
+    message: GetSettingsPropertyRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.key !== undefined) {
+      writer.uint32(10).string(message.key);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): GetSettingsPropertyRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseGetSettingsPropertyRequest,
+    } as GetSettingsPropertyRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.key = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetSettingsPropertyRequest {
+    const message = {
+      ...baseGetSettingsPropertyRequest,
+    } as GetSettingsPropertyRequest;
+    if (object.key !== undefined && object.key !== null) {
+      message.key = String(object.key);
+    }
+    return message;
+  },
+
+  toJSON(message: GetSettingsPropertyRequest): unknown {
+    const obj: any = {};
+    message.key !== undefined && (obj.key = message.key);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<GetSettingsPropertyRequest>
+  ): GetSettingsPropertyRequest {
+    const message = {
+      ...baseGetSettingsPropertyRequest,
+    } as GetSettingsPropertyRequest;
+    if (object.key !== undefined && object.key !== null) {
+      message.key = object.key;
+    }
+    return message;
+  },
+};
+
+const baseGetSettingsPropertyResponse: object = {};
+
+export const GetSettingsPropertyResponse = {
+  encode(
+    message: GetSettingsPropertyResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.jsonBlob !== undefined) {
+      writer.uint32(10).string(message.jsonBlob);
+    }
+    if (message.isDefault !== undefined) {
+      writer.uint32(16).bool(message.isDefault);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): GetSettingsPropertyResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseGetSettingsPropertyResponse,
+    } as GetSettingsPropertyResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.jsonBlob = reader.string();
+          break;
+        case 2:
+          message.isDefault = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetSettingsPropertyResponse {
+    const message = {
+      ...baseGetSettingsPropertyResponse,
+    } as GetSettingsPropertyResponse;
+    if (object.jsonBlob !== undefined && object.jsonBlob !== null) {
+      message.jsonBlob = String(object.jsonBlob);
+    }
+    if (object.isDefault !== undefined && object.isDefault !== null) {
+      message.isDefault = Boolean(object.isDefault);
+    }
+    return message;
+  },
+
+  toJSON(message: GetSettingsPropertyResponse): unknown {
+    const obj: any = {};
+    message.jsonBlob !== undefined && (obj.jsonBlob = message.jsonBlob);
+    message.isDefault !== undefined && (obj.isDefault = message.isDefault);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<GetSettingsPropertyResponse>
+  ): GetSettingsPropertyResponse {
+    const message = {
+      ...baseGetSettingsPropertyResponse,
+    } as GetSettingsPropertyResponse;
+    if (object.jsonBlob !== undefined && object.jsonBlob !== null) {
+      message.jsonBlob = object.jsonBlob;
+    }
+    if (object.isDefault !== undefined && object.isDefault !== null) {
+      message.isDefault = object.isDefault;
+    }
+    return message;
+  },
+};
+
+const baseUpdateSettingsPropertyRequest: object = {};
+
+export const UpdateSettingsPropertyRequest = {
+  encode(
+    message: UpdateSettingsPropertyRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.key !== undefined) {
+      writer.uint32(10).string(message.key);
+    }
+    if (message.value !== undefined) {
+      writer.uint32(18).string(message.value);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): UpdateSettingsPropertyRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseUpdateSettingsPropertyRequest,
+    } as UpdateSettingsPropertyRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.key = reader.string();
+          break;
+        case 2:
+          message.value = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateSettingsPropertyRequest {
+    const message = {
+      ...baseUpdateSettingsPropertyRequest,
+    } as UpdateSettingsPropertyRequest;
+    if (object.key !== undefined && object.key !== null) {
+      message.key = String(object.key);
+    }
+    if (object.value !== undefined && object.value !== null) {
+      message.value = String(object.value);
+    }
+    return message;
+  },
+
+  toJSON(message: UpdateSettingsPropertyRequest): unknown {
+    const obj: any = {};
+    message.key !== undefined && (obj.key = message.key);
+    message.value !== undefined && (obj.value = message.value);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<UpdateSettingsPropertyRequest>
+  ): UpdateSettingsPropertyRequest {
+    const message = {
+      ...baseUpdateSettingsPropertyRequest,
+    } as UpdateSettingsPropertyRequest;
+    if (object.key !== undefined && object.key !== null) {
+      message.key = object.key;
+    }
+    if (object.value !== undefined && object.value !== null) {
+      message.value = object.value;
     }
     return message;
   },
