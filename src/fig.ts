@@ -129,7 +129,10 @@ export interface ClientOriginatedMessage {
         $case: "positionWindowRequest";
         positionWindowRequest: PositionWindowRequest;
       }
-    | { $case: "ptyRequest"; ptyRequest: PseudoterminalExecuteRequest }
+    | {
+        $case: "pseudoterminalExecuteRequest";
+        pseudoterminalExecuteRequest: PseudoterminalExecuteRequest;
+      }
     | {
         $case: "pseudoterminalWriteRequest";
         pseudoterminalWriteRequest: PseudoterminalWriteRequest;
@@ -382,6 +385,7 @@ export interface ProcessChangedNotification {
 
 export interface KeybindingPressedNotification {
   keypress?: KeyEvent | undefined;
+  action?: string | undefined;
 }
 
 const baseClientOriginatedMessage: object = {};
@@ -400,9 +404,9 @@ export const ClientOriginatedMessage = {
         writer.uint32(810).fork()
       ).ldelim();
     }
-    if (message.submessage?.$case === "ptyRequest") {
+    if (message.submessage?.$case === "pseudoterminalExecuteRequest") {
       PseudoterminalExecuteRequest.encode(
-        message.submessage.ptyRequest,
+        message.submessage.pseudoterminalExecuteRequest,
         writer.uint32(818).fork()
       ).ldelim();
     }
@@ -477,8 +481,8 @@ export const ClientOriginatedMessage = {
           break;
         case 102:
           message.submessage = {
-            $case: "ptyRequest",
-            ptyRequest: PseudoterminalExecuteRequest.decode(
+            $case: "pseudoterminalExecuteRequest",
+            pseudoterminalExecuteRequest: PseudoterminalExecuteRequest.decode(
               reader,
               reader.uint32()
             ),
@@ -567,10 +571,15 @@ export const ClientOriginatedMessage = {
         ),
       };
     }
-    if (object.ptyRequest !== undefined && object.ptyRequest !== null) {
+    if (
+      object.pseudoterminalExecuteRequest !== undefined &&
+      object.pseudoterminalExecuteRequest !== null
+    ) {
       message.submessage = {
-        $case: "ptyRequest",
-        ptyRequest: PseudoterminalExecuteRequest.fromJSON(object.ptyRequest),
+        $case: "pseudoterminalExecuteRequest",
+        pseudoterminalExecuteRequest: PseudoterminalExecuteRequest.fromJSON(
+          object.pseudoterminalExecuteRequest
+        ),
       };
     }
     if (
@@ -658,9 +667,12 @@ export const ClientOriginatedMessage = {
             message.submessage?.positionWindowRequest
           )
         : undefined);
-    message.submessage?.$case === "ptyRequest" &&
-      (obj.ptyRequest = message.submessage?.ptyRequest
-        ? PseudoterminalExecuteRequest.toJSON(message.submessage?.ptyRequest)
+    message.submessage?.$case === "pseudoterminalExecuteRequest" &&
+      (obj.pseudoterminalExecuteRequest = message.submessage
+        ?.pseudoterminalExecuteRequest
+        ? PseudoterminalExecuteRequest.toJSON(
+            message.submessage?.pseudoterminalExecuteRequest
+          )
         : undefined);
     message.submessage?.$case === "pseudoterminalWriteRequest" &&
       (obj.pseudoterminalWriteRequest = message.submessage
@@ -727,14 +739,14 @@ export const ClientOriginatedMessage = {
       };
     }
     if (
-      object.submessage?.$case === "ptyRequest" &&
-      object.submessage?.ptyRequest !== undefined &&
-      object.submessage?.ptyRequest !== null
+      object.submessage?.$case === "pseudoterminalExecuteRequest" &&
+      object.submessage?.pseudoterminalExecuteRequest !== undefined &&
+      object.submessage?.pseudoterminalExecuteRequest !== null
     ) {
       message.submessage = {
-        $case: "ptyRequest",
-        ptyRequest: PseudoterminalExecuteRequest.fromPartial(
-          object.submessage.ptyRequest
+        $case: "pseudoterminalExecuteRequest",
+        pseudoterminalExecuteRequest: PseudoterminalExecuteRequest.fromPartial(
+          object.submessage.pseudoterminalExecuteRequest
         ),
       };
     }
@@ -4149,6 +4161,9 @@ export const KeybindingPressedNotification = {
     if (message.keypress !== undefined) {
       KeyEvent.encode(message.keypress, writer.uint32(10).fork()).ldelim();
     }
+    if (message.action !== undefined) {
+      writer.uint32(18).string(message.action);
+    }
     return writer;
   },
 
@@ -4167,6 +4182,9 @@ export const KeybindingPressedNotification = {
         case 1:
           message.keypress = KeyEvent.decode(reader, reader.uint32());
           break;
+        case 2:
+          message.action = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -4182,6 +4200,9 @@ export const KeybindingPressedNotification = {
     if (object.keypress !== undefined && object.keypress !== null) {
       message.keypress = KeyEvent.fromJSON(object.keypress);
     }
+    if (object.action !== undefined && object.action !== null) {
+      message.action = String(object.action);
+    }
     return message;
   },
 
@@ -4191,6 +4212,7 @@ export const KeybindingPressedNotification = {
       (obj.keypress = message.keypress
         ? KeyEvent.toJSON(message.keypress)
         : undefined);
+    message.action !== undefined && (obj.action = message.action);
     return obj;
   },
 
@@ -4202,6 +4224,9 @@ export const KeybindingPressedNotification = {
     } as KeybindingPressedNotification;
     if (object.keypress !== undefined && object.keypress !== null) {
       message.keypress = KeyEvent.fromPartial(object.keypress);
+    }
+    if (object.action !== undefined && object.action !== null) {
+      message.action = object.action;
     }
     return message;
   },
