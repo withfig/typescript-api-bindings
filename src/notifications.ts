@@ -56,7 +56,7 @@ export const _subscribe = (request: NotificationRequest, handler: NotificationHa
   if (handlersForType.length > 0) {
     handlersForType.push(handler)
     handlers[type] = handlersForType
-    return
+    return  { unsubscribe: () => { _unsubscribe(type, handler) } }
   }
 
   handlers[type] = handlersForType
@@ -97,6 +97,6 @@ export const _subscribe = (request: NotificationRequest, handler: NotificationHa
     return false
   })
 
-  return { unsubscribe: () => { _unsubscribe(type, handler) }}
+  return { unsubscribe: () => { _unsubscribe(type, handler) } }
     
 }
