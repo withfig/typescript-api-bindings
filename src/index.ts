@@ -3,8 +3,9 @@ import Settings from './settings';
 import EditBufferNotifications from './editbuffer';
 import PTY from './pty'
 import Shell from './shell'
+import Keybindings from './keybindings'
 
 // @ts-ignore
-window.f =  { WindowPosition, Settings, EditBufferNotifications, PTY, Shell}
+window.f =  { WindowPosition, Settings, EditBufferNotifications, PTY, Shell, Keybindings}
 
-export  { WindowPosition, Settings, EditBufferNotifications, PTY, Shell}
+export { WindowPosition, Settings, EditBufferNotifications, PTY, Shell, Keybindings}
