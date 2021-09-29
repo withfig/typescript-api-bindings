@@ -90,5 +90,5 @@ const setupEventListeners = (): void => {
 };
 
 // We want this to be run automatically
-console.log("Setting up Fig event listeners...");
+console.log("[fig] setting up event listeners...");
 setupEventListeners();

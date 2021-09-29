@@ -100,3 +100,13 @@ export const _subscribe = (request: NotificationRequest, handler: NotificationHa
   return { unsubscribe: () => { _unsubscribe(type, handler) } }
     
 }
+
+const unsubscribeFromAll = () => {
+  sendMessage({ $case: "notificationRequest", notificationRequest: {
+    subscribe: false,
+    type: NotificationType.ALL
+  }})
+}
+
+console.log("[fig] unsubscribing any existing notifications...")
+unsubscribeFromAll()
