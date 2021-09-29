@@ -59,6 +59,12 @@ const recievedMessage = (response: ServerOriginatedMessage): void => {
     return;
   }
 
+  let handler = handlers[response.id]
+
+  if (!handler) {
+    return
+  } 
+
   const keepListeningOnID = handlers[response.id](response.submessage);
 
   if (!keepListeningOnID) {
