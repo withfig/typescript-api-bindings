@@ -15,30 +15,9 @@ export interface Subscription {
 const handlers: Partial<Record<NotificationType, NotificationHandler[]>> = {};
 
 export const _unsubscribe = (type: NotificationType, handler?: NotificationHandler) => {
-
-
-  if (handler) {
-    let notificationHandlers = handlers[type] ?? []
-
-
-    let idx = notificationHandlers.indexOf(handler)
-    
-    if (idx > -1) {
-      notificationHandlers.splice(idx, 1)
-      handlers[type] = notificationHandlers
-    } 
-
-    if (notificationHandlers.length != 0) {
-      return
-    }
+  if (handler && handlers[type] !== undefined) {
+    handlers[type] = (handlers[type] ?? []).filter(x => x !== handler);
   }
- 
-  sendMessage({ $case: "notificationRequest", notificationRequest: {
-      subscribe: false,
-      type: type
-    } 
-  })
-
 }
 
 export const _subscribe = (request: NotificationRequest, handler: NotificationHandler): Subscription | undefined =>  {
@@ -50,16 +29,13 @@ export const _subscribe = (request: NotificationRequest, handler: NotificationHa
     return
   }
 
-  let handlersForType = handlers[type] ?? []
-
   // primary subscription already exists
-  if (handlersForType.length > 0) {
-    handlersForType.push(handler)
-    handlers[type] = handlersForType
+  if (handlers[type] !== undefined) {
+    handlers[type] = [...(handlers[type] ?? []), handler]
     return  { unsubscribe: () => { _unsubscribe(type, handler) } }
   }
 
-  handlers[type] = handlersForType
+  handlers[type] = [];
 
   request.subscribe = true
 
