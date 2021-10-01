@@ -68,6 +68,7 @@ export enum NotificationType {
   NOTIFY_ON_LOCATION_CHANGE = 4,
   NOTIFY_ON_PROCESS_CHANGED = 5,
   NOTIFY_ON_KEYBINDING_PRESSED = 6,
+  NOTIFY_ON_FOCUS_CHANGED = 7,
   UNRECOGNIZED = -1,
 }
 
@@ -94,6 +95,9 @@ export function notificationTypeFromJSON(object: any): NotificationType {
     case 6:
     case "NOTIFY_ON_KEYBINDING_PRESSED":
       return NotificationType.NOTIFY_ON_KEYBINDING_PRESSED;
+    case 7:
+    case "NOTIFY_ON_FOCUS_CHANGED":
+      return NotificationType.NOTIFY_ON_FOCUS_CHANGED;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -117,6 +121,8 @@ export function notificationTypeToJSON(object: NotificationType): string {
       return "NOTIFY_ON_PROCESS_CHANGED";
     case NotificationType.NOTIFY_ON_KEYBINDING_PRESSED:
       return "NOTIFY_ON_KEYBINDING_PRESSED";
+    case NotificationType.NOTIFY_ON_FOCUS_CHANGED:
+      return "NOTIFY_ON_FOCUS_CHANGED";
     default:
       return "UNKNOWN";
   }
@@ -363,6 +369,10 @@ export interface Notification {
     | {
         $case: "keybindingPressedNotification";
         keybindingPressedNotification: KeybindingPressedNotification;
+      }
+    | {
+        $case: "windowFocusChangedNotification";
+        windowFocusChangedNotification: WindowFocusChangedNotification;
       };
 }
 
@@ -396,6 +406,10 @@ export interface ProcessChangedNotification {
 export interface KeybindingPressedNotification {
   keypress?: KeyEvent | undefined;
   action?: string | undefined;
+}
+
+export interface WindowFocusChangedNotification {
+  window?: Window | undefined;
 }
 
 const baseClientOriginatedMessage: object = {};
@@ -3650,6 +3664,12 @@ export const Notification = {
         writer.uint32(50).fork()
       ).ldelim();
     }
+    if (message.type?.$case === "windowFocusChangedNotification") {
+      WindowFocusChangedNotification.encode(
+        message.type.windowFocusChangedNotification,
+        writer.uint32(58).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -3710,6 +3730,13 @@ export const Notification = {
               reader,
               reader.uint32()
             ),
+          };
+          break;
+        case 7:
+          message.type = {
+            $case: "windowFocusChangedNotification",
+            windowFocusChangedNotification:
+              WindowFocusChangedNotification.decode(reader, reader.uint32()),
           };
           break;
         default:
@@ -3789,6 +3816,17 @@ export const Notification = {
         ),
       };
     }
+    if (
+      object.windowFocusChangedNotification !== undefined &&
+      object.windowFocusChangedNotification !== null
+    ) {
+      message.type = {
+        $case: "windowFocusChangedNotification",
+        windowFocusChangedNotification: WindowFocusChangedNotification.fromJSON(
+          object.windowFocusChangedNotification
+        ),
+      };
+    }
     return message;
   },
 
@@ -3832,6 +3870,13 @@ export const Notification = {
         ?.keybindingPressedNotification
         ? KeybindingPressedNotification.toJSON(
             message.type?.keybindingPressedNotification
+          )
+        : undefined);
+    message.type?.$case === "windowFocusChangedNotification" &&
+      (obj.windowFocusChangedNotification = message.type
+        ?.windowFocusChangedNotification
+        ? WindowFocusChangedNotification.toJSON(
+            message.type?.windowFocusChangedNotification
           )
         : undefined);
     return obj;
@@ -3910,6 +3955,19 @@ export const Notification = {
         keybindingPressedNotification:
           KeybindingPressedNotification.fromPartial(
             object.type.keybindingPressedNotification
+          ),
+      };
+    }
+    if (
+      object.type?.$case === "windowFocusChangedNotification" &&
+      object.type?.windowFocusChangedNotification !== undefined &&
+      object.type?.windowFocusChangedNotification !== null
+    ) {
+      message.type = {
+        $case: "windowFocusChangedNotification",
+        windowFocusChangedNotification:
+          WindowFocusChangedNotification.fromPartial(
+            object.type.windowFocusChangedNotification
           ),
       };
     }
@@ -4413,6 +4471,72 @@ export const KeybindingPressedNotification = {
     }
     if (object.action !== undefined && object.action !== null) {
       message.action = object.action;
+    }
+    return message;
+  },
+};
+
+const baseWindowFocusChangedNotification: object = {};
+
+export const WindowFocusChangedNotification = {
+  encode(
+    message: WindowFocusChangedNotification,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.window !== undefined) {
+      Window.encode(message.window, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): WindowFocusChangedNotification {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseWindowFocusChangedNotification,
+    } as WindowFocusChangedNotification;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.window = Window.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): WindowFocusChangedNotification {
+    const message = {
+      ...baseWindowFocusChangedNotification,
+    } as WindowFocusChangedNotification;
+    if (object.window !== undefined && object.window !== null) {
+      message.window = Window.fromJSON(object.window);
+    }
+    return message;
+  },
+
+  toJSON(message: WindowFocusChangedNotification): unknown {
+    const obj: any = {};
+    message.window !== undefined &&
+      (obj.window = message.window ? Window.toJSON(message.window) : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<WindowFocusChangedNotification>
+  ): WindowFocusChangedNotification {
+    const message = {
+      ...baseWindowFocusChangedNotification,
+    } as WindowFocusChangedNotification;
+    if (object.window !== undefined && object.window !== null) {
+      message.window = Window.fromPartial(object.window);
     }
     return message;
   },
