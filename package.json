@@ -17,7 +17,8 @@
     "lint": "tsdx lint",
     "prepare": "tsdx build",
     "size": "size-limit",
-    "analyze": "size-limit --why"
+    "analyze": "size-limit --why",
+    "generate-requests": "ts-node -O '{\"module\":\"commonjs\"}' codegen/generate-requests.ts"
   },
   "peerDependencies": {},
   "husky": {
@@ -48,6 +49,8 @@
     "@size-limit/preset-small-lib": "^5.0.3",
     "husky": "^7.0.2",
     "size-limit": "^5.0.3",
+    "ts-morph": "^12.0.0",
+    "ts-node": "^10.3.0",
     "tsdx": "^0.14.1",
     "tslib": "^2.3.1",
     "typescript": "^4.3.5"

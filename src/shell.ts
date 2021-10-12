@@ -1,7 +1,6 @@
-import { InsertTextRequest, NotificationType,ProcessChangedNotification, ShellPromptReturnedNotification } from "./fig";
+import { NotificationType,ProcessChangedNotification, ShellPromptReturnedNotification } from "./fig";
+import { sendInsertTextRequest } from './requests'
 import { _subscribe, Subscription } from "./notifications";
-
-import { sendMessage } from "./core";
 
 const subscribeToProcessChangedNotifications = (handler: (notification: ProcessChangedNotification) => boolean | undefined): Subscription | undefined => {
     return _subscribe({ type: NotificationType.NOTIFY_ON_PROCESS_CHANGED }, (notification) => {
@@ -29,33 +28,7 @@ const subscribeToPromptReturnedNotifications = (handler: (notification: ShellPro
     })
 }
 
-export const sendInsertTextRequest = async (
-    request: InsertTextRequest
-  ): Promise<void> =>
-    new Promise((resolve, reject) => {
-      const requestName = "insertTextRequest";
-      sendMessage(
-        { $case: "insertTextRequest", insertTextRequest: request },
-        (response) => {
-          switch (response?.$case) {
-            case "success":
-              resolve();
-              break;
-            case "error":
-              reject(Error(response.error));
-              break;
-            default:
-              reject(
-                Error(
-                  `Invalid response '${response?.$case}' for '${requestName}'`
-                )
-              );
-          }
-        }
-      );
-    });
-
-const insert =  async (text: string): Promise<void> =>
+const insert =  async (text: string) =>
     sendInsertTextRequest({
         type: { $case: "text", text: text}
     });
