@@ -18,7 +18,7 @@
     "prepare": "tsdx build",
     "size": "size-limit",
     "analyze": "size-limit --why",
-    "generate-requests": "ts-node -O '{\"module\":\"commonjs\"}' codegen/generate-requests.ts"
+    "generate-requests": "npx ts-node -O '{\"module\":\"commonjs\"}' codegen/generate-requests.ts"
   },
   "peerDependencies": {},
   "husky": {
