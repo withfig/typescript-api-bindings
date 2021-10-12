@@ -1,4 +1,4 @@
-import { SettingsChangedNotification, NotificationType, GetSettingsPropertyResponse, UpdateSettingsPropertyRequest } from "./fig";
+import { SettingsChangedNotification, NotificationType } from "./fig";
 import { _subscribe } from "./notifications";
 
 import { sendGetSettingsPropertyRequest, sendUpdateSettingsPropertyRequest } from "./requests"
@@ -17,7 +17,7 @@ const subscribe = (handler: (notification: SettingsChangedNotification) => boole
 
 const get = async (
   key: string,
-): Promise<GetSettingsPropertyResponse> =>
+) =>
   sendGetSettingsPropertyRequest({
     key: key,
   });
