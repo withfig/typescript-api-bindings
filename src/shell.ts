@@ -1,9 +1,9 @@
 import { InsertTextRequest, NotificationType,ProcessChangedNotification, ShellPromptReturnedNotification } from "./fig";
-import { _subscribe, Subscription } from "./notifications";
+import { _subscribe } from "./notifications";
 
 import { sendMessage } from "./core";
 
-const subscribeToProcessChangedNotifications = (handler: (notification: ProcessChangedNotification) => boolean | undefined): Subscription | undefined => {
+const subscribeToProcessChangedNotifications = (handler: (notification: ProcessChangedNotification) => boolean | undefined) => {
     return _subscribe({ type: NotificationType.NOTIFY_ON_PROCESS_CHANGED }, (notification) => {
         switch (notification?.type?.$case) {
             case "processChangeNotification":
@@ -16,7 +16,7 @@ const subscribeToProcessChangedNotifications = (handler: (notification: ProcessC
     })
 }
 
-const subscribeToPromptReturnedNotifications = (handler: (notification: ShellPromptReturnedNotification) => boolean | undefined): Subscription | undefined => {
+const subscribeToPromptReturnedNotifications = (handler: (notification: ShellPromptReturnedNotification) => boolean | undefined) => {
     return _subscribe({ type: NotificationType.NOTIFY_ON_PROMPT }, (notification) => {
         switch (notification?.type?.$case) {
             case "shellPromptReturnedNotification":

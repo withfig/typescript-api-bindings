@@ -31,7 +31,7 @@ export const _subscribe = (request: NotificationRequest, handler: NotificationHa
 
   const addHandler = () => {
     handlers[type] = [...(handlers[type] ?? []), handler]
-    resolve({ unsubscribe: { _unsubscribe(type, handler) } });
+    resolve({ unsubscribe: () => _unsubscribe(type, handler) });
   }
 
   // primary subscription already exists
@@ -52,9 +52,13 @@ export const _subscribe = (request: NotificationRequest, handler: NotificationHa
             }
 
             // call handlers and remove any that have unsubscribed (by returning false)
-            const handlersToRemove = handlers[type]?
-              .filter(handler => handler(response.notification) === false);
-            handlers[type] = handlers[type]?.filter(handler => handlersToRemove.includes(handler));
+            const handlersToRemove = handlers[type]?.filter(
+              handler => handler(response.notification) === false
+            );
+
+            handlers[type] = handlers[type]?.filter(
+              handler => handlersToRemove?.includes(handler)
+            );
 
             return true
           case "success":
