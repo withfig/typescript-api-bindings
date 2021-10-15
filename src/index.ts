@@ -9,4 +9,5 @@ import Keybindings from './keybindings'
 window.f =  { WindowPosition, Settings, EditBufferNotifications, PTY, Shell, Keybindings}
 
 export * from "./fig";
+export * from "./requests"
 export { WindowPosition, Settings, EditBufferNotifications, PTY, Shell, Keybindings}
