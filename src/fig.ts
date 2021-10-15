@@ -211,8 +211,8 @@ export interface ClientOriginatedMessage {
         updateApplicationPropertiesRequest: UpdateApplicationPropertiesRequest;
       }
     | {
-        $case: "destinationOfSymlinkRequest";
-        destinationOfSymlinkRequest: DestinationOfSymlinkRequest;
+        $case: "destinationOfSymbolicLinkRequest";
+        destinationOfSymbolicLinkRequest: DestinationOfSymbolicLinkRequest;
       };
 }
 
@@ -239,8 +239,8 @@ export interface ServerOriginatedMessage {
         getSettingsPropertyResponse: GetSettingsPropertyResponse;
       }
     | {
-        $case: "destinationOfSymlinkResponse";
-        destinationOfSymlinkResponse: DestinationOfSymlinkResponse;
+        $case: "destinationOfSymbolicLinkResponse";
+        destinationOfSymbolicLinkResponse: DestinationOfSymbolicLinkResponse;
       }
     | { $case: "notification"; notification: Notification };
 }
@@ -376,11 +376,11 @@ export interface ContentsOfDirectoryResponse {
   fileNames: string[];
 }
 
-export interface DestinationOfSymlinkRequest {
+export interface DestinationOfSymbolicLinkRequest {
   path?: FilePath | undefined;
 }
 
-export interface DestinationOfSymlinkResponse {
+export interface DestinationOfSymbolicLinkResponse {
   destination?: FilePath | undefined;
 }
 
@@ -593,9 +593,9 @@ export const ClientOriginatedMessage = {
         writer.uint32(890).fork()
       ).ldelim();
     }
-    if (message.submessage?.$case === "destinationOfSymlinkRequest") {
-      DestinationOfSymlinkRequest.encode(
-        message.submessage.destinationOfSymlinkRequest,
+    if (message.submessage?.$case === "destinationOfSymbolicLinkRequest") {
+      DestinationOfSymbolicLinkRequest.encode(
+        message.submessage.destinationOfSymbolicLinkRequest,
         writer.uint32(898).fork()
       ).ldelim();
     }
@@ -713,11 +713,9 @@ export const ClientOriginatedMessage = {
           break;
         case 112:
           message.submessage = {
-            $case: "destinationOfSymlinkRequest",
-            destinationOfSymlinkRequest: DestinationOfSymlinkRequest.decode(
-              reader,
-              reader.uint32()
-            ),
+            $case: "destinationOfSymbolicLinkRequest",
+            destinationOfSymbolicLinkRequest:
+              DestinationOfSymbolicLinkRequest.decode(reader, reader.uint32()),
           };
           break;
         default:
@@ -852,14 +850,15 @@ export const ClientOriginatedMessage = {
       };
     }
     if (
-      object.destinationOfSymlinkRequest !== undefined &&
-      object.destinationOfSymlinkRequest !== null
+      object.destinationOfSymbolicLinkRequest !== undefined &&
+      object.destinationOfSymbolicLinkRequest !== null
     ) {
       message.submessage = {
-        $case: "destinationOfSymlinkRequest",
-        destinationOfSymlinkRequest: DestinationOfSymlinkRequest.fromJSON(
-          object.destinationOfSymlinkRequest
-        ),
+        $case: "destinationOfSymbolicLinkRequest",
+        destinationOfSymbolicLinkRequest:
+          DestinationOfSymbolicLinkRequest.fromJSON(
+            object.destinationOfSymbolicLinkRequest
+          ),
       };
     }
     return message;
@@ -932,11 +931,11 @@ export const ClientOriginatedMessage = {
             message.submessage?.updateApplicationPropertiesRequest
           )
         : undefined);
-    message.submessage?.$case === "destinationOfSymlinkRequest" &&
-      (obj.destinationOfSymlinkRequest = message.submessage
-        ?.destinationOfSymlinkRequest
-        ? DestinationOfSymlinkRequest.toJSON(
-            message.submessage?.destinationOfSymlinkRequest
+    message.submessage?.$case === "destinationOfSymbolicLinkRequest" &&
+      (obj.destinationOfSymbolicLinkRequest = message.submessage
+        ?.destinationOfSymbolicLinkRequest
+        ? DestinationOfSymbolicLinkRequest.toJSON(
+            message.submessage?.destinationOfSymbolicLinkRequest
           )
         : undefined);
     return obj;
@@ -1086,15 +1085,16 @@ export const ClientOriginatedMessage = {
       };
     }
     if (
-      object.submessage?.$case === "destinationOfSymlinkRequest" &&
-      object.submessage?.destinationOfSymlinkRequest !== undefined &&
-      object.submessage?.destinationOfSymlinkRequest !== null
+      object.submessage?.$case === "destinationOfSymbolicLinkRequest" &&
+      object.submessage?.destinationOfSymbolicLinkRequest !== undefined &&
+      object.submessage?.destinationOfSymbolicLinkRequest !== null
     ) {
       message.submessage = {
-        $case: "destinationOfSymlinkRequest",
-        destinationOfSymlinkRequest: DestinationOfSymlinkRequest.fromPartial(
-          object.submessage.destinationOfSymlinkRequest
-        ),
+        $case: "destinationOfSymbolicLinkRequest",
+        destinationOfSymbolicLinkRequest:
+          DestinationOfSymbolicLinkRequest.fromPartial(
+            object.submessage.destinationOfSymbolicLinkRequest
+          ),
       };
     }
     return message;
@@ -1147,9 +1147,9 @@ export const ServerOriginatedMessage = {
         writer.uint32(834).fork()
       ).ldelim();
     }
-    if (message.submessage?.$case === "destinationOfSymlinkResponse") {
-      DestinationOfSymlinkResponse.encode(
-        message.submessage.destinationOfSymlinkResponse,
+    if (message.submessage?.$case === "destinationOfSymbolicLinkResponse") {
+      DestinationOfSymbolicLinkResponse.encode(
+        message.submessage.destinationOfSymbolicLinkResponse,
         writer.uint32(842).fork()
       ).ldelim();
     }
@@ -1227,11 +1227,9 @@ export const ServerOriginatedMessage = {
           break;
         case 105:
           message.submessage = {
-            $case: "destinationOfSymlinkResponse",
-            destinationOfSymlinkResponse: DestinationOfSymlinkResponse.decode(
-              reader,
-              reader.uint32()
-            ),
+            $case: "destinationOfSymbolicLinkResponse",
+            destinationOfSymbolicLinkResponse:
+              DestinationOfSymbolicLinkResponse.decode(reader, reader.uint32()),
           };
           break;
         case 1000:
@@ -1318,14 +1316,15 @@ export const ServerOriginatedMessage = {
       };
     }
     if (
-      object.destinationOfSymlinkResponse !== undefined &&
-      object.destinationOfSymlinkResponse !== null
+      object.destinationOfSymbolicLinkResponse !== undefined &&
+      object.destinationOfSymbolicLinkResponse !== null
     ) {
       message.submessage = {
-        $case: "destinationOfSymlinkResponse",
-        destinationOfSymlinkResponse: DestinationOfSymlinkResponse.fromJSON(
-          object.destinationOfSymlinkResponse
-        ),
+        $case: "destinationOfSymbolicLinkResponse",
+        destinationOfSymbolicLinkResponse:
+          DestinationOfSymbolicLinkResponse.fromJSON(
+            object.destinationOfSymbolicLinkResponse
+          ),
       };
     }
     if (object.notification !== undefined && object.notification !== null) {
@@ -1375,11 +1374,11 @@ export const ServerOriginatedMessage = {
             message.submessage?.getSettingsPropertyResponse
           )
         : undefined);
-    message.submessage?.$case === "destinationOfSymlinkResponse" &&
-      (obj.destinationOfSymlinkResponse = message.submessage
-        ?.destinationOfSymlinkResponse
-        ? DestinationOfSymlinkResponse.toJSON(
-            message.submessage?.destinationOfSymlinkResponse
+    message.submessage?.$case === "destinationOfSymbolicLinkResponse" &&
+      (obj.destinationOfSymbolicLinkResponse = message.submessage
+        ?.destinationOfSymbolicLinkResponse
+        ? DestinationOfSymbolicLinkResponse.toJSON(
+            message.submessage?.destinationOfSymbolicLinkResponse
           )
         : undefined);
     message.submessage?.$case === "notification" &&
@@ -1477,15 +1476,16 @@ export const ServerOriginatedMessage = {
       };
     }
     if (
-      object.submessage?.$case === "destinationOfSymlinkResponse" &&
-      object.submessage?.destinationOfSymlinkResponse !== undefined &&
-      object.submessage?.destinationOfSymlinkResponse !== null
+      object.submessage?.$case === "destinationOfSymbolicLinkResponse" &&
+      object.submessage?.destinationOfSymbolicLinkResponse !== undefined &&
+      object.submessage?.destinationOfSymbolicLinkResponse !== null
     ) {
       message.submessage = {
-        $case: "destinationOfSymlinkResponse",
-        destinationOfSymlinkResponse: DestinationOfSymlinkResponse.fromPartial(
-          object.submessage.destinationOfSymlinkResponse
-        ),
+        $case: "destinationOfSymbolicLinkResponse",
+        destinationOfSymbolicLinkResponse:
+          DestinationOfSymbolicLinkResponse.fromPartial(
+            object.submessage.destinationOfSymbolicLinkResponse
+          ),
       };
     }
     if (
@@ -3450,11 +3450,11 @@ export const ContentsOfDirectoryResponse = {
   },
 };
 
-const baseDestinationOfSymlinkRequest: object = {};
+const baseDestinationOfSymbolicLinkRequest: object = {};
 
-export const DestinationOfSymlinkRequest = {
+export const DestinationOfSymbolicLinkRequest = {
   encode(
-    message: DestinationOfSymlinkRequest,
+    message: DestinationOfSymbolicLinkRequest,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     if (message.path !== undefined) {
@@ -3466,12 +3466,12 @@ export const DestinationOfSymlinkRequest = {
   decode(
     input: _m0.Reader | Uint8Array,
     length?: number
-  ): DestinationOfSymlinkRequest {
+  ): DestinationOfSymbolicLinkRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {
-      ...baseDestinationOfSymlinkRequest,
-    } as DestinationOfSymlinkRequest;
+      ...baseDestinationOfSymbolicLinkRequest,
+    } as DestinationOfSymbolicLinkRequest;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -3486,17 +3486,17 @@ export const DestinationOfSymlinkRequest = {
     return message;
   },
 
-  fromJSON(object: any): DestinationOfSymlinkRequest {
+  fromJSON(object: any): DestinationOfSymbolicLinkRequest {
     const message = {
-      ...baseDestinationOfSymlinkRequest,
-    } as DestinationOfSymlinkRequest;
+      ...baseDestinationOfSymbolicLinkRequest,
+    } as DestinationOfSymbolicLinkRequest;
     if (object.path !== undefined && object.path !== null) {
       message.path = FilePath.fromJSON(object.path);
     }
     return message;
   },
 
-  toJSON(message: DestinationOfSymlinkRequest): unknown {
+  toJSON(message: DestinationOfSymbolicLinkRequest): unknown {
     const obj: any = {};
     message.path !== undefined &&
       (obj.path = message.path ? FilePath.toJSON(message.path) : undefined);
@@ -3504,11 +3504,11 @@ export const DestinationOfSymlinkRequest = {
   },
 
   fromPartial(
-    object: DeepPartial<DestinationOfSymlinkRequest>
-  ): DestinationOfSymlinkRequest {
+    object: DeepPartial<DestinationOfSymbolicLinkRequest>
+  ): DestinationOfSymbolicLinkRequest {
     const message = {
-      ...baseDestinationOfSymlinkRequest,
-    } as DestinationOfSymlinkRequest;
+      ...baseDestinationOfSymbolicLinkRequest,
+    } as DestinationOfSymbolicLinkRequest;
     if (object.path !== undefined && object.path !== null) {
       message.path = FilePath.fromPartial(object.path);
     }
@@ -3516,11 +3516,11 @@ export const DestinationOfSymlinkRequest = {
   },
 };
 
-const baseDestinationOfSymlinkResponse: object = {};
+const baseDestinationOfSymbolicLinkResponse: object = {};
 
-export const DestinationOfSymlinkResponse = {
+export const DestinationOfSymbolicLinkResponse = {
   encode(
-    message: DestinationOfSymlinkResponse,
+    message: DestinationOfSymbolicLinkResponse,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     if (message.destination !== undefined) {
@@ -3532,12 +3532,12 @@ export const DestinationOfSymlinkResponse = {
   decode(
     input: _m0.Reader | Uint8Array,
     length?: number
-  ): DestinationOfSymlinkResponse {
+  ): DestinationOfSymbolicLinkResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {
-      ...baseDestinationOfSymlinkResponse,
-    } as DestinationOfSymlinkResponse;
+      ...baseDestinationOfSymbolicLinkResponse,
+    } as DestinationOfSymbolicLinkResponse;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -3552,17 +3552,17 @@ export const DestinationOfSymlinkResponse = {
     return message;
   },
 
-  fromJSON(object: any): DestinationOfSymlinkResponse {
+  fromJSON(object: any): DestinationOfSymbolicLinkResponse {
     const message = {
-      ...baseDestinationOfSymlinkResponse,
-    } as DestinationOfSymlinkResponse;
+      ...baseDestinationOfSymbolicLinkResponse,
+    } as DestinationOfSymbolicLinkResponse;
     if (object.destination !== undefined && object.destination !== null) {
       message.destination = FilePath.fromJSON(object.destination);
     }
     return message;
   },
 
-  toJSON(message: DestinationOfSymlinkResponse): unknown {
+  toJSON(message: DestinationOfSymbolicLinkResponse): unknown {
     const obj: any = {};
     message.destination !== undefined &&
       (obj.destination = message.destination
@@ -3572,11 +3572,11 @@ export const DestinationOfSymlinkResponse = {
   },
 
   fromPartial(
-    object: DeepPartial<DestinationOfSymlinkResponse>
-  ): DestinationOfSymlinkResponse {
+    object: DeepPartial<DestinationOfSymbolicLinkResponse>
+  ): DestinationOfSymbolicLinkResponse {
     const message = {
-      ...baseDestinationOfSymlinkResponse,
-    } as DestinationOfSymlinkResponse;
+      ...baseDestinationOfSymbolicLinkResponse,
+    } as DestinationOfSymbolicLinkResponse;
     if (object.destination !== undefined && object.destination !== null) {
       message.destination = FilePath.fromPartial(object.destination);
     }
