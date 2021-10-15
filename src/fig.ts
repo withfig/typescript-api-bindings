@@ -60,6 +60,53 @@ export function modifiersToJSON(object: Modifiers): string {
   }
 }
 
+export enum ActionAvailability {
+  ALWAYS = 0,
+  /** WHEN_FOCUSED - the action can only be performed when the app has keyboard focus */
+  WHEN_FOCUSED = 1,
+  /** WHEN_VISIBLE - the action can only be performed when the app is visible */
+  WHEN_VISIBLE = 2,
+  /** WHEN_HIDDEN - the action can only be performed when the app is hidden */
+  WHEN_HIDDEN = 3,
+  UNRECOGNIZED = -1,
+}
+
+export function actionAvailabilityFromJSON(object: any): ActionAvailability {
+  switch (object) {
+    case 0:
+    case "ALWAYS":
+      return ActionAvailability.ALWAYS;
+    case 1:
+    case "WHEN_FOCUSED":
+      return ActionAvailability.WHEN_FOCUSED;
+    case 2:
+    case "WHEN_VISIBLE":
+      return ActionAvailability.WHEN_VISIBLE;
+    case 3:
+    case "WHEN_HIDDEN":
+      return ActionAvailability.WHEN_HIDDEN;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ActionAvailability.UNRECOGNIZED;
+  }
+}
+
+export function actionAvailabilityToJSON(object: ActionAvailability): string {
+  switch (object) {
+    case ActionAvailability.ALWAYS:
+      return "ALWAYS";
+    case ActionAvailability.WHEN_FOCUSED:
+      return "WHEN_FOCUSED";
+    case ActionAvailability.WHEN_VISIBLE:
+      return "WHEN_VISIBLE";
+    case ActionAvailability.WHEN_HIDDEN:
+      return "WHEN_HIDDEN";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 export enum NotificationType {
   ALL = 0,
   NOTIFY_ON_EDITBUFFFER_CHANGE = 1,
@@ -351,8 +398,21 @@ export interface UpdateSettingsPropertyRequest {
   value?: string | undefined;
 }
 
+export interface Action {
+  /** unique identifier for the action; not user facing. */
+  identifier?: string | undefined;
+  /** name of action, will appear in user interfaces. */
+  name?: string | undefined;
+  /** a quick summary of what the action will do */
+  description?: string | undefined;
+  category?: string | undefined;
+  /** when can this action be performed */
+  availability?: ActionAvailability | undefined;
+}
+
 export interface UpdateApplicationPropertiesRequest {
   interceptBoundKeystrokes?: boolean | undefined;
+  actions?: Action | undefined;
 }
 
 export interface NotificationRequest {
@@ -3745,6 +3805,117 @@ export const UpdateSettingsPropertyRequest = {
   },
 };
 
+const baseAction: object = {};
+
+export const Action = {
+  encode(
+    message: Action,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.identifier !== undefined) {
+      writer.uint32(10).string(message.identifier);
+    }
+    if (message.name !== undefined) {
+      writer.uint32(18).string(message.name);
+    }
+    if (message.description !== undefined) {
+      writer.uint32(26).string(message.description);
+    }
+    if (message.category !== undefined) {
+      writer.uint32(34).string(message.category);
+    }
+    if (message.availability !== undefined) {
+      writer.uint32(40).int32(message.availability);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Action {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseAction } as Action;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.identifier = reader.string();
+          break;
+        case 2:
+          message.name = reader.string();
+          break;
+        case 3:
+          message.description = reader.string();
+          break;
+        case 4:
+          message.category = reader.string();
+          break;
+        case 5:
+          message.availability = reader.int32() as any;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Action {
+    const message = { ...baseAction } as Action;
+    if (object.identifier !== undefined && object.identifier !== null) {
+      message.identifier = String(object.identifier);
+    }
+    if (object.name !== undefined && object.name !== null) {
+      message.name = String(object.name);
+    }
+    if (object.description !== undefined && object.description !== null) {
+      message.description = String(object.description);
+    }
+    if (object.category !== undefined && object.category !== null) {
+      message.category = String(object.category);
+    }
+    if (object.availability !== undefined && object.availability !== null) {
+      message.availability = actionAvailabilityFromJSON(object.availability);
+    }
+    return message;
+  },
+
+  toJSON(message: Action): unknown {
+    const obj: any = {};
+    message.identifier !== undefined && (obj.identifier = message.identifier);
+    message.name !== undefined && (obj.name = message.name);
+    message.description !== undefined &&
+      (obj.description = message.description);
+    message.category !== undefined && (obj.category = message.category);
+    message.availability !== undefined &&
+      (obj.availability =
+        message.availability !== undefined
+          ? actionAvailabilityToJSON(message.availability)
+          : undefined);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<Action>): Action {
+    const message = { ...baseAction } as Action;
+    if (object.identifier !== undefined && object.identifier !== null) {
+      message.identifier = object.identifier;
+    }
+    if (object.name !== undefined && object.name !== null) {
+      message.name = object.name;
+    }
+    if (object.description !== undefined && object.description !== null) {
+      message.description = object.description;
+    }
+    if (object.category !== undefined && object.category !== null) {
+      message.category = object.category;
+    }
+    if (object.availability !== undefined && object.availability !== null) {
+      message.availability = object.availability;
+    }
+    return message;
+  },
+};
+
 const baseUpdateApplicationPropertiesRequest: object = {};
 
 export const UpdateApplicationPropertiesRequest = {
@@ -3754,6 +3925,9 @@ export const UpdateApplicationPropertiesRequest = {
   ): _m0.Writer {
     if (message.interceptBoundKeystrokes !== undefined) {
       writer.uint32(8).bool(message.interceptBoundKeystrokes);
+    }
+    if (message.actions !== undefined) {
+      Action.encode(message.actions, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -3772,6 +3946,9 @@ export const UpdateApplicationPropertiesRequest = {
       switch (tag >>> 3) {
         case 1:
           message.interceptBoundKeystrokes = reader.bool();
+          break;
+        case 2:
+          message.actions = Action.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -3793,6 +3970,9 @@ export const UpdateApplicationPropertiesRequest = {
         object.interceptBoundKeystrokes
       );
     }
+    if (object.actions !== undefined && object.actions !== null) {
+      message.actions = Action.fromJSON(object.actions);
+    }
     return message;
   },
 
@@ -3800,6 +3980,10 @@ export const UpdateApplicationPropertiesRequest = {
     const obj: any = {};
     message.interceptBoundKeystrokes !== undefined &&
       (obj.interceptBoundKeystrokes = message.interceptBoundKeystrokes);
+    message.actions !== undefined &&
+      (obj.actions = message.actions
+        ? Action.toJSON(message.actions)
+        : undefined);
     return obj;
   },
 
@@ -3814,6 +3998,9 @@ export const UpdateApplicationPropertiesRequest = {
       object.interceptBoundKeystrokes !== null
     ) {
       message.interceptBoundKeystrokes = object.interceptBoundKeystrokes;
+    }
+    if (object.actions !== undefined && object.actions !== null) {
+      message.actions = Action.fromPartial(object.actions);
     }
     return message;
   },
