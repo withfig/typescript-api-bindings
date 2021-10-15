@@ -412,7 +412,7 @@ export interface Action {
 
 export interface UpdateApplicationPropertiesRequest {
   interceptBoundKeystrokes?: boolean | undefined;
-  actions?: Action | undefined;
+  actions: Action[];
 }
 
 export interface NotificationRequest {
@@ -3926,8 +3926,8 @@ export const UpdateApplicationPropertiesRequest = {
     if (message.interceptBoundKeystrokes !== undefined) {
       writer.uint32(8).bool(message.interceptBoundKeystrokes);
     }
-    if (message.actions !== undefined) {
-      Action.encode(message.actions, writer.uint32(18).fork()).ldelim();
+    for (const v of message.actions) {
+      Action.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -3941,6 +3941,7 @@ export const UpdateApplicationPropertiesRequest = {
     const message = {
       ...baseUpdateApplicationPropertiesRequest,
     } as UpdateApplicationPropertiesRequest;
+    message.actions = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -3948,7 +3949,7 @@ export const UpdateApplicationPropertiesRequest = {
           message.interceptBoundKeystrokes = reader.bool();
           break;
         case 2:
-          message.actions = Action.decode(reader, reader.uint32());
+          message.actions.push(Action.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -3962,6 +3963,7 @@ export const UpdateApplicationPropertiesRequest = {
     const message = {
       ...baseUpdateApplicationPropertiesRequest,
     } as UpdateApplicationPropertiesRequest;
+    message.actions = [];
     if (
       object.interceptBoundKeystrokes !== undefined &&
       object.interceptBoundKeystrokes !== null
@@ -3971,7 +3973,9 @@ export const UpdateApplicationPropertiesRequest = {
       );
     }
     if (object.actions !== undefined && object.actions !== null) {
-      message.actions = Action.fromJSON(object.actions);
+      for (const e of object.actions) {
+        message.actions.push(Action.fromJSON(e));
+      }
     }
     return message;
   },
@@ -3980,10 +3984,13 @@ export const UpdateApplicationPropertiesRequest = {
     const obj: any = {};
     message.interceptBoundKeystrokes !== undefined &&
       (obj.interceptBoundKeystrokes = message.interceptBoundKeystrokes);
-    message.actions !== undefined &&
-      (obj.actions = message.actions
-        ? Action.toJSON(message.actions)
-        : undefined);
+    if (message.actions) {
+      obj.actions = message.actions.map((e) =>
+        e ? Action.toJSON(e) : undefined
+      );
+    } else {
+      obj.actions = [];
+    }
     return obj;
   },
 
@@ -3993,6 +4000,7 @@ export const UpdateApplicationPropertiesRequest = {
     const message = {
       ...baseUpdateApplicationPropertiesRequest,
     } as UpdateApplicationPropertiesRequest;
+    message.actions = [];
     if (
       object.interceptBoundKeystrokes !== undefined &&
       object.interceptBoundKeystrokes !== null
@@ -4000,7 +4008,9 @@ export const UpdateApplicationPropertiesRequest = {
       message.interceptBoundKeystrokes = object.interceptBoundKeystrokes;
     }
     if (object.actions !== undefined && object.actions !== null) {
-      message.actions = Action.fromPartial(object.actions);
+      for (const e of object.actions) {
+        message.actions.push(Action.fromPartial(e));
+      }
     }
     return message;
   },
