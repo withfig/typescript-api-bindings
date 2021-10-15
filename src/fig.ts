@@ -162,6 +162,10 @@ export interface ClientOriginatedMessage {
     | {
         $case: "updateApplicationPropertiesRequest";
         updateApplicationPropertiesRequest: UpdateApplicationPropertiesRequest;
+      }
+    | {
+        $case: "destinationOfSymlinkRequest";
+        destinationOfSymlinkRequest: DestinationOfSymlinkRequest;
       };
 }
 
@@ -186,6 +190,10 @@ export interface ServerOriginatedMessage {
     | {
         $case: "getSettingsPropertyResponse";
         getSettingsPropertyResponse: GetSettingsPropertyResponse;
+      }
+    | {
+        $case: "destinationOfSymlinkResponse";
+        destinationOfSymlinkResponse: DestinationOfSymlinkResponse;
       }
     | { $case: "notification"; notification: Notification };
 }
@@ -319,6 +327,14 @@ export interface ContentsOfDirectoryRequest {
 
 export interface ContentsOfDirectoryResponse {
   fileNames: string[];
+}
+
+export interface DestinationOfSymlinkRequest {
+  path?: FilePath | undefined;
+}
+
+export interface DestinationOfSymlinkResponse {
+  destination?: FilePath | undefined;
 }
 
 export interface GetSettingsPropertyRequest {
@@ -517,6 +533,12 @@ export const ClientOriginatedMessage = {
         writer.uint32(890).fork()
       ).ldelim();
     }
+    if (message.submessage?.$case === "destinationOfSymlinkRequest") {
+      DestinationOfSymlinkRequest.encode(
+        message.submessage.destinationOfSymlinkRequest,
+        writer.uint32(898).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -627,6 +649,15 @@ export const ClientOriginatedMessage = {
                 reader,
                 reader.uint32()
               ),
+          };
+          break;
+        case 112:
+          message.submessage = {
+            $case: "destinationOfSymlinkRequest",
+            destinationOfSymlinkRequest: DestinationOfSymlinkRequest.decode(
+              reader,
+              reader.uint32()
+            ),
           };
           break;
         default:
@@ -760,6 +791,17 @@ export const ClientOriginatedMessage = {
           ),
       };
     }
+    if (
+      object.destinationOfSymlinkRequest !== undefined &&
+      object.destinationOfSymlinkRequest !== null
+    ) {
+      message.submessage = {
+        $case: "destinationOfSymlinkRequest",
+        destinationOfSymlinkRequest: DestinationOfSymlinkRequest.fromJSON(
+          object.destinationOfSymlinkRequest
+        ),
+      };
+    }
     return message;
   },
 
@@ -828,6 +870,13 @@ export const ClientOriginatedMessage = {
         ?.updateApplicationPropertiesRequest
         ? UpdateApplicationPropertiesRequest.toJSON(
             message.submessage?.updateApplicationPropertiesRequest
+          )
+        : undefined);
+    message.submessage?.$case === "destinationOfSymlinkRequest" &&
+      (obj.destinationOfSymlinkRequest = message.submessage
+        ?.destinationOfSymlinkRequest
+        ? DestinationOfSymlinkRequest.toJSON(
+            message.submessage?.destinationOfSymlinkRequest
           )
         : undefined);
     return obj;
@@ -976,6 +1025,18 @@ export const ClientOriginatedMessage = {
           ),
       };
     }
+    if (
+      object.submessage?.$case === "destinationOfSymlinkRequest" &&
+      object.submessage?.destinationOfSymlinkRequest !== undefined &&
+      object.submessage?.destinationOfSymlinkRequest !== null
+    ) {
+      message.submessage = {
+        $case: "destinationOfSymlinkRequest",
+        destinationOfSymlinkRequest: DestinationOfSymlinkRequest.fromPartial(
+          object.submessage.destinationOfSymlinkRequest
+        ),
+      };
+    }
     return message;
   },
 };
@@ -1024,6 +1085,12 @@ export const ServerOriginatedMessage = {
       GetSettingsPropertyResponse.encode(
         message.submessage.getSettingsPropertyResponse,
         writer.uint32(834).fork()
+      ).ldelim();
+    }
+    if (message.submessage?.$case === "destinationOfSymlinkResponse") {
+      DestinationOfSymlinkResponse.encode(
+        message.submessage.destinationOfSymlinkResponse,
+        writer.uint32(842).fork()
       ).ldelim();
     }
     if (message.submessage?.$case === "notification") {
@@ -1093,6 +1160,15 @@ export const ServerOriginatedMessage = {
           message.submessage = {
             $case: "getSettingsPropertyResponse",
             getSettingsPropertyResponse: GetSettingsPropertyResponse.decode(
+              reader,
+              reader.uint32()
+            ),
+          };
+          break;
+        case 105:
+          message.submessage = {
+            $case: "destinationOfSymlinkResponse",
+            destinationOfSymlinkResponse: DestinationOfSymlinkResponse.decode(
               reader,
               reader.uint32()
             ),
@@ -1181,6 +1257,17 @@ export const ServerOriginatedMessage = {
         ),
       };
     }
+    if (
+      object.destinationOfSymlinkResponse !== undefined &&
+      object.destinationOfSymlinkResponse !== null
+    ) {
+      message.submessage = {
+        $case: "destinationOfSymlinkResponse",
+        destinationOfSymlinkResponse: DestinationOfSymlinkResponse.fromJSON(
+          object.destinationOfSymlinkResponse
+        ),
+      };
+    }
     if (object.notification !== undefined && object.notification !== null) {
       message.submessage = {
         $case: "notification",
@@ -1226,6 +1313,13 @@ export const ServerOriginatedMessage = {
         ?.getSettingsPropertyResponse
         ? GetSettingsPropertyResponse.toJSON(
             message.submessage?.getSettingsPropertyResponse
+          )
+        : undefined);
+    message.submessage?.$case === "destinationOfSymlinkResponse" &&
+      (obj.destinationOfSymlinkResponse = message.submessage
+        ?.destinationOfSymlinkResponse
+        ? DestinationOfSymlinkResponse.toJSON(
+            message.submessage?.destinationOfSymlinkResponse
           )
         : undefined);
     message.submessage?.$case === "notification" &&
@@ -1319,6 +1413,18 @@ export const ServerOriginatedMessage = {
         $case: "getSettingsPropertyResponse",
         getSettingsPropertyResponse: GetSettingsPropertyResponse.fromPartial(
           object.submessage.getSettingsPropertyResponse
+        ),
+      };
+    }
+    if (
+      object.submessage?.$case === "destinationOfSymlinkResponse" &&
+      object.submessage?.destinationOfSymlinkResponse !== undefined &&
+      object.submessage?.destinationOfSymlinkResponse !== null
+    ) {
+      message.submessage = {
+        $case: "destinationOfSymlinkResponse",
+        destinationOfSymlinkResponse: DestinationOfSymlinkResponse.fromPartial(
+          object.submessage.destinationOfSymlinkResponse
         ),
       };
     }
@@ -3279,6 +3385,140 @@ export const ContentsOfDirectoryResponse = {
       for (const e of object.fileNames) {
         message.fileNames.push(e);
       }
+    }
+    return message;
+  },
+};
+
+const baseDestinationOfSymlinkRequest: object = {};
+
+export const DestinationOfSymlinkRequest = {
+  encode(
+    message: DestinationOfSymlinkRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.path !== undefined) {
+      FilePath.encode(message.path, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): DestinationOfSymlinkRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseDestinationOfSymlinkRequest,
+    } as DestinationOfSymlinkRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.path = FilePath.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DestinationOfSymlinkRequest {
+    const message = {
+      ...baseDestinationOfSymlinkRequest,
+    } as DestinationOfSymlinkRequest;
+    if (object.path !== undefined && object.path !== null) {
+      message.path = FilePath.fromJSON(object.path);
+    }
+    return message;
+  },
+
+  toJSON(message: DestinationOfSymlinkRequest): unknown {
+    const obj: any = {};
+    message.path !== undefined &&
+      (obj.path = message.path ? FilePath.toJSON(message.path) : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<DestinationOfSymlinkRequest>
+  ): DestinationOfSymlinkRequest {
+    const message = {
+      ...baseDestinationOfSymlinkRequest,
+    } as DestinationOfSymlinkRequest;
+    if (object.path !== undefined && object.path !== null) {
+      message.path = FilePath.fromPartial(object.path);
+    }
+    return message;
+  },
+};
+
+const baseDestinationOfSymlinkResponse: object = {};
+
+export const DestinationOfSymlinkResponse = {
+  encode(
+    message: DestinationOfSymlinkResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.destination !== undefined) {
+      FilePath.encode(message.destination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): DestinationOfSymlinkResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseDestinationOfSymlinkResponse,
+    } as DestinationOfSymlinkResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.destination = FilePath.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DestinationOfSymlinkResponse {
+    const message = {
+      ...baseDestinationOfSymlinkResponse,
+    } as DestinationOfSymlinkResponse;
+    if (object.destination !== undefined && object.destination !== null) {
+      message.destination = FilePath.fromJSON(object.destination);
+    }
+    return message;
+  },
+
+  toJSON(message: DestinationOfSymlinkResponse): unknown {
+    const obj: any = {};
+    message.destination !== undefined &&
+      (obj.destination = message.destination
+        ? FilePath.toJSON(message.destination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<DestinationOfSymlinkResponse>
+  ): DestinationOfSymlinkResponse {
+    const message = {
+      ...baseDestinationOfSymlinkResponse,
+    } as DestinationOfSymlinkResponse;
+    if (object.destination !== undefined && object.destination !== null) {
+      message.destination = FilePath.fromPartial(object.destination);
     }
     return message;
   },
