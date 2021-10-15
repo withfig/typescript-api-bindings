@@ -412,6 +412,35 @@ export interface WindowFocusChangedNotification {
   window?: Window | undefined;
 }
 
+/**
+ * / Constants
+ * Can be found under fig.constants. Certain legacy constants are included at the top-level for backwards compatibility.
+ */
+export interface Constants {
+  /** the current version of Fig */
+  version?: string | undefined;
+  /** the current build of Fig */
+  build?: string | undefined;
+  /** the path to the figcli executable */
+  cli?: string | undefined;
+  /** the filepath of the macOS bundle */
+  bundlePath?: string | undefined;
+  /** the remote URL where apps are loaded from */
+  remote?: string | undefined;
+  /** the user's home directory */
+  home?: string | undefined;
+  /** the user's name (equivalent to running `whoami`) */
+  user?: string | undefined;
+  /** the default macOS $PATH */
+  defaultPath?: string | undefined;
+  jsonMessageRecieved?: string | undefined;
+  jsonMessageHandler?: string | undefined;
+  protoMessageRecieved?: string | undefined;
+  protoMessageHandler?: string | undefined;
+  /** a comma-separated list of all themes */
+  themes?: string | undefined;
+}
+
 const baseClientOriginatedMessage: object = {};
 
 export const ClientOriginatedMessage = {
@@ -4537,6 +4566,245 @@ export const WindowFocusChangedNotification = {
     } as WindowFocusChangedNotification;
     if (object.window !== undefined && object.window !== null) {
       message.window = Window.fromPartial(object.window);
+    }
+    return message;
+  },
+};
+
+const baseConstants: object = {};
+
+export const Constants = {
+  encode(
+    message: Constants,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.version !== undefined) {
+      writer.uint32(10).string(message.version);
+    }
+    if (message.build !== undefined) {
+      writer.uint32(18).string(message.build);
+    }
+    if (message.cli !== undefined) {
+      writer.uint32(26).string(message.cli);
+    }
+    if (message.bundlePath !== undefined) {
+      writer.uint32(34).string(message.bundlePath);
+    }
+    if (message.remote !== undefined) {
+      writer.uint32(42).string(message.remote);
+    }
+    if (message.home !== undefined) {
+      writer.uint32(50).string(message.home);
+    }
+    if (message.user !== undefined) {
+      writer.uint32(58).string(message.user);
+    }
+    if (message.defaultPath !== undefined) {
+      writer.uint32(66).string(message.defaultPath);
+    }
+    if (message.jsonMessageRecieved !== undefined) {
+      writer.uint32(74).string(message.jsonMessageRecieved);
+    }
+    if (message.jsonMessageHandler !== undefined) {
+      writer.uint32(82).string(message.jsonMessageHandler);
+    }
+    if (message.protoMessageRecieved !== undefined) {
+      writer.uint32(90).string(message.protoMessageRecieved);
+    }
+    if (message.protoMessageHandler !== undefined) {
+      writer.uint32(98).string(message.protoMessageHandler);
+    }
+    if (message.themes !== undefined) {
+      writer.uint32(106).string(message.themes);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Constants {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseConstants } as Constants;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.version = reader.string();
+          break;
+        case 2:
+          message.build = reader.string();
+          break;
+        case 3:
+          message.cli = reader.string();
+          break;
+        case 4:
+          message.bundlePath = reader.string();
+          break;
+        case 5:
+          message.remote = reader.string();
+          break;
+        case 6:
+          message.home = reader.string();
+          break;
+        case 7:
+          message.user = reader.string();
+          break;
+        case 8:
+          message.defaultPath = reader.string();
+          break;
+        case 9:
+          message.jsonMessageRecieved = reader.string();
+          break;
+        case 10:
+          message.jsonMessageHandler = reader.string();
+          break;
+        case 11:
+          message.protoMessageRecieved = reader.string();
+          break;
+        case 12:
+          message.protoMessageHandler = reader.string();
+          break;
+        case 13:
+          message.themes = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Constants {
+    const message = { ...baseConstants } as Constants;
+    if (object.version !== undefined && object.version !== null) {
+      message.version = String(object.version);
+    }
+    if (object.build !== undefined && object.build !== null) {
+      message.build = String(object.build);
+    }
+    if (object.cli !== undefined && object.cli !== null) {
+      message.cli = String(object.cli);
+    }
+    if (object.bundlePath !== undefined && object.bundlePath !== null) {
+      message.bundlePath = String(object.bundlePath);
+    }
+    if (object.remote !== undefined && object.remote !== null) {
+      message.remote = String(object.remote);
+    }
+    if (object.home !== undefined && object.home !== null) {
+      message.home = String(object.home);
+    }
+    if (object.user !== undefined && object.user !== null) {
+      message.user = String(object.user);
+    }
+    if (object.defaultPath !== undefined && object.defaultPath !== null) {
+      message.defaultPath = String(object.defaultPath);
+    }
+    if (
+      object.jsonMessageRecieved !== undefined &&
+      object.jsonMessageRecieved !== null
+    ) {
+      message.jsonMessageRecieved = String(object.jsonMessageRecieved);
+    }
+    if (
+      object.jsonMessageHandler !== undefined &&
+      object.jsonMessageHandler !== null
+    ) {
+      message.jsonMessageHandler = String(object.jsonMessageHandler);
+    }
+    if (
+      object.protoMessageRecieved !== undefined &&
+      object.protoMessageRecieved !== null
+    ) {
+      message.protoMessageRecieved = String(object.protoMessageRecieved);
+    }
+    if (
+      object.protoMessageHandler !== undefined &&
+      object.protoMessageHandler !== null
+    ) {
+      message.protoMessageHandler = String(object.protoMessageHandler);
+    }
+    if (object.themes !== undefined && object.themes !== null) {
+      message.themes = String(object.themes);
+    }
+    return message;
+  },
+
+  toJSON(message: Constants): unknown {
+    const obj: any = {};
+    message.version !== undefined && (obj.version = message.version);
+    message.build !== undefined && (obj.build = message.build);
+    message.cli !== undefined && (obj.cli = message.cli);
+    message.bundlePath !== undefined && (obj.bundlePath = message.bundlePath);
+    message.remote !== undefined && (obj.remote = message.remote);
+    message.home !== undefined && (obj.home = message.home);
+    message.user !== undefined && (obj.user = message.user);
+    message.defaultPath !== undefined &&
+      (obj.defaultPath = message.defaultPath);
+    message.jsonMessageRecieved !== undefined &&
+      (obj.jsonMessageRecieved = message.jsonMessageRecieved);
+    message.jsonMessageHandler !== undefined &&
+      (obj.jsonMessageHandler = message.jsonMessageHandler);
+    message.protoMessageRecieved !== undefined &&
+      (obj.protoMessageRecieved = message.protoMessageRecieved);
+    message.protoMessageHandler !== undefined &&
+      (obj.protoMessageHandler = message.protoMessageHandler);
+    message.themes !== undefined && (obj.themes = message.themes);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<Constants>): Constants {
+    const message = { ...baseConstants } as Constants;
+    if (object.version !== undefined && object.version !== null) {
+      message.version = object.version;
+    }
+    if (object.build !== undefined && object.build !== null) {
+      message.build = object.build;
+    }
+    if (object.cli !== undefined && object.cli !== null) {
+      message.cli = object.cli;
+    }
+    if (object.bundlePath !== undefined && object.bundlePath !== null) {
+      message.bundlePath = object.bundlePath;
+    }
+    if (object.remote !== undefined && object.remote !== null) {
+      message.remote = object.remote;
+    }
+    if (object.home !== undefined && object.home !== null) {
+      message.home = object.home;
+    }
+    if (object.user !== undefined && object.user !== null) {
+      message.user = object.user;
+    }
+    if (object.defaultPath !== undefined && object.defaultPath !== null) {
+      message.defaultPath = object.defaultPath;
+    }
+    if (
+      object.jsonMessageRecieved !== undefined &&
+      object.jsonMessageRecieved !== null
+    ) {
+      message.jsonMessageRecieved = object.jsonMessageRecieved;
+    }
+    if (
+      object.jsonMessageHandler !== undefined &&
+      object.jsonMessageHandler !== null
+    ) {
+      message.jsonMessageHandler = object.jsonMessageHandler;
+    }
+    if (
+      object.protoMessageRecieved !== undefined &&
+      object.protoMessageRecieved !== null
+    ) {
+      message.protoMessageRecieved = object.protoMessageRecieved;
+    }
+    if (
+      object.protoMessageHandler !== undefined &&
+      object.protoMessageHandler !== null
+    ) {
+      message.protoMessageHandler = object.protoMessageHandler;
+    }
+    if (object.themes !== undefined && object.themes !== null) {
+      message.themes = object.themes;
     }
     return message;
   },
