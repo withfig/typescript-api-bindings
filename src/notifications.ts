@@ -15,90 +15,66 @@ export interface Subscription {
 const handlers: Partial<Record<NotificationType, NotificationHandler[]>> = {};
 
 export const _unsubscribe = (type: NotificationType, handler?: NotificationHandler) => {
-
-
-  if (handler) {
-    let notificationHandlers = handlers[type] ?? []
-
-
-    let idx = notificationHandlers.indexOf(handler)
-    
-    if (idx > -1) {
-      notificationHandlers.splice(idx, 1)
-      handlers[type] = notificationHandlers
-    } 
-
-    if (notificationHandlers.length != 0) {
-      return
-    }
+  if (handler && handlers[type] !== undefined) {
+    handlers[type] = (handlers[type] ?? []).filter(x => x !== handler);
   }
- 
-  sendMessage({ $case: "notificationRequest", notificationRequest: {
-      subscribe: false,
-      type: type
-    } 
-  })
-
 }
 
-export const _subscribe = (request: NotificationRequest, handler: NotificationHandler): Subscription | undefined =>  {
+export const _subscribe = (request: NotificationRequest, handler: NotificationHandler): Promise<Subscription> | undefined =>  {
+  return new Promise<Subscription>((resolve, reject) => {
 
   const type = request.type
 
   if (!type) {
-    console.warn("NotificationRequest type must be defined.")
-    return
+     return reject("NotificationRequest type must be defined.")
   }
 
-  let handlersForType = handlers[type] ?? []
+  const addHandler = () => {
+    handlers[type] = [...(handlers[type] ?? []), handler]
+    resolve({ unsubscribe: () => _unsubscribe(type, handler) });
+  }
 
   // primary subscription already exists
-  if (handlersForType.length > 0) {
-    handlersForType.push(handler)
-    handlers[type] = handlersForType
-    return  { unsubscribe: () => { _unsubscribe(type, handler) } }
+  if (handlers[type] !== undefined) {
+    return addHandler();
   }
 
-  handlers[type] = handlersForType
+  handlers[type] = [];
 
   request.subscribe = true
 
-  sendMessage({ $case: "notificationRequest", notificationRequest: request },
-   (response: ServerOriginatedMessage["submessage"]) => {
+    sendMessage({ $case: "notificationRequest", notificationRequest: request },
+      (response: ServerOriginatedMessage["submessage"]) => {
+        switch (response?.$case) {
+          case "notification":
+            if (!handlers[type]) {
+              return false
+            }
 
-    switch (response?.$case) {
-      case "notification":
-        let notificationHandlers = handlers[type] 
-        if (!notificationHandlers) {
-          return false
+            // call handlers and remove any that have unsubscribed (by returning false)
+            const handlersToRemove = handlers[type]?.filter(
+              handler => handler(response.notification) === false
+            );
+
+            handlers[type] = handlers[type]?.filter(
+              handler => handlersToRemove?.includes(handler)
+            );
+
+            return true
+          case "success":
+            addHandler();
+            return true
+          case "error":
+            reject(response.error);
+            break;
+          default:
+            reject("Not a notification");
+            break;
         }
 
-        // call handlers and remove any that have unsubscribed (by returning false)
-        notificationHandlers = notificationHandlers.filter((handler) => handler(response.notification) !== false)
-        handlers[type] = notificationHandlers
-
-        if (notificationHandlers.length == 0) {
-          _unsubscribe(type)
-          return false
-        }
-
-        return true
-      case "success":
-        handlers[type]?.push(handler)
-        return true
-      case "error":
-        console.error(response.error);
-        break;
-      default:
-        console.warn("Not a Notification!")
-        break;
-    }
-
-    return false
-  })
-
-  return { unsubscribe: () => { _unsubscribe(type, handler) } }
-    
+        return false
+      })
+    })
 }
 
 const unsubscribeFromAll = () => {

@@ -15,7 +15,7 @@ const subscribeToProcessChangedNotifications = (handler: (notification: ProcessC
     })
 }
 
-const subscribeToPromptReturnedNotifications = (handler: (notification: ShellPromptReturnedNotification) => boolean | undefined): Subscription | undefined => {
+const subscribeToPromptReturnedNotifications = (handler: (notification: ShellPromptReturnedNotification) => boolean | undefined) => {
     return _subscribe({ type: NotificationType.NOTIFY_ON_PROMPT }, (notification) => {
         switch (notification?.type?.$case) {
             case "shellPromptReturnedNotification":

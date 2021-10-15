@@ -60,6 +60,53 @@ export function modifiersToJSON(object: Modifiers): string {
   }
 }
 
+export enum ActionAvailability {
+  ALWAYS = 0,
+  /** WHEN_FOCUSED - the action can only be performed when the app has keyboard focus */
+  WHEN_FOCUSED = 1,
+  /** WHEN_VISIBLE - the action can only be performed when the app is visible */
+  WHEN_VISIBLE = 2,
+  /** WHEN_HIDDEN - the action can only be performed when the app is hidden */
+  WHEN_HIDDEN = 3,
+  UNRECOGNIZED = -1,
+}
+
+export function actionAvailabilityFromJSON(object: any): ActionAvailability {
+  switch (object) {
+    case 0:
+    case "ALWAYS":
+      return ActionAvailability.ALWAYS;
+    case 1:
+    case "WHEN_FOCUSED":
+      return ActionAvailability.WHEN_FOCUSED;
+    case 2:
+    case "WHEN_VISIBLE":
+      return ActionAvailability.WHEN_VISIBLE;
+    case 3:
+    case "WHEN_HIDDEN":
+      return ActionAvailability.WHEN_HIDDEN;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ActionAvailability.UNRECOGNIZED;
+  }
+}
+
+export function actionAvailabilityToJSON(object: ActionAvailability): string {
+  switch (object) {
+    case ActionAvailability.ALWAYS:
+      return "ALWAYS";
+    case ActionAvailability.WHEN_FOCUSED:
+      return "WHEN_FOCUSED";
+    case ActionAvailability.WHEN_VISIBLE:
+      return "WHEN_VISIBLE";
+    case ActionAvailability.WHEN_HIDDEN:
+      return "WHEN_HIDDEN";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 export enum NotificationType {
   ALL = 0,
   NOTIFY_ON_EDITBUFFFER_CHANGE = 1,
@@ -68,6 +115,7 @@ export enum NotificationType {
   NOTIFY_ON_LOCATION_CHANGE = 4,
   NOTIFY_ON_PROCESS_CHANGED = 5,
   NOTIFY_ON_KEYBINDING_PRESSED = 6,
+  NOTIFY_ON_FOCUS_CHANGED = 7,
   UNRECOGNIZED = -1,
 }
 
@@ -94,6 +142,9 @@ export function notificationTypeFromJSON(object: any): NotificationType {
     case 6:
     case "NOTIFY_ON_KEYBINDING_PRESSED":
       return NotificationType.NOTIFY_ON_KEYBINDING_PRESSED;
+    case 7:
+    case "NOTIFY_ON_FOCUS_CHANGED":
+      return NotificationType.NOTIFY_ON_FOCUS_CHANGED;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -117,6 +168,8 @@ export function notificationTypeToJSON(object: NotificationType): string {
       return "NOTIFY_ON_PROCESS_CHANGED";
     case NotificationType.NOTIFY_ON_KEYBINDING_PRESSED:
       return "NOTIFY_ON_KEYBINDING_PRESSED";
+    case NotificationType.NOTIFY_ON_FOCUS_CHANGED:
+      return "NOTIFY_ON_FOCUS_CHANGED";
     default:
       return "UNKNOWN";
   }
@@ -156,6 +209,10 @@ export interface ClientOriginatedMessage {
     | {
         $case: "updateApplicationPropertiesRequest";
         updateApplicationPropertiesRequest: UpdateApplicationPropertiesRequest;
+      }
+    | {
+        $case: "destinationOfSymbolicLinkRequest";
+        destinationOfSymbolicLinkRequest: DestinationOfSymbolicLinkRequest;
       };
 }
 
@@ -180,6 +237,10 @@ export interface ServerOriginatedMessage {
     | {
         $case: "getSettingsPropertyResponse";
         getSettingsPropertyResponse: GetSettingsPropertyResponse;
+      }
+    | {
+        $case: "destinationOfSymbolicLinkResponse";
+        destinationOfSymbolicLinkResponse: DestinationOfSymbolicLinkResponse;
       }
     | { $case: "notification"; notification: Notification };
 }
@@ -315,6 +376,14 @@ export interface ContentsOfDirectoryResponse {
   fileNames: string[];
 }
 
+export interface DestinationOfSymbolicLinkRequest {
+  path?: FilePath | undefined;
+}
+
+export interface DestinationOfSymbolicLinkResponse {
+  destination?: FilePath | undefined;
+}
+
 export interface GetSettingsPropertyRequest {
   key?: string | undefined;
 }
@@ -329,8 +398,21 @@ export interface UpdateSettingsPropertyRequest {
   value?: string | undefined;
 }
 
+export interface Action {
+  /** unique identifier for the action; not user facing. */
+  identifier?: string | undefined;
+  /** name of action, will appear in user interfaces. */
+  name?: string | undefined;
+  /** a quick summary of what the action will do */
+  description?: string | undefined;
+  category?: string | undefined;
+  /** when can this action be performed */
+  availability?: ActionAvailability | undefined;
+}
+
 export interface UpdateApplicationPropertiesRequest {
   interceptBoundKeystrokes?: boolean | undefined;
+  actions: Action[];
 }
 
 export interface NotificationRequest {
@@ -363,6 +445,10 @@ export interface Notification {
     | {
         $case: "keybindingPressedNotification";
         keybindingPressedNotification: KeybindingPressedNotification;
+      }
+    | {
+        $case: "windowFocusChangedNotification";
+        windowFocusChangedNotification: WindowFocusChangedNotification;
       };
 }
 
@@ -396,6 +482,39 @@ export interface ProcessChangedNotification {
 export interface KeybindingPressedNotification {
   keypress?: KeyEvent | undefined;
   action?: string | undefined;
+}
+
+export interface WindowFocusChangedNotification {
+  window?: Window | undefined;
+}
+
+/**
+ * / Constants
+ * Can be found under fig.constants. Certain legacy constants are included at the top-level for backwards compatibility.
+ */
+export interface Constants {
+  /** the current version of Fig */
+  version?: string | undefined;
+  /** the current build of Fig */
+  build?: string | undefined;
+  /** the path to the figcli executable */
+  cli?: string | undefined;
+  /** the filepath of the macOS bundle */
+  bundlePath?: string | undefined;
+  /** the remote URL where apps are loaded from */
+  remote?: string | undefined;
+  /** the user's home directory */
+  home?: string | undefined;
+  /** the user's name (equivalent to running `whoami`) */
+  user?: string | undefined;
+  /** the default macOS $PATH */
+  defaultPath?: string | undefined;
+  jsonMessageRecieved?: string | undefined;
+  jsonMessageHandler?: string | undefined;
+  protoMessageRecieved?: string | undefined;
+  protoMessageHandler?: string | undefined;
+  /** a comma-separated list of all themes */
+  themes?: string | undefined;
 }
 
 const baseClientOriginatedMessage: object = {};
@@ -472,6 +591,12 @@ export const ClientOriginatedMessage = {
       UpdateApplicationPropertiesRequest.encode(
         message.submessage.updateApplicationPropertiesRequest,
         writer.uint32(890).fork()
+      ).ldelim();
+    }
+    if (message.submessage?.$case === "destinationOfSymbolicLinkRequest") {
+      DestinationOfSymbolicLinkRequest.encode(
+        message.submessage.destinationOfSymbolicLinkRequest,
+        writer.uint32(898).fork()
       ).ldelim();
     }
     return writer;
@@ -584,6 +709,13 @@ export const ClientOriginatedMessage = {
                 reader,
                 reader.uint32()
               ),
+          };
+          break;
+        case 112:
+          message.submessage = {
+            $case: "destinationOfSymbolicLinkRequest",
+            destinationOfSymbolicLinkRequest:
+              DestinationOfSymbolicLinkRequest.decode(reader, reader.uint32()),
           };
           break;
         default:
@@ -717,6 +849,18 @@ export const ClientOriginatedMessage = {
           ),
       };
     }
+    if (
+      object.destinationOfSymbolicLinkRequest !== undefined &&
+      object.destinationOfSymbolicLinkRequest !== null
+    ) {
+      message.submessage = {
+        $case: "destinationOfSymbolicLinkRequest",
+        destinationOfSymbolicLinkRequest:
+          DestinationOfSymbolicLinkRequest.fromJSON(
+            object.destinationOfSymbolicLinkRequest
+          ),
+      };
+    }
     return message;
   },
 
@@ -785,6 +929,13 @@ export const ClientOriginatedMessage = {
         ?.updateApplicationPropertiesRequest
         ? UpdateApplicationPropertiesRequest.toJSON(
             message.submessage?.updateApplicationPropertiesRequest
+          )
+        : undefined);
+    message.submessage?.$case === "destinationOfSymbolicLinkRequest" &&
+      (obj.destinationOfSymbolicLinkRequest = message.submessage
+        ?.destinationOfSymbolicLinkRequest
+        ? DestinationOfSymbolicLinkRequest.toJSON(
+            message.submessage?.destinationOfSymbolicLinkRequest
           )
         : undefined);
     return obj;
@@ -933,6 +1084,19 @@ export const ClientOriginatedMessage = {
           ),
       };
     }
+    if (
+      object.submessage?.$case === "destinationOfSymbolicLinkRequest" &&
+      object.submessage?.destinationOfSymbolicLinkRequest !== undefined &&
+      object.submessage?.destinationOfSymbolicLinkRequest !== null
+    ) {
+      message.submessage = {
+        $case: "destinationOfSymbolicLinkRequest",
+        destinationOfSymbolicLinkRequest:
+          DestinationOfSymbolicLinkRequest.fromPartial(
+            object.submessage.destinationOfSymbolicLinkRequest
+          ),
+      };
+    }
     return message;
   },
 };
@@ -981,6 +1145,12 @@ export const ServerOriginatedMessage = {
       GetSettingsPropertyResponse.encode(
         message.submessage.getSettingsPropertyResponse,
         writer.uint32(834).fork()
+      ).ldelim();
+    }
+    if (message.submessage?.$case === "destinationOfSymbolicLinkResponse") {
+      DestinationOfSymbolicLinkResponse.encode(
+        message.submessage.destinationOfSymbolicLinkResponse,
+        writer.uint32(842).fork()
       ).ldelim();
     }
     if (message.submessage?.$case === "notification") {
@@ -1053,6 +1223,13 @@ export const ServerOriginatedMessage = {
               reader,
               reader.uint32()
             ),
+          };
+          break;
+        case 105:
+          message.submessage = {
+            $case: "destinationOfSymbolicLinkResponse",
+            destinationOfSymbolicLinkResponse:
+              DestinationOfSymbolicLinkResponse.decode(reader, reader.uint32()),
           };
           break;
         case 1000:
@@ -1138,6 +1315,18 @@ export const ServerOriginatedMessage = {
         ),
       };
     }
+    if (
+      object.destinationOfSymbolicLinkResponse !== undefined &&
+      object.destinationOfSymbolicLinkResponse !== null
+    ) {
+      message.submessage = {
+        $case: "destinationOfSymbolicLinkResponse",
+        destinationOfSymbolicLinkResponse:
+          DestinationOfSymbolicLinkResponse.fromJSON(
+            object.destinationOfSymbolicLinkResponse
+          ),
+      };
+    }
     if (object.notification !== undefined && object.notification !== null) {
       message.submessage = {
         $case: "notification",
@@ -1183,6 +1372,13 @@ export const ServerOriginatedMessage = {
         ?.getSettingsPropertyResponse
         ? GetSettingsPropertyResponse.toJSON(
             message.submessage?.getSettingsPropertyResponse
+          )
+        : undefined);
+    message.submessage?.$case === "destinationOfSymbolicLinkResponse" &&
+      (obj.destinationOfSymbolicLinkResponse = message.submessage
+        ?.destinationOfSymbolicLinkResponse
+        ? DestinationOfSymbolicLinkResponse.toJSON(
+            message.submessage?.destinationOfSymbolicLinkResponse
           )
         : undefined);
     message.submessage?.$case === "notification" &&
@@ -1277,6 +1473,19 @@ export const ServerOriginatedMessage = {
         getSettingsPropertyResponse: GetSettingsPropertyResponse.fromPartial(
           object.submessage.getSettingsPropertyResponse
         ),
+      };
+    }
+    if (
+      object.submessage?.$case === "destinationOfSymbolicLinkResponse" &&
+      object.submessage?.destinationOfSymbolicLinkResponse !== undefined &&
+      object.submessage?.destinationOfSymbolicLinkResponse !== null
+    ) {
+      message.submessage = {
+        $case: "destinationOfSymbolicLinkResponse",
+        destinationOfSymbolicLinkResponse:
+          DestinationOfSymbolicLinkResponse.fromPartial(
+            object.submessage.destinationOfSymbolicLinkResponse
+          ),
       };
     }
     if (
@@ -3241,6 +3450,140 @@ export const ContentsOfDirectoryResponse = {
   },
 };
 
+const baseDestinationOfSymbolicLinkRequest: object = {};
+
+export const DestinationOfSymbolicLinkRequest = {
+  encode(
+    message: DestinationOfSymbolicLinkRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.path !== undefined) {
+      FilePath.encode(message.path, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): DestinationOfSymbolicLinkRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseDestinationOfSymbolicLinkRequest,
+    } as DestinationOfSymbolicLinkRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.path = FilePath.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DestinationOfSymbolicLinkRequest {
+    const message = {
+      ...baseDestinationOfSymbolicLinkRequest,
+    } as DestinationOfSymbolicLinkRequest;
+    if (object.path !== undefined && object.path !== null) {
+      message.path = FilePath.fromJSON(object.path);
+    }
+    return message;
+  },
+
+  toJSON(message: DestinationOfSymbolicLinkRequest): unknown {
+    const obj: any = {};
+    message.path !== undefined &&
+      (obj.path = message.path ? FilePath.toJSON(message.path) : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<DestinationOfSymbolicLinkRequest>
+  ): DestinationOfSymbolicLinkRequest {
+    const message = {
+      ...baseDestinationOfSymbolicLinkRequest,
+    } as DestinationOfSymbolicLinkRequest;
+    if (object.path !== undefined && object.path !== null) {
+      message.path = FilePath.fromPartial(object.path);
+    }
+    return message;
+  },
+};
+
+const baseDestinationOfSymbolicLinkResponse: object = {};
+
+export const DestinationOfSymbolicLinkResponse = {
+  encode(
+    message: DestinationOfSymbolicLinkResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.destination !== undefined) {
+      FilePath.encode(message.destination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): DestinationOfSymbolicLinkResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseDestinationOfSymbolicLinkResponse,
+    } as DestinationOfSymbolicLinkResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.destination = FilePath.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DestinationOfSymbolicLinkResponse {
+    const message = {
+      ...baseDestinationOfSymbolicLinkResponse,
+    } as DestinationOfSymbolicLinkResponse;
+    if (object.destination !== undefined && object.destination !== null) {
+      message.destination = FilePath.fromJSON(object.destination);
+    }
+    return message;
+  },
+
+  toJSON(message: DestinationOfSymbolicLinkResponse): unknown {
+    const obj: any = {};
+    message.destination !== undefined &&
+      (obj.destination = message.destination
+        ? FilePath.toJSON(message.destination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<DestinationOfSymbolicLinkResponse>
+  ): DestinationOfSymbolicLinkResponse {
+    const message = {
+      ...baseDestinationOfSymbolicLinkResponse,
+    } as DestinationOfSymbolicLinkResponse;
+    if (object.destination !== undefined && object.destination !== null) {
+      message.destination = FilePath.fromPartial(object.destination);
+    }
+    return message;
+  },
+};
+
 const baseGetSettingsPropertyRequest: object = {};
 
 export const GetSettingsPropertyRequest = {
@@ -3462,6 +3805,117 @@ export const UpdateSettingsPropertyRequest = {
   },
 };
 
+const baseAction: object = {};
+
+export const Action = {
+  encode(
+    message: Action,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.identifier !== undefined) {
+      writer.uint32(10).string(message.identifier);
+    }
+    if (message.name !== undefined) {
+      writer.uint32(18).string(message.name);
+    }
+    if (message.description !== undefined) {
+      writer.uint32(26).string(message.description);
+    }
+    if (message.category !== undefined) {
+      writer.uint32(34).string(message.category);
+    }
+    if (message.availability !== undefined) {
+      writer.uint32(40).int32(message.availability);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Action {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseAction } as Action;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.identifier = reader.string();
+          break;
+        case 2:
+          message.name = reader.string();
+          break;
+        case 3:
+          message.description = reader.string();
+          break;
+        case 4:
+          message.category = reader.string();
+          break;
+        case 5:
+          message.availability = reader.int32() as any;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Action {
+    const message = { ...baseAction } as Action;
+    if (object.identifier !== undefined && object.identifier !== null) {
+      message.identifier = String(object.identifier);
+    }
+    if (object.name !== undefined && object.name !== null) {
+      message.name = String(object.name);
+    }
+    if (object.description !== undefined && object.description !== null) {
+      message.description = String(object.description);
+    }
+    if (object.category !== undefined && object.category !== null) {
+      message.category = String(object.category);
+    }
+    if (object.availability !== undefined && object.availability !== null) {
+      message.availability = actionAvailabilityFromJSON(object.availability);
+    }
+    return message;
+  },
+
+  toJSON(message: Action): unknown {
+    const obj: any = {};
+    message.identifier !== undefined && (obj.identifier = message.identifier);
+    message.name !== undefined && (obj.name = message.name);
+    message.description !== undefined &&
+      (obj.description = message.description);
+    message.category !== undefined && (obj.category = message.category);
+    message.availability !== undefined &&
+      (obj.availability =
+        message.availability !== undefined
+          ? actionAvailabilityToJSON(message.availability)
+          : undefined);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<Action>): Action {
+    const message = { ...baseAction } as Action;
+    if (object.identifier !== undefined && object.identifier !== null) {
+      message.identifier = object.identifier;
+    }
+    if (object.name !== undefined && object.name !== null) {
+      message.name = object.name;
+    }
+    if (object.description !== undefined && object.description !== null) {
+      message.description = object.description;
+    }
+    if (object.category !== undefined && object.category !== null) {
+      message.category = object.category;
+    }
+    if (object.availability !== undefined && object.availability !== null) {
+      message.availability = object.availability;
+    }
+    return message;
+  },
+};
+
 const baseUpdateApplicationPropertiesRequest: object = {};
 
 export const UpdateApplicationPropertiesRequest = {
@@ -3471,6 +3925,9 @@ export const UpdateApplicationPropertiesRequest = {
   ): _m0.Writer {
     if (message.interceptBoundKeystrokes !== undefined) {
       writer.uint32(8).bool(message.interceptBoundKeystrokes);
+    }
+    for (const v of message.actions) {
+      Action.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -3484,11 +3941,15 @@ export const UpdateApplicationPropertiesRequest = {
     const message = {
       ...baseUpdateApplicationPropertiesRequest,
     } as UpdateApplicationPropertiesRequest;
+    message.actions = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
           message.interceptBoundKeystrokes = reader.bool();
+          break;
+        case 2:
+          message.actions.push(Action.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -3502,6 +3963,7 @@ export const UpdateApplicationPropertiesRequest = {
     const message = {
       ...baseUpdateApplicationPropertiesRequest,
     } as UpdateApplicationPropertiesRequest;
+    message.actions = [];
     if (
       object.interceptBoundKeystrokes !== undefined &&
       object.interceptBoundKeystrokes !== null
@@ -3510,6 +3972,11 @@ export const UpdateApplicationPropertiesRequest = {
         object.interceptBoundKeystrokes
       );
     }
+    if (object.actions !== undefined && object.actions !== null) {
+      for (const e of object.actions) {
+        message.actions.push(Action.fromJSON(e));
+      }
+    }
     return message;
   },
 
@@ -3517,6 +3984,13 @@ export const UpdateApplicationPropertiesRequest = {
     const obj: any = {};
     message.interceptBoundKeystrokes !== undefined &&
       (obj.interceptBoundKeystrokes = message.interceptBoundKeystrokes);
+    if (message.actions) {
+      obj.actions = message.actions.map((e) =>
+        e ? Action.toJSON(e) : undefined
+      );
+    } else {
+      obj.actions = [];
+    }
     return obj;
   },
 
@@ -3526,11 +4000,17 @@ export const UpdateApplicationPropertiesRequest = {
     const message = {
       ...baseUpdateApplicationPropertiesRequest,
     } as UpdateApplicationPropertiesRequest;
+    message.actions = [];
     if (
       object.interceptBoundKeystrokes !== undefined &&
       object.interceptBoundKeystrokes !== null
     ) {
       message.interceptBoundKeystrokes = object.interceptBoundKeystrokes;
+    }
+    if (object.actions !== undefined && object.actions !== null) {
+      for (const e of object.actions) {
+        message.actions.push(Action.fromPartial(e));
+      }
     }
     return message;
   },
@@ -3650,6 +4130,12 @@ export const Notification = {
         writer.uint32(50).fork()
       ).ldelim();
     }
+    if (message.type?.$case === "windowFocusChangedNotification") {
+      WindowFocusChangedNotification.encode(
+        message.type.windowFocusChangedNotification,
+        writer.uint32(58).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -3710,6 +4196,13 @@ export const Notification = {
               reader,
               reader.uint32()
             ),
+          };
+          break;
+        case 7:
+          message.type = {
+            $case: "windowFocusChangedNotification",
+            windowFocusChangedNotification:
+              WindowFocusChangedNotification.decode(reader, reader.uint32()),
           };
           break;
         default:
@@ -3789,6 +4282,17 @@ export const Notification = {
         ),
       };
     }
+    if (
+      object.windowFocusChangedNotification !== undefined &&
+      object.windowFocusChangedNotification !== null
+    ) {
+      message.type = {
+        $case: "windowFocusChangedNotification",
+        windowFocusChangedNotification: WindowFocusChangedNotification.fromJSON(
+          object.windowFocusChangedNotification
+        ),
+      };
+    }
     return message;
   },
 
@@ -3832,6 +4336,13 @@ export const Notification = {
         ?.keybindingPressedNotification
         ? KeybindingPressedNotification.toJSON(
             message.type?.keybindingPressedNotification
+          )
+        : undefined);
+    message.type?.$case === "windowFocusChangedNotification" &&
+      (obj.windowFocusChangedNotification = message.type
+        ?.windowFocusChangedNotification
+        ? WindowFocusChangedNotification.toJSON(
+            message.type?.windowFocusChangedNotification
           )
         : undefined);
     return obj;
@@ -3910,6 +4421,19 @@ export const Notification = {
         keybindingPressedNotification:
           KeybindingPressedNotification.fromPartial(
             object.type.keybindingPressedNotification
+          ),
+      };
+    }
+    if (
+      object.type?.$case === "windowFocusChangedNotification" &&
+      object.type?.windowFocusChangedNotification !== undefined &&
+      object.type?.windowFocusChangedNotification !== null
+    ) {
+      message.type = {
+        $case: "windowFocusChangedNotification",
+        windowFocusChangedNotification:
+          WindowFocusChangedNotification.fromPartial(
+            object.type.windowFocusChangedNotification
           ),
       };
     }
@@ -4413,6 +4937,311 @@ export const KeybindingPressedNotification = {
     }
     if (object.action !== undefined && object.action !== null) {
       message.action = object.action;
+    }
+    return message;
+  },
+};
+
+const baseWindowFocusChangedNotification: object = {};
+
+export const WindowFocusChangedNotification = {
+  encode(
+    message: WindowFocusChangedNotification,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.window !== undefined) {
+      Window.encode(message.window, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): WindowFocusChangedNotification {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseWindowFocusChangedNotification,
+    } as WindowFocusChangedNotification;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.window = Window.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): WindowFocusChangedNotification {
+    const message = {
+      ...baseWindowFocusChangedNotification,
+    } as WindowFocusChangedNotification;
+    if (object.window !== undefined && object.window !== null) {
+      message.window = Window.fromJSON(object.window);
+    }
+    return message;
+  },
+
+  toJSON(message: WindowFocusChangedNotification): unknown {
+    const obj: any = {};
+    message.window !== undefined &&
+      (obj.window = message.window ? Window.toJSON(message.window) : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<WindowFocusChangedNotification>
+  ): WindowFocusChangedNotification {
+    const message = {
+      ...baseWindowFocusChangedNotification,
+    } as WindowFocusChangedNotification;
+    if (object.window !== undefined && object.window !== null) {
+      message.window = Window.fromPartial(object.window);
+    }
+    return message;
+  },
+};
+
+const baseConstants: object = {};
+
+export const Constants = {
+  encode(
+    message: Constants,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.version !== undefined) {
+      writer.uint32(10).string(message.version);
+    }
+    if (message.build !== undefined) {
+      writer.uint32(18).string(message.build);
+    }
+    if (message.cli !== undefined) {
+      writer.uint32(26).string(message.cli);
+    }
+    if (message.bundlePath !== undefined) {
+      writer.uint32(34).string(message.bundlePath);
+    }
+    if (message.remote !== undefined) {
+      writer.uint32(42).string(message.remote);
+    }
+    if (message.home !== undefined) {
+      writer.uint32(50).string(message.home);
+    }
+    if (message.user !== undefined) {
+      writer.uint32(58).string(message.user);
+    }
+    if (message.defaultPath !== undefined) {
+      writer.uint32(66).string(message.defaultPath);
+    }
+    if (message.jsonMessageRecieved !== undefined) {
+      writer.uint32(74).string(message.jsonMessageRecieved);
+    }
+    if (message.jsonMessageHandler !== undefined) {
+      writer.uint32(82).string(message.jsonMessageHandler);
+    }
+    if (message.protoMessageRecieved !== undefined) {
+      writer.uint32(90).string(message.protoMessageRecieved);
+    }
+    if (message.protoMessageHandler !== undefined) {
+      writer.uint32(98).string(message.protoMessageHandler);
+    }
+    if (message.themes !== undefined) {
+      writer.uint32(106).string(message.themes);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Constants {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseConstants } as Constants;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.version = reader.string();
+          break;
+        case 2:
+          message.build = reader.string();
+          break;
+        case 3:
+          message.cli = reader.string();
+          break;
+        case 4:
+          message.bundlePath = reader.string();
+          break;
+        case 5:
+          message.remote = reader.string();
+          break;
+        case 6:
+          message.home = reader.string();
+          break;
+        case 7:
+          message.user = reader.string();
+          break;
+        case 8:
+          message.defaultPath = reader.string();
+          break;
+        case 9:
+          message.jsonMessageRecieved = reader.string();
+          break;
+        case 10:
+          message.jsonMessageHandler = reader.string();
+          break;
+        case 11:
+          message.protoMessageRecieved = reader.string();
+          break;
+        case 12:
+          message.protoMessageHandler = reader.string();
+          break;
+        case 13:
+          message.themes = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Constants {
+    const message = { ...baseConstants } as Constants;
+    if (object.version !== undefined && object.version !== null) {
+      message.version = String(object.version);
+    }
+    if (object.build !== undefined && object.build !== null) {
+      message.build = String(object.build);
+    }
+    if (object.cli !== undefined && object.cli !== null) {
+      message.cli = String(object.cli);
+    }
+    if (object.bundlePath !== undefined && object.bundlePath !== null) {
+      message.bundlePath = String(object.bundlePath);
+    }
+    if (object.remote !== undefined && object.remote !== null) {
+      message.remote = String(object.remote);
+    }
+    if (object.home !== undefined && object.home !== null) {
+      message.home = String(object.home);
+    }
+    if (object.user !== undefined && object.user !== null) {
+      message.user = String(object.user);
+    }
+    if (object.defaultPath !== undefined && object.defaultPath !== null) {
+      message.defaultPath = String(object.defaultPath);
+    }
+    if (
+      object.jsonMessageRecieved !== undefined &&
+      object.jsonMessageRecieved !== null
+    ) {
+      message.jsonMessageRecieved = String(object.jsonMessageRecieved);
+    }
+    if (
+      object.jsonMessageHandler !== undefined &&
+      object.jsonMessageHandler !== null
+    ) {
+      message.jsonMessageHandler = String(object.jsonMessageHandler);
+    }
+    if (
+      object.protoMessageRecieved !== undefined &&
+      object.protoMessageRecieved !== null
+    ) {
+      message.protoMessageRecieved = String(object.protoMessageRecieved);
+    }
+    if (
+      object.protoMessageHandler !== undefined &&
+      object.protoMessageHandler !== null
+    ) {
+      message.protoMessageHandler = String(object.protoMessageHandler);
+    }
+    if (object.themes !== undefined && object.themes !== null) {
+      message.themes = String(object.themes);
+    }
+    return message;
+  },
+
+  toJSON(message: Constants): unknown {
+    const obj: any = {};
+    message.version !== undefined && (obj.version = message.version);
+    message.build !== undefined && (obj.build = message.build);
+    message.cli !== undefined && (obj.cli = message.cli);
+    message.bundlePath !== undefined && (obj.bundlePath = message.bundlePath);
+    message.remote !== undefined && (obj.remote = message.remote);
+    message.home !== undefined && (obj.home = message.home);
+    message.user !== undefined && (obj.user = message.user);
+    message.defaultPath !== undefined &&
+      (obj.defaultPath = message.defaultPath);
+    message.jsonMessageRecieved !== undefined &&
+      (obj.jsonMessageRecieved = message.jsonMessageRecieved);
+    message.jsonMessageHandler !== undefined &&
+      (obj.jsonMessageHandler = message.jsonMessageHandler);
+    message.protoMessageRecieved !== undefined &&
+      (obj.protoMessageRecieved = message.protoMessageRecieved);
+    message.protoMessageHandler !== undefined &&
+      (obj.protoMessageHandler = message.protoMessageHandler);
+    message.themes !== undefined && (obj.themes = message.themes);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<Constants>): Constants {
+    const message = { ...baseConstants } as Constants;
+    if (object.version !== undefined && object.version !== null) {
+      message.version = object.version;
+    }
+    if (object.build !== undefined && object.build !== null) {
+      message.build = object.build;
+    }
+    if (object.cli !== undefined && object.cli !== null) {
+      message.cli = object.cli;
+    }
+    if (object.bundlePath !== undefined && object.bundlePath !== null) {
+      message.bundlePath = object.bundlePath;
+    }
+    if (object.remote !== undefined && object.remote !== null) {
+      message.remote = object.remote;
+    }
+    if (object.home !== undefined && object.home !== null) {
+      message.home = object.home;
+    }
+    if (object.user !== undefined && object.user !== null) {
+      message.user = object.user;
+    }
+    if (object.defaultPath !== undefined && object.defaultPath !== null) {
+      message.defaultPath = object.defaultPath;
+    }
+    if (
+      object.jsonMessageRecieved !== undefined &&
+      object.jsonMessageRecieved !== null
+    ) {
+      message.jsonMessageRecieved = object.jsonMessageRecieved;
+    }
+    if (
+      object.jsonMessageHandler !== undefined &&
+      object.jsonMessageHandler !== null
+    ) {
+      message.jsonMessageHandler = object.jsonMessageHandler;
+    }
+    if (
+      object.protoMessageRecieved !== undefined &&
+      object.protoMessageRecieved !== null
+    ) {
+      message.protoMessageRecieved = object.protoMessageRecieved;
+    }
+    if (
+      object.protoMessageHandler !== undefined &&
+      object.protoMessageHandler !== null
+    ) {
+      message.protoMessageHandler = object.protoMessageHandler;
+    }
+    if (object.themes !== undefined && object.themes !== null) {
+      message.themes = object.themes;
     }
     return message;
   },
