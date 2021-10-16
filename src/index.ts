@@ -5,9 +5,10 @@ import PTY from './pty'
 import Shell from './shell'
 import Keybindings from './keybindings'
 
-// @ts-ignore
-window.f =  { WindowPosition, Settings, EditBufferNotifications, PTY, Shell, Keybindings}
+import * as Fig from "./fig";
+import * as Internal from "./requests"
 
-export * from "./fig";
-export * from "./requests"
-export { WindowPosition, Settings, EditBufferNotifications, PTY, Shell, Keybindings}
+// @ts-ignore
+window.f =  { WindowPosition, Settings, EditBufferNotifications, PTY, Shell, Keybindings, Internal}
+
+export { WindowPosition, Settings, EditBufferNotifications, PTY, Shell, Keybindings, Internal, Fig}
