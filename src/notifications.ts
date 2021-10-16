@@ -57,7 +57,7 @@ export const _subscribe = (request: NotificationRequest, handler: NotificationHa
             );
 
             handlers[type] = handlers[type]?.filter(
-              handler => handlersToRemove?.includes(handler)
+              handler => !handlersToRemove?.includes(handler)
             );
 
             return true
