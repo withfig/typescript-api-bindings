@@ -1,32 +1,29 @@
-import {
-  ServerOriginatedMessage,
-  ClientOriginatedMessage,
-} from "./fig";
+import { ServerOriginatedMessage, ClientOriginatedMessage } from './fig';
 
-import { b64ToBytes, bytesToBase64 } from "./utils";
+import { b64ToBytes, bytesToBase64 } from './utils';
 
 interface GlobalAPIError {
   error: string;
 }
 
-const FigGlobalErrorOccurred = "FigGlobalErrorOccurred";
-const FigProtoMessageRecieved = "FigProtoMessageRecieved";
+const FigGlobalErrorOccurred = 'FigGlobalErrorOccurred';
+const FigProtoMessageRecieved = 'FigProtoMessageRecieved';
 
 type shouldKeepListening = boolean;
 
 export type APIResponseHandler = (
-  response: ServerOriginatedMessage["submessage"]
+  response: ServerOriginatedMessage['submessage']
 ) => shouldKeepListening | void;
 
 let messageId = 0;
 const handlers: Record<number, APIResponseHandler> = {};
 
 export const setHandlerForId = (handler: APIResponseHandler, id: number) => {
-    handlers[id] = handler;
-}
+  handlers[id] = handler;
+};
 
 export const sendMessage = (
-  message: ClientOriginatedMessage["submessage"],
+  message: ClientOriginatedMessage['submessage'],
   handler?: APIResponseHandler
 ): void => {
   const request: ClientOriginatedMessage = {
@@ -46,7 +43,7 @@ export const sendMessage = (
   // @ts-ignore
   if (!window.webkit.messageHandlers.proto) {
     console.error(
-      "This version of Fig does not support using protocol buffers. Please update."
+      'This version of Fig does not support using protocol buffers. Please update.'
     );
     return;
   }
@@ -60,11 +57,11 @@ const recievedMessage = (response: ServerOriginatedMessage): void => {
     return;
   }
 
-  let handler = handlers[response.id]
+  let handler = handlers[response.id];
 
   if (!handler) {
-    return
-  } 
+    return;
+  }
 
   const keepListeningOnID = handlers[response.id](response.submessage);
 
@@ -91,5 +88,5 @@ const setupEventListeners = (): void => {
 };
 
 // We want this to be run automatically
-console.log("[fig] setting up event listeners...");
+console.log('[fig] setting up event listeners...');
 setupEventListeners();

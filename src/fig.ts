@@ -1,8 +1,8 @@
 /* eslint-disable */
-import Long from "long";
-import _m0 from "protobufjs/minimal";
+import Long from 'long';
+import _m0 from 'protobufjs/minimal';
 
-export const protobufPackage = "fig";
+export const protobufPackage = 'fig';
 
 export enum Modifiers {
   CONTROL = 0,
@@ -17,25 +17,25 @@ export enum Modifiers {
 export function modifiersFromJSON(object: any): Modifiers {
   switch (object) {
     case 0:
-    case "CONTROL":
+    case 'CONTROL':
       return Modifiers.CONTROL;
     case 1:
-    case "OPTION":
+    case 'OPTION':
       return Modifiers.OPTION;
     case 2:
-    case "COMMAND":
+    case 'COMMAND':
       return Modifiers.COMMAND;
     case 3:
-    case "SHIFT":
+    case 'SHIFT':
       return Modifiers.SHIFT;
     case 4:
-    case "FUNCTION":
+    case 'FUNCTION':
       return Modifiers.FUNCTION;
     case 5:
-    case "NUMPAD":
+    case 'NUMPAD':
       return Modifiers.NUMPAD;
     case -1:
-    case "UNRECOGNIZED":
+    case 'UNRECOGNIZED':
     default:
       return Modifiers.UNRECOGNIZED;
   }
@@ -44,19 +44,19 @@ export function modifiersFromJSON(object: any): Modifiers {
 export function modifiersToJSON(object: Modifiers): string {
   switch (object) {
     case Modifiers.CONTROL:
-      return "CONTROL";
+      return 'CONTROL';
     case Modifiers.OPTION:
-      return "OPTION";
+      return 'OPTION';
     case Modifiers.COMMAND:
-      return "COMMAND";
+      return 'COMMAND';
     case Modifiers.SHIFT:
-      return "SHIFT";
+      return 'SHIFT';
     case Modifiers.FUNCTION:
-      return "FUNCTION";
+      return 'FUNCTION';
     case Modifiers.NUMPAD:
-      return "NUMPAD";
+      return 'NUMPAD';
     default:
-      return "UNKNOWN";
+      return 'UNKNOWN';
   }
 }
 
@@ -74,19 +74,19 @@ export enum ActionAvailability {
 export function actionAvailabilityFromJSON(object: any): ActionAvailability {
   switch (object) {
     case 0:
-    case "ALWAYS":
+    case 'ALWAYS':
       return ActionAvailability.ALWAYS;
     case 1:
-    case "WHEN_FOCUSED":
+    case 'WHEN_FOCUSED':
       return ActionAvailability.WHEN_FOCUSED;
     case 2:
-    case "WHEN_VISIBLE":
+    case 'WHEN_VISIBLE':
       return ActionAvailability.WHEN_VISIBLE;
     case 3:
-    case "WHEN_HIDDEN":
+    case 'WHEN_HIDDEN':
       return ActionAvailability.WHEN_HIDDEN;
     case -1:
-    case "UNRECOGNIZED":
+    case 'UNRECOGNIZED':
     default:
       return ActionAvailability.UNRECOGNIZED;
   }
@@ -95,15 +95,15 @@ export function actionAvailabilityFromJSON(object: any): ActionAvailability {
 export function actionAvailabilityToJSON(object: ActionAvailability): string {
   switch (object) {
     case ActionAvailability.ALWAYS:
-      return "ALWAYS";
+      return 'ALWAYS';
     case ActionAvailability.WHEN_FOCUSED:
-      return "WHEN_FOCUSED";
+      return 'WHEN_FOCUSED';
     case ActionAvailability.WHEN_VISIBLE:
-      return "WHEN_VISIBLE";
+      return 'WHEN_VISIBLE';
     case ActionAvailability.WHEN_HIDDEN:
-      return "WHEN_HIDDEN";
+      return 'WHEN_HIDDEN';
     default:
-      return "UNKNOWN";
+      return 'UNKNOWN';
   }
 }
 
@@ -122,31 +122,31 @@ export enum NotificationType {
 export function notificationTypeFromJSON(object: any): NotificationType {
   switch (object) {
     case 0:
-    case "ALL":
+    case 'ALL':
       return NotificationType.ALL;
     case 1:
-    case "NOTIFY_ON_EDITBUFFFER_CHANGE":
+    case 'NOTIFY_ON_EDITBUFFFER_CHANGE':
       return NotificationType.NOTIFY_ON_EDITBUFFFER_CHANGE;
     case 2:
-    case "NOTIFY_ON_SETTINGS_CHANGE":
+    case 'NOTIFY_ON_SETTINGS_CHANGE':
       return NotificationType.NOTIFY_ON_SETTINGS_CHANGE;
     case 3:
-    case "NOTIFY_ON_PROMPT":
+    case 'NOTIFY_ON_PROMPT':
       return NotificationType.NOTIFY_ON_PROMPT;
     case 4:
-    case "NOTIFY_ON_LOCATION_CHANGE":
+    case 'NOTIFY_ON_LOCATION_CHANGE':
       return NotificationType.NOTIFY_ON_LOCATION_CHANGE;
     case 5:
-    case "NOTIFY_ON_PROCESS_CHANGED":
+    case 'NOTIFY_ON_PROCESS_CHANGED':
       return NotificationType.NOTIFY_ON_PROCESS_CHANGED;
     case 6:
-    case "NOTIFY_ON_KEYBINDING_PRESSED":
+    case 'NOTIFY_ON_KEYBINDING_PRESSED':
       return NotificationType.NOTIFY_ON_KEYBINDING_PRESSED;
     case 7:
-    case "NOTIFY_ON_FOCUS_CHANGED":
+    case 'NOTIFY_ON_FOCUS_CHANGED':
       return NotificationType.NOTIFY_ON_FOCUS_CHANGED;
     case -1:
-    case "UNRECOGNIZED":
+    case 'UNRECOGNIZED':
     default:
       return NotificationType.UNRECOGNIZED;
   }
@@ -155,23 +155,23 @@ export function notificationTypeFromJSON(object: any): NotificationType {
 export function notificationTypeToJSON(object: NotificationType): string {
   switch (object) {
     case NotificationType.ALL:
-      return "ALL";
+      return 'ALL';
     case NotificationType.NOTIFY_ON_EDITBUFFFER_CHANGE:
-      return "NOTIFY_ON_EDITBUFFFER_CHANGE";
+      return 'NOTIFY_ON_EDITBUFFFER_CHANGE';
     case NotificationType.NOTIFY_ON_SETTINGS_CHANGE:
-      return "NOTIFY_ON_SETTINGS_CHANGE";
+      return 'NOTIFY_ON_SETTINGS_CHANGE';
     case NotificationType.NOTIFY_ON_PROMPT:
-      return "NOTIFY_ON_PROMPT";
+      return 'NOTIFY_ON_PROMPT';
     case NotificationType.NOTIFY_ON_LOCATION_CHANGE:
-      return "NOTIFY_ON_LOCATION_CHANGE";
+      return 'NOTIFY_ON_LOCATION_CHANGE';
     case NotificationType.NOTIFY_ON_PROCESS_CHANGED:
-      return "NOTIFY_ON_PROCESS_CHANGED";
+      return 'NOTIFY_ON_PROCESS_CHANGED';
     case NotificationType.NOTIFY_ON_KEYBINDING_PRESSED:
-      return "NOTIFY_ON_KEYBINDING_PRESSED";
+      return 'NOTIFY_ON_KEYBINDING_PRESSED';
     case NotificationType.NOTIFY_ON_FOCUS_CHANGED:
-      return "NOTIFY_ON_FOCUS_CHANGED";
+      return 'NOTIFY_ON_FOCUS_CHANGED';
     default:
-      return "UNKNOWN";
+      return 'UNKNOWN';
   }
 }
 
@@ -179,39 +179,39 @@ export interface ClientOriginatedMessage {
   id?: number | undefined;
   submessage?:
     | {
-        $case: "positionWindowRequest";
+        $case: 'positionWindowRequest';
         positionWindowRequest: PositionWindowRequest;
       }
     | {
-        $case: "pseudoterminalExecuteRequest";
+        $case: 'pseudoterminalExecuteRequest';
         pseudoterminalExecuteRequest: PseudoterminalExecuteRequest;
       }
     | {
-        $case: "pseudoterminalWriteRequest";
+        $case: 'pseudoterminalWriteRequest';
         pseudoterminalWriteRequest: PseudoterminalWriteRequest;
       }
-    | { $case: "readFileRequest"; readFileRequest: ReadFileRequest }
-    | { $case: "writeFileRequest"; writeFileRequest: WriteFileRequest }
+    | { $case: 'readFileRequest'; readFileRequest: ReadFileRequest }
+    | { $case: 'writeFileRequest'; writeFileRequest: WriteFileRequest }
     | {
-        $case: "contentsOfDirectoryRequest";
+        $case: 'contentsOfDirectoryRequest';
         contentsOfDirectoryRequest: ContentsOfDirectoryRequest;
       }
-    | { $case: "notificationRequest"; notificationRequest: NotificationRequest }
+    | { $case: 'notificationRequest'; notificationRequest: NotificationRequest }
     | {
-        $case: "getSettingsPropertyRequest";
+        $case: 'getSettingsPropertyRequest';
         getSettingsPropertyRequest: GetSettingsPropertyRequest;
       }
     | {
-        $case: "updateSettingsPropertyRequest";
+        $case: 'updateSettingsPropertyRequest';
         updateSettingsPropertyRequest: UpdateSettingsPropertyRequest;
       }
-    | { $case: "insertTextRequest"; insertTextRequest: InsertTextRequest }
+    | { $case: 'insertTextRequest'; insertTextRequest: InsertTextRequest }
     | {
-        $case: "updateApplicationPropertiesRequest";
+        $case: 'updateApplicationPropertiesRequest';
         updateApplicationPropertiesRequest: UpdateApplicationPropertiesRequest;
       }
     | {
-        $case: "destinationOfSymbolicLinkRequest";
+        $case: 'destinationOfSymbolicLinkRequest';
         destinationOfSymbolicLinkRequest: DestinationOfSymbolicLinkRequest;
       };
 }
@@ -219,30 +219,30 @@ export interface ClientOriginatedMessage {
 export interface ServerOriginatedMessage {
   id?: number | undefined;
   submessage?:
-    | { $case: "error"; error: string }
-    | { $case: "success"; success: boolean }
+    | { $case: 'error'; error: string }
+    | { $case: 'success'; success: boolean }
     | {
-        $case: "positionWindowResponse";
+        $case: 'positionWindowResponse';
         positionWindowResponse: PositionWindowResponse;
       }
     | {
-        $case: "pseudoterminalExecuteResponse";
+        $case: 'pseudoterminalExecuteResponse';
         pseudoterminalExecuteResponse: PseudoterminalExecuteResponse;
       }
-    | { $case: "readFileResponse"; readFileResponse: ReadFileResponse }
+    | { $case: 'readFileResponse'; readFileResponse: ReadFileResponse }
     | {
-        $case: "contentsOfDirectoryResponse";
+        $case: 'contentsOfDirectoryResponse';
         contentsOfDirectoryResponse: ContentsOfDirectoryResponse;
       }
     | {
-        $case: "getSettingsPropertyResponse";
+        $case: 'getSettingsPropertyResponse';
         getSettingsPropertyResponse: GetSettingsPropertyResponse;
       }
     | {
-        $case: "destinationOfSymbolicLinkResponse";
+        $case: 'destinationOfSymbolicLinkResponse';
         destinationOfSymbolicLinkResponse: DestinationOfSymbolicLinkResponse;
       }
-    | { $case: "notification"; notification: Notification };
+    | { $case: 'notification'; notification: Notification };
 }
 
 export interface Point {
@@ -318,14 +318,14 @@ export interface TextUpdate {
 
 export interface InsertTextRequest {
   type?:
-    | { $case: "text"; text: string }
-    | { $case: "update"; update: TextUpdate };
+    | { $case: 'text'; text: string }
+    | { $case: 'update'; update: TextUpdate };
 }
 
 export interface PseudoterminalWriteRequest {
   input?:
-    | { $case: "text"; text: string }
-    | { $case: "octal"; octal: Uint8Array };
+    | { $case: 'text'; text: string }
+    | { $case: 'octal'; octal: Uint8Array };
 }
 
 export interface PseudoterminalExecuteRequest {
@@ -364,8 +364,8 @@ export interface ReadFileResponse {
 export interface WriteFileRequest {
   path?: FilePath | undefined;
   data?:
-    | { $case: "text"; text: string }
-    | { $case: "binary"; binary: Uint8Array };
+    | { $case: 'text'; text: string }
+    | { $case: 'binary'; binary: Uint8Array };
 }
 
 export interface ContentsOfDirectoryRequest {
@@ -423,31 +423,31 @@ export interface NotificationRequest {
 export interface Notification {
   type?:
     | {
-        $case: "editBufferNotification";
+        $case: 'editBufferNotification';
         editBufferNotification: EditBufferChangedNotification;
       }
     | {
-        $case: "settingsChangedNotification";
+        $case: 'settingsChangedNotification';
         settingsChangedNotification: SettingsChangedNotification;
       }
     | {
-        $case: "shellPromptReturnedNotification";
+        $case: 'shellPromptReturnedNotification';
         shellPromptReturnedNotification: ShellPromptReturnedNotification;
       }
     | {
-        $case: "locationChangedNotification";
+        $case: 'locationChangedNotification';
         locationChangedNotification: LocationChangedNotification;
       }
     | {
-        $case: "processChangeNotification";
+        $case: 'processChangeNotification';
         processChangeNotification: ProcessChangedNotification;
       }
     | {
-        $case: "keybindingPressedNotification";
+        $case: 'keybindingPressedNotification';
         keybindingPressedNotification: KeybindingPressedNotification;
       }
     | {
-        $case: "windowFocusChangedNotification";
+        $case: 'windowFocusChangedNotification';
         windowFocusChangedNotification: WindowFocusChangedNotification;
       };
 }
@@ -527,73 +527,73 @@ export const ClientOriginatedMessage = {
     if (message.id !== undefined) {
       writer.uint32(8).int64(message.id);
     }
-    if (message.submessage?.$case === "positionWindowRequest") {
+    if (message.submessage?.$case === 'positionWindowRequest') {
       PositionWindowRequest.encode(
         message.submessage.positionWindowRequest,
         writer.uint32(810).fork()
       ).ldelim();
     }
-    if (message.submessage?.$case === "pseudoterminalExecuteRequest") {
+    if (message.submessage?.$case === 'pseudoterminalExecuteRequest') {
       PseudoterminalExecuteRequest.encode(
         message.submessage.pseudoterminalExecuteRequest,
         writer.uint32(818).fork()
       ).ldelim();
     }
-    if (message.submessage?.$case === "pseudoterminalWriteRequest") {
+    if (message.submessage?.$case === 'pseudoterminalWriteRequest') {
       PseudoterminalWriteRequest.encode(
         message.submessage.pseudoterminalWriteRequest,
         writer.uint32(826).fork()
       ).ldelim();
     }
-    if (message.submessage?.$case === "readFileRequest") {
+    if (message.submessage?.$case === 'readFileRequest') {
       ReadFileRequest.encode(
         message.submessage.readFileRequest,
         writer.uint32(834).fork()
       ).ldelim();
     }
-    if (message.submessage?.$case === "writeFileRequest") {
+    if (message.submessage?.$case === 'writeFileRequest') {
       WriteFileRequest.encode(
         message.submessage.writeFileRequest,
         writer.uint32(842).fork()
       ).ldelim();
     }
-    if (message.submessage?.$case === "contentsOfDirectoryRequest") {
+    if (message.submessage?.$case === 'contentsOfDirectoryRequest') {
       ContentsOfDirectoryRequest.encode(
         message.submessage.contentsOfDirectoryRequest,
         writer.uint32(850).fork()
       ).ldelim();
     }
-    if (message.submessage?.$case === "notificationRequest") {
+    if (message.submessage?.$case === 'notificationRequest') {
       NotificationRequest.encode(
         message.submessage.notificationRequest,
         writer.uint32(858).fork()
       ).ldelim();
     }
-    if (message.submessage?.$case === "getSettingsPropertyRequest") {
+    if (message.submessage?.$case === 'getSettingsPropertyRequest') {
       GetSettingsPropertyRequest.encode(
         message.submessage.getSettingsPropertyRequest,
         writer.uint32(866).fork()
       ).ldelim();
     }
-    if (message.submessage?.$case === "updateSettingsPropertyRequest") {
+    if (message.submessage?.$case === 'updateSettingsPropertyRequest') {
       UpdateSettingsPropertyRequest.encode(
         message.submessage.updateSettingsPropertyRequest,
         writer.uint32(874).fork()
       ).ldelim();
     }
-    if (message.submessage?.$case === "insertTextRequest") {
+    if (message.submessage?.$case === 'insertTextRequest') {
       InsertTextRequest.encode(
         message.submessage.insertTextRequest,
         writer.uint32(882).fork()
       ).ldelim();
     }
-    if (message.submessage?.$case === "updateApplicationPropertiesRequest") {
+    if (message.submessage?.$case === 'updateApplicationPropertiesRequest') {
       UpdateApplicationPropertiesRequest.encode(
         message.submessage.updateApplicationPropertiesRequest,
         writer.uint32(890).fork()
       ).ldelim();
     }
-    if (message.submessage?.$case === "destinationOfSymbolicLinkRequest") {
+    if (message.submessage?.$case === 'destinationOfSymbolicLinkRequest') {
       DestinationOfSymbolicLinkRequest.encode(
         message.submessage.destinationOfSymbolicLinkRequest,
         writer.uint32(898).fork()
@@ -619,7 +619,7 @@ export const ClientOriginatedMessage = {
           break;
         case 101:
           message.submessage = {
-            $case: "positionWindowRequest",
+            $case: 'positionWindowRequest',
             positionWindowRequest: PositionWindowRequest.decode(
               reader,
               reader.uint32()
@@ -628,7 +628,7 @@ export const ClientOriginatedMessage = {
           break;
         case 102:
           message.submessage = {
-            $case: "pseudoterminalExecuteRequest",
+            $case: 'pseudoterminalExecuteRequest',
             pseudoterminalExecuteRequest: PseudoterminalExecuteRequest.decode(
               reader,
               reader.uint32()
@@ -637,7 +637,7 @@ export const ClientOriginatedMessage = {
           break;
         case 103:
           message.submessage = {
-            $case: "pseudoterminalWriteRequest",
+            $case: 'pseudoterminalWriteRequest',
             pseudoterminalWriteRequest: PseudoterminalWriteRequest.decode(
               reader,
               reader.uint32()
@@ -646,19 +646,19 @@ export const ClientOriginatedMessage = {
           break;
         case 104:
           message.submessage = {
-            $case: "readFileRequest",
+            $case: 'readFileRequest',
             readFileRequest: ReadFileRequest.decode(reader, reader.uint32()),
           };
           break;
         case 105:
           message.submessage = {
-            $case: "writeFileRequest",
+            $case: 'writeFileRequest',
             writeFileRequest: WriteFileRequest.decode(reader, reader.uint32()),
           };
           break;
         case 106:
           message.submessage = {
-            $case: "contentsOfDirectoryRequest",
+            $case: 'contentsOfDirectoryRequest',
             contentsOfDirectoryRequest: ContentsOfDirectoryRequest.decode(
               reader,
               reader.uint32()
@@ -667,7 +667,7 @@ export const ClientOriginatedMessage = {
           break;
         case 107:
           message.submessage = {
-            $case: "notificationRequest",
+            $case: 'notificationRequest',
             notificationRequest: NotificationRequest.decode(
               reader,
               reader.uint32()
@@ -676,7 +676,7 @@ export const ClientOriginatedMessage = {
           break;
         case 108:
           message.submessage = {
-            $case: "getSettingsPropertyRequest",
+            $case: 'getSettingsPropertyRequest',
             getSettingsPropertyRequest: GetSettingsPropertyRequest.decode(
               reader,
               reader.uint32()
@@ -685,7 +685,7 @@ export const ClientOriginatedMessage = {
           break;
         case 109:
           message.submessage = {
-            $case: "updateSettingsPropertyRequest",
+            $case: 'updateSettingsPropertyRequest',
             updateSettingsPropertyRequest: UpdateSettingsPropertyRequest.decode(
               reader,
               reader.uint32()
@@ -694,7 +694,7 @@ export const ClientOriginatedMessage = {
           break;
         case 110:
           message.submessage = {
-            $case: "insertTextRequest",
+            $case: 'insertTextRequest',
             insertTextRequest: InsertTextRequest.decode(
               reader,
               reader.uint32()
@@ -703,7 +703,7 @@ export const ClientOriginatedMessage = {
           break;
         case 111:
           message.submessage = {
-            $case: "updateApplicationPropertiesRequest",
+            $case: 'updateApplicationPropertiesRequest',
             updateApplicationPropertiesRequest:
               UpdateApplicationPropertiesRequest.decode(
                 reader,
@@ -713,7 +713,7 @@ export const ClientOriginatedMessage = {
           break;
         case 112:
           message.submessage = {
-            $case: "destinationOfSymbolicLinkRequest",
+            $case: 'destinationOfSymbolicLinkRequest',
             destinationOfSymbolicLinkRequest:
               DestinationOfSymbolicLinkRequest.decode(reader, reader.uint32()),
           };
@@ -738,7 +738,7 @@ export const ClientOriginatedMessage = {
       object.positionWindowRequest !== null
     ) {
       message.submessage = {
-        $case: "positionWindowRequest",
+        $case: 'positionWindowRequest',
         positionWindowRequest: PositionWindowRequest.fromJSON(
           object.positionWindowRequest
         ),
@@ -749,7 +749,7 @@ export const ClientOriginatedMessage = {
       object.pseudoterminalExecuteRequest !== null
     ) {
       message.submessage = {
-        $case: "pseudoterminalExecuteRequest",
+        $case: 'pseudoterminalExecuteRequest',
         pseudoterminalExecuteRequest: PseudoterminalExecuteRequest.fromJSON(
           object.pseudoterminalExecuteRequest
         ),
@@ -760,7 +760,7 @@ export const ClientOriginatedMessage = {
       object.pseudoterminalWriteRequest !== null
     ) {
       message.submessage = {
-        $case: "pseudoterminalWriteRequest",
+        $case: 'pseudoterminalWriteRequest',
         pseudoterminalWriteRequest: PseudoterminalWriteRequest.fromJSON(
           object.pseudoterminalWriteRequest
         ),
@@ -771,7 +771,7 @@ export const ClientOriginatedMessage = {
       object.readFileRequest !== null
     ) {
       message.submessage = {
-        $case: "readFileRequest",
+        $case: 'readFileRequest',
         readFileRequest: ReadFileRequest.fromJSON(object.readFileRequest),
       };
     }
@@ -780,7 +780,7 @@ export const ClientOriginatedMessage = {
       object.writeFileRequest !== null
     ) {
       message.submessage = {
-        $case: "writeFileRequest",
+        $case: 'writeFileRequest',
         writeFileRequest: WriteFileRequest.fromJSON(object.writeFileRequest),
       };
     }
@@ -789,7 +789,7 @@ export const ClientOriginatedMessage = {
       object.contentsOfDirectoryRequest !== null
     ) {
       message.submessage = {
-        $case: "contentsOfDirectoryRequest",
+        $case: 'contentsOfDirectoryRequest',
         contentsOfDirectoryRequest: ContentsOfDirectoryRequest.fromJSON(
           object.contentsOfDirectoryRequest
         ),
@@ -800,7 +800,7 @@ export const ClientOriginatedMessage = {
       object.notificationRequest !== null
     ) {
       message.submessage = {
-        $case: "notificationRequest",
+        $case: 'notificationRequest',
         notificationRequest: NotificationRequest.fromJSON(
           object.notificationRequest
         ),
@@ -811,7 +811,7 @@ export const ClientOriginatedMessage = {
       object.getSettingsPropertyRequest !== null
     ) {
       message.submessage = {
-        $case: "getSettingsPropertyRequest",
+        $case: 'getSettingsPropertyRequest',
         getSettingsPropertyRequest: GetSettingsPropertyRequest.fromJSON(
           object.getSettingsPropertyRequest
         ),
@@ -822,7 +822,7 @@ export const ClientOriginatedMessage = {
       object.updateSettingsPropertyRequest !== null
     ) {
       message.submessage = {
-        $case: "updateSettingsPropertyRequest",
+        $case: 'updateSettingsPropertyRequest',
         updateSettingsPropertyRequest: UpdateSettingsPropertyRequest.fromJSON(
           object.updateSettingsPropertyRequest
         ),
@@ -833,7 +833,7 @@ export const ClientOriginatedMessage = {
       object.insertTextRequest !== null
     ) {
       message.submessage = {
-        $case: "insertTextRequest",
+        $case: 'insertTextRequest',
         insertTextRequest: InsertTextRequest.fromJSON(object.insertTextRequest),
       };
     }
@@ -842,7 +842,7 @@ export const ClientOriginatedMessage = {
       object.updateApplicationPropertiesRequest !== null
     ) {
       message.submessage = {
-        $case: "updateApplicationPropertiesRequest",
+        $case: 'updateApplicationPropertiesRequest',
         updateApplicationPropertiesRequest:
           UpdateApplicationPropertiesRequest.fromJSON(
             object.updateApplicationPropertiesRequest
@@ -854,7 +854,7 @@ export const ClientOriginatedMessage = {
       object.destinationOfSymbolicLinkRequest !== null
     ) {
       message.submessage = {
-        $case: "destinationOfSymbolicLinkRequest",
+        $case: 'destinationOfSymbolicLinkRequest',
         destinationOfSymbolicLinkRequest:
           DestinationOfSymbolicLinkRequest.fromJSON(
             object.destinationOfSymbolicLinkRequest
@@ -867,71 +867,71 @@ export const ClientOriginatedMessage = {
   toJSON(message: ClientOriginatedMessage): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = message.id);
-    message.submessage?.$case === "positionWindowRequest" &&
+    message.submessage?.$case === 'positionWindowRequest' &&
       (obj.positionWindowRequest = message.submessage?.positionWindowRequest
         ? PositionWindowRequest.toJSON(
             message.submessage?.positionWindowRequest
           )
         : undefined);
-    message.submessage?.$case === "pseudoterminalExecuteRequest" &&
+    message.submessage?.$case === 'pseudoterminalExecuteRequest' &&
       (obj.pseudoterminalExecuteRequest = message.submessage
         ?.pseudoterminalExecuteRequest
         ? PseudoterminalExecuteRequest.toJSON(
             message.submessage?.pseudoterminalExecuteRequest
           )
         : undefined);
-    message.submessage?.$case === "pseudoterminalWriteRequest" &&
+    message.submessage?.$case === 'pseudoterminalWriteRequest' &&
       (obj.pseudoterminalWriteRequest = message.submessage
         ?.pseudoterminalWriteRequest
         ? PseudoterminalWriteRequest.toJSON(
             message.submessage?.pseudoterminalWriteRequest
           )
         : undefined);
-    message.submessage?.$case === "readFileRequest" &&
+    message.submessage?.$case === 'readFileRequest' &&
       (obj.readFileRequest = message.submessage?.readFileRequest
         ? ReadFileRequest.toJSON(message.submessage?.readFileRequest)
         : undefined);
-    message.submessage?.$case === "writeFileRequest" &&
+    message.submessage?.$case === 'writeFileRequest' &&
       (obj.writeFileRequest = message.submessage?.writeFileRequest
         ? WriteFileRequest.toJSON(message.submessage?.writeFileRequest)
         : undefined);
-    message.submessage?.$case === "contentsOfDirectoryRequest" &&
+    message.submessage?.$case === 'contentsOfDirectoryRequest' &&
       (obj.contentsOfDirectoryRequest = message.submessage
         ?.contentsOfDirectoryRequest
         ? ContentsOfDirectoryRequest.toJSON(
             message.submessage?.contentsOfDirectoryRequest
           )
         : undefined);
-    message.submessage?.$case === "notificationRequest" &&
+    message.submessage?.$case === 'notificationRequest' &&
       (obj.notificationRequest = message.submessage?.notificationRequest
         ? NotificationRequest.toJSON(message.submessage?.notificationRequest)
         : undefined);
-    message.submessage?.$case === "getSettingsPropertyRequest" &&
+    message.submessage?.$case === 'getSettingsPropertyRequest' &&
       (obj.getSettingsPropertyRequest = message.submessage
         ?.getSettingsPropertyRequest
         ? GetSettingsPropertyRequest.toJSON(
             message.submessage?.getSettingsPropertyRequest
           )
         : undefined);
-    message.submessage?.$case === "updateSettingsPropertyRequest" &&
+    message.submessage?.$case === 'updateSettingsPropertyRequest' &&
       (obj.updateSettingsPropertyRequest = message.submessage
         ?.updateSettingsPropertyRequest
         ? UpdateSettingsPropertyRequest.toJSON(
             message.submessage?.updateSettingsPropertyRequest
           )
         : undefined);
-    message.submessage?.$case === "insertTextRequest" &&
+    message.submessage?.$case === 'insertTextRequest' &&
       (obj.insertTextRequest = message.submessage?.insertTextRequest
         ? InsertTextRequest.toJSON(message.submessage?.insertTextRequest)
         : undefined);
-    message.submessage?.$case === "updateApplicationPropertiesRequest" &&
+    message.submessage?.$case === 'updateApplicationPropertiesRequest' &&
       (obj.updateApplicationPropertiesRequest = message.submessage
         ?.updateApplicationPropertiesRequest
         ? UpdateApplicationPropertiesRequest.toJSON(
             message.submessage?.updateApplicationPropertiesRequest
           )
         : undefined);
-    message.submessage?.$case === "destinationOfSymbolicLinkRequest" &&
+    message.submessage?.$case === 'destinationOfSymbolicLinkRequest' &&
       (obj.destinationOfSymbolicLinkRequest = message.submessage
         ?.destinationOfSymbolicLinkRequest
         ? DestinationOfSymbolicLinkRequest.toJSON(
@@ -951,108 +951,108 @@ export const ClientOriginatedMessage = {
       message.id = object.id;
     }
     if (
-      object.submessage?.$case === "positionWindowRequest" &&
+      object.submessage?.$case === 'positionWindowRequest' &&
       object.submessage?.positionWindowRequest !== undefined &&
       object.submessage?.positionWindowRequest !== null
     ) {
       message.submessage = {
-        $case: "positionWindowRequest",
+        $case: 'positionWindowRequest',
         positionWindowRequest: PositionWindowRequest.fromPartial(
           object.submessage.positionWindowRequest
         ),
       };
     }
     if (
-      object.submessage?.$case === "pseudoterminalExecuteRequest" &&
+      object.submessage?.$case === 'pseudoterminalExecuteRequest' &&
       object.submessage?.pseudoterminalExecuteRequest !== undefined &&
       object.submessage?.pseudoterminalExecuteRequest !== null
     ) {
       message.submessage = {
-        $case: "pseudoterminalExecuteRequest",
+        $case: 'pseudoterminalExecuteRequest',
         pseudoterminalExecuteRequest: PseudoterminalExecuteRequest.fromPartial(
           object.submessage.pseudoterminalExecuteRequest
         ),
       };
     }
     if (
-      object.submessage?.$case === "pseudoterminalWriteRequest" &&
+      object.submessage?.$case === 'pseudoterminalWriteRequest' &&
       object.submessage?.pseudoterminalWriteRequest !== undefined &&
       object.submessage?.pseudoterminalWriteRequest !== null
     ) {
       message.submessage = {
-        $case: "pseudoterminalWriteRequest",
+        $case: 'pseudoterminalWriteRequest',
         pseudoterminalWriteRequest: PseudoterminalWriteRequest.fromPartial(
           object.submessage.pseudoterminalWriteRequest
         ),
       };
     }
     if (
-      object.submessage?.$case === "readFileRequest" &&
+      object.submessage?.$case === 'readFileRequest' &&
       object.submessage?.readFileRequest !== undefined &&
       object.submessage?.readFileRequest !== null
     ) {
       message.submessage = {
-        $case: "readFileRequest",
+        $case: 'readFileRequest',
         readFileRequest: ReadFileRequest.fromPartial(
           object.submessage.readFileRequest
         ),
       };
     }
     if (
-      object.submessage?.$case === "writeFileRequest" &&
+      object.submessage?.$case === 'writeFileRequest' &&
       object.submessage?.writeFileRequest !== undefined &&
       object.submessage?.writeFileRequest !== null
     ) {
       message.submessage = {
-        $case: "writeFileRequest",
+        $case: 'writeFileRequest',
         writeFileRequest: WriteFileRequest.fromPartial(
           object.submessage.writeFileRequest
         ),
       };
     }
     if (
-      object.submessage?.$case === "contentsOfDirectoryRequest" &&
+      object.submessage?.$case === 'contentsOfDirectoryRequest' &&
       object.submessage?.contentsOfDirectoryRequest !== undefined &&
       object.submessage?.contentsOfDirectoryRequest !== null
     ) {
       message.submessage = {
-        $case: "contentsOfDirectoryRequest",
+        $case: 'contentsOfDirectoryRequest',
         contentsOfDirectoryRequest: ContentsOfDirectoryRequest.fromPartial(
           object.submessage.contentsOfDirectoryRequest
         ),
       };
     }
     if (
-      object.submessage?.$case === "notificationRequest" &&
+      object.submessage?.$case === 'notificationRequest' &&
       object.submessage?.notificationRequest !== undefined &&
       object.submessage?.notificationRequest !== null
     ) {
       message.submessage = {
-        $case: "notificationRequest",
+        $case: 'notificationRequest',
         notificationRequest: NotificationRequest.fromPartial(
           object.submessage.notificationRequest
         ),
       };
     }
     if (
-      object.submessage?.$case === "getSettingsPropertyRequest" &&
+      object.submessage?.$case === 'getSettingsPropertyRequest' &&
       object.submessage?.getSettingsPropertyRequest !== undefined &&
       object.submessage?.getSettingsPropertyRequest !== null
     ) {
       message.submessage = {
-        $case: "getSettingsPropertyRequest",
+        $case: 'getSettingsPropertyRequest',
         getSettingsPropertyRequest: GetSettingsPropertyRequest.fromPartial(
           object.submessage.getSettingsPropertyRequest
         ),
       };
     }
     if (
-      object.submessage?.$case === "updateSettingsPropertyRequest" &&
+      object.submessage?.$case === 'updateSettingsPropertyRequest' &&
       object.submessage?.updateSettingsPropertyRequest !== undefined &&
       object.submessage?.updateSettingsPropertyRequest !== null
     ) {
       message.submessage = {
-        $case: "updateSettingsPropertyRequest",
+        $case: 'updateSettingsPropertyRequest',
         updateSettingsPropertyRequest:
           UpdateSettingsPropertyRequest.fromPartial(
             object.submessage.updateSettingsPropertyRequest
@@ -1060,24 +1060,24 @@ export const ClientOriginatedMessage = {
       };
     }
     if (
-      object.submessage?.$case === "insertTextRequest" &&
+      object.submessage?.$case === 'insertTextRequest' &&
       object.submessage?.insertTextRequest !== undefined &&
       object.submessage?.insertTextRequest !== null
     ) {
       message.submessage = {
-        $case: "insertTextRequest",
+        $case: 'insertTextRequest',
         insertTextRequest: InsertTextRequest.fromPartial(
           object.submessage.insertTextRequest
         ),
       };
     }
     if (
-      object.submessage?.$case === "updateApplicationPropertiesRequest" &&
+      object.submessage?.$case === 'updateApplicationPropertiesRequest' &&
       object.submessage?.updateApplicationPropertiesRequest !== undefined &&
       object.submessage?.updateApplicationPropertiesRequest !== null
     ) {
       message.submessage = {
-        $case: "updateApplicationPropertiesRequest",
+        $case: 'updateApplicationPropertiesRequest',
         updateApplicationPropertiesRequest:
           UpdateApplicationPropertiesRequest.fromPartial(
             object.submessage.updateApplicationPropertiesRequest
@@ -1085,12 +1085,12 @@ export const ClientOriginatedMessage = {
       };
     }
     if (
-      object.submessage?.$case === "destinationOfSymbolicLinkRequest" &&
+      object.submessage?.$case === 'destinationOfSymbolicLinkRequest' &&
       object.submessage?.destinationOfSymbolicLinkRequest !== undefined &&
       object.submessage?.destinationOfSymbolicLinkRequest !== null
     ) {
       message.submessage = {
-        $case: "destinationOfSymbolicLinkRequest",
+        $case: 'destinationOfSymbolicLinkRequest',
         destinationOfSymbolicLinkRequest:
           DestinationOfSymbolicLinkRequest.fromPartial(
             object.submessage.destinationOfSymbolicLinkRequest
@@ -1111,49 +1111,49 @@ export const ServerOriginatedMessage = {
     if (message.id !== undefined) {
       writer.uint32(8).int64(message.id);
     }
-    if (message.submessage?.$case === "error") {
+    if (message.submessage?.$case === 'error') {
       writer.uint32(18).string(message.submessage.error);
     }
-    if (message.submessage?.$case === "success") {
+    if (message.submessage?.$case === 'success') {
       writer.uint32(24).bool(message.submessage.success);
     }
-    if (message.submessage?.$case === "positionWindowResponse") {
+    if (message.submessage?.$case === 'positionWindowResponse') {
       PositionWindowResponse.encode(
         message.submessage.positionWindowResponse,
         writer.uint32(802).fork()
       ).ldelim();
     }
-    if (message.submessage?.$case === "pseudoterminalExecuteResponse") {
+    if (message.submessage?.$case === 'pseudoterminalExecuteResponse') {
       PseudoterminalExecuteResponse.encode(
         message.submessage.pseudoterminalExecuteResponse,
         writer.uint32(810).fork()
       ).ldelim();
     }
-    if (message.submessage?.$case === "readFileResponse") {
+    if (message.submessage?.$case === 'readFileResponse') {
       ReadFileResponse.encode(
         message.submessage.readFileResponse,
         writer.uint32(818).fork()
       ).ldelim();
     }
-    if (message.submessage?.$case === "contentsOfDirectoryResponse") {
+    if (message.submessage?.$case === 'contentsOfDirectoryResponse') {
       ContentsOfDirectoryResponse.encode(
         message.submessage.contentsOfDirectoryResponse,
         writer.uint32(826).fork()
       ).ldelim();
     }
-    if (message.submessage?.$case === "getSettingsPropertyResponse") {
+    if (message.submessage?.$case === 'getSettingsPropertyResponse') {
       GetSettingsPropertyResponse.encode(
         message.submessage.getSettingsPropertyResponse,
         writer.uint32(834).fork()
       ).ldelim();
     }
-    if (message.submessage?.$case === "destinationOfSymbolicLinkResponse") {
+    if (message.submessage?.$case === 'destinationOfSymbolicLinkResponse') {
       DestinationOfSymbolicLinkResponse.encode(
         message.submessage.destinationOfSymbolicLinkResponse,
         writer.uint32(842).fork()
       ).ldelim();
     }
-    if (message.submessage?.$case === "notification") {
+    if (message.submessage?.$case === 'notification') {
       Notification.encode(
         message.submessage.notification,
         writer.uint32(8002).fork()
@@ -1178,14 +1178,14 @@ export const ServerOriginatedMessage = {
           message.id = longToNumber(reader.int64() as Long);
           break;
         case 2:
-          message.submessage = { $case: "error", error: reader.string() };
+          message.submessage = { $case: 'error', error: reader.string() };
           break;
         case 3:
-          message.submessage = { $case: "success", success: reader.bool() };
+          message.submessage = { $case: 'success', success: reader.bool() };
           break;
         case 100:
           message.submessage = {
-            $case: "positionWindowResponse",
+            $case: 'positionWindowResponse',
             positionWindowResponse: PositionWindowResponse.decode(
               reader,
               reader.uint32()
@@ -1194,7 +1194,7 @@ export const ServerOriginatedMessage = {
           break;
         case 101:
           message.submessage = {
-            $case: "pseudoterminalExecuteResponse",
+            $case: 'pseudoterminalExecuteResponse',
             pseudoterminalExecuteResponse: PseudoterminalExecuteResponse.decode(
               reader,
               reader.uint32()
@@ -1203,13 +1203,13 @@ export const ServerOriginatedMessage = {
           break;
         case 102:
           message.submessage = {
-            $case: "readFileResponse",
+            $case: 'readFileResponse',
             readFileResponse: ReadFileResponse.decode(reader, reader.uint32()),
           };
           break;
         case 103:
           message.submessage = {
-            $case: "contentsOfDirectoryResponse",
+            $case: 'contentsOfDirectoryResponse',
             contentsOfDirectoryResponse: ContentsOfDirectoryResponse.decode(
               reader,
               reader.uint32()
@@ -1218,7 +1218,7 @@ export const ServerOriginatedMessage = {
           break;
         case 104:
           message.submessage = {
-            $case: "getSettingsPropertyResponse",
+            $case: 'getSettingsPropertyResponse',
             getSettingsPropertyResponse: GetSettingsPropertyResponse.decode(
               reader,
               reader.uint32()
@@ -1227,14 +1227,14 @@ export const ServerOriginatedMessage = {
           break;
         case 105:
           message.submessage = {
-            $case: "destinationOfSymbolicLinkResponse",
+            $case: 'destinationOfSymbolicLinkResponse',
             destinationOfSymbolicLinkResponse:
               DestinationOfSymbolicLinkResponse.decode(reader, reader.uint32()),
           };
           break;
         case 1000:
           message.submessage = {
-            $case: "notification",
+            $case: 'notification',
             notification: Notification.decode(reader, reader.uint32()),
           };
           break;
@@ -1254,11 +1254,11 @@ export const ServerOriginatedMessage = {
       message.id = Number(object.id);
     }
     if (object.error !== undefined && object.error !== null) {
-      message.submessage = { $case: "error", error: String(object.error) };
+      message.submessage = { $case: 'error', error: String(object.error) };
     }
     if (object.success !== undefined && object.success !== null) {
       message.submessage = {
-        $case: "success",
+        $case: 'success',
         success: Boolean(object.success),
       };
     }
@@ -1267,7 +1267,7 @@ export const ServerOriginatedMessage = {
       object.positionWindowResponse !== null
     ) {
       message.submessage = {
-        $case: "positionWindowResponse",
+        $case: 'positionWindowResponse',
         positionWindowResponse: PositionWindowResponse.fromJSON(
           object.positionWindowResponse
         ),
@@ -1278,7 +1278,7 @@ export const ServerOriginatedMessage = {
       object.pseudoterminalExecuteResponse !== null
     ) {
       message.submessage = {
-        $case: "pseudoterminalExecuteResponse",
+        $case: 'pseudoterminalExecuteResponse',
         pseudoterminalExecuteResponse: PseudoterminalExecuteResponse.fromJSON(
           object.pseudoterminalExecuteResponse
         ),
@@ -1289,7 +1289,7 @@ export const ServerOriginatedMessage = {
       object.readFileResponse !== null
     ) {
       message.submessage = {
-        $case: "readFileResponse",
+        $case: 'readFileResponse',
         readFileResponse: ReadFileResponse.fromJSON(object.readFileResponse),
       };
     }
@@ -1298,7 +1298,7 @@ export const ServerOriginatedMessage = {
       object.contentsOfDirectoryResponse !== null
     ) {
       message.submessage = {
-        $case: "contentsOfDirectoryResponse",
+        $case: 'contentsOfDirectoryResponse',
         contentsOfDirectoryResponse: ContentsOfDirectoryResponse.fromJSON(
           object.contentsOfDirectoryResponse
         ),
@@ -1309,7 +1309,7 @@ export const ServerOriginatedMessage = {
       object.getSettingsPropertyResponse !== null
     ) {
       message.submessage = {
-        $case: "getSettingsPropertyResponse",
+        $case: 'getSettingsPropertyResponse',
         getSettingsPropertyResponse: GetSettingsPropertyResponse.fromJSON(
           object.getSettingsPropertyResponse
         ),
@@ -1320,7 +1320,7 @@ export const ServerOriginatedMessage = {
       object.destinationOfSymbolicLinkResponse !== null
     ) {
       message.submessage = {
-        $case: "destinationOfSymbolicLinkResponse",
+        $case: 'destinationOfSymbolicLinkResponse',
         destinationOfSymbolicLinkResponse:
           DestinationOfSymbolicLinkResponse.fromJSON(
             object.destinationOfSymbolicLinkResponse
@@ -1329,7 +1329,7 @@ export const ServerOriginatedMessage = {
     }
     if (object.notification !== undefined && object.notification !== null) {
       message.submessage = {
-        $case: "notification",
+        $case: 'notification',
         notification: Notification.fromJSON(object.notification),
       };
     }
@@ -1339,49 +1339,49 @@ export const ServerOriginatedMessage = {
   toJSON(message: ServerOriginatedMessage): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = message.id);
-    message.submessage?.$case === "error" &&
+    message.submessage?.$case === 'error' &&
       (obj.error = message.submessage?.error);
-    message.submessage?.$case === "success" &&
+    message.submessage?.$case === 'success' &&
       (obj.success = message.submessage?.success);
-    message.submessage?.$case === "positionWindowResponse" &&
+    message.submessage?.$case === 'positionWindowResponse' &&
       (obj.positionWindowResponse = message.submessage?.positionWindowResponse
         ? PositionWindowResponse.toJSON(
             message.submessage?.positionWindowResponse
           )
         : undefined);
-    message.submessage?.$case === "pseudoterminalExecuteResponse" &&
+    message.submessage?.$case === 'pseudoterminalExecuteResponse' &&
       (obj.pseudoterminalExecuteResponse = message.submessage
         ?.pseudoterminalExecuteResponse
         ? PseudoterminalExecuteResponse.toJSON(
             message.submessage?.pseudoterminalExecuteResponse
           )
         : undefined);
-    message.submessage?.$case === "readFileResponse" &&
+    message.submessage?.$case === 'readFileResponse' &&
       (obj.readFileResponse = message.submessage?.readFileResponse
         ? ReadFileResponse.toJSON(message.submessage?.readFileResponse)
         : undefined);
-    message.submessage?.$case === "contentsOfDirectoryResponse" &&
+    message.submessage?.$case === 'contentsOfDirectoryResponse' &&
       (obj.contentsOfDirectoryResponse = message.submessage
         ?.contentsOfDirectoryResponse
         ? ContentsOfDirectoryResponse.toJSON(
             message.submessage?.contentsOfDirectoryResponse
           )
         : undefined);
-    message.submessage?.$case === "getSettingsPropertyResponse" &&
+    message.submessage?.$case === 'getSettingsPropertyResponse' &&
       (obj.getSettingsPropertyResponse = message.submessage
         ?.getSettingsPropertyResponse
         ? GetSettingsPropertyResponse.toJSON(
             message.submessage?.getSettingsPropertyResponse
           )
         : undefined);
-    message.submessage?.$case === "destinationOfSymbolicLinkResponse" &&
+    message.submessage?.$case === 'destinationOfSymbolicLinkResponse' &&
       (obj.destinationOfSymbolicLinkResponse = message.submessage
         ?.destinationOfSymbolicLinkResponse
         ? DestinationOfSymbolicLinkResponse.toJSON(
             message.submessage?.destinationOfSymbolicLinkResponse
           )
         : undefined);
-    message.submessage?.$case === "notification" &&
+    message.submessage?.$case === 'notification' &&
       (obj.notification = message.submessage?.notification
         ? Notification.toJSON(message.submessage?.notification)
         : undefined);
@@ -1398,41 +1398,41 @@ export const ServerOriginatedMessage = {
       message.id = object.id;
     }
     if (
-      object.submessage?.$case === "error" &&
+      object.submessage?.$case === 'error' &&
       object.submessage?.error !== undefined &&
       object.submessage?.error !== null
     ) {
-      message.submessage = { $case: "error", error: object.submessage.error };
+      message.submessage = { $case: 'error', error: object.submessage.error };
     }
     if (
-      object.submessage?.$case === "success" &&
+      object.submessage?.$case === 'success' &&
       object.submessage?.success !== undefined &&
       object.submessage?.success !== null
     ) {
       message.submessage = {
-        $case: "success",
+        $case: 'success',
         success: object.submessage.success,
       };
     }
     if (
-      object.submessage?.$case === "positionWindowResponse" &&
+      object.submessage?.$case === 'positionWindowResponse' &&
       object.submessage?.positionWindowResponse !== undefined &&
       object.submessage?.positionWindowResponse !== null
     ) {
       message.submessage = {
-        $case: "positionWindowResponse",
+        $case: 'positionWindowResponse',
         positionWindowResponse: PositionWindowResponse.fromPartial(
           object.submessage.positionWindowResponse
         ),
       };
     }
     if (
-      object.submessage?.$case === "pseudoterminalExecuteResponse" &&
+      object.submessage?.$case === 'pseudoterminalExecuteResponse' &&
       object.submessage?.pseudoterminalExecuteResponse !== undefined &&
       object.submessage?.pseudoterminalExecuteResponse !== null
     ) {
       message.submessage = {
-        $case: "pseudoterminalExecuteResponse",
+        $case: 'pseudoterminalExecuteResponse',
         pseudoterminalExecuteResponse:
           PseudoterminalExecuteResponse.fromPartial(
             object.submessage.pseudoterminalExecuteResponse
@@ -1440,48 +1440,48 @@ export const ServerOriginatedMessage = {
       };
     }
     if (
-      object.submessage?.$case === "readFileResponse" &&
+      object.submessage?.$case === 'readFileResponse' &&
       object.submessage?.readFileResponse !== undefined &&
       object.submessage?.readFileResponse !== null
     ) {
       message.submessage = {
-        $case: "readFileResponse",
+        $case: 'readFileResponse',
         readFileResponse: ReadFileResponse.fromPartial(
           object.submessage.readFileResponse
         ),
       };
     }
     if (
-      object.submessage?.$case === "contentsOfDirectoryResponse" &&
+      object.submessage?.$case === 'contentsOfDirectoryResponse' &&
       object.submessage?.contentsOfDirectoryResponse !== undefined &&
       object.submessage?.contentsOfDirectoryResponse !== null
     ) {
       message.submessage = {
-        $case: "contentsOfDirectoryResponse",
+        $case: 'contentsOfDirectoryResponse',
         contentsOfDirectoryResponse: ContentsOfDirectoryResponse.fromPartial(
           object.submessage.contentsOfDirectoryResponse
         ),
       };
     }
     if (
-      object.submessage?.$case === "getSettingsPropertyResponse" &&
+      object.submessage?.$case === 'getSettingsPropertyResponse' &&
       object.submessage?.getSettingsPropertyResponse !== undefined &&
       object.submessage?.getSettingsPropertyResponse !== null
     ) {
       message.submessage = {
-        $case: "getSettingsPropertyResponse",
+        $case: 'getSettingsPropertyResponse',
         getSettingsPropertyResponse: GetSettingsPropertyResponse.fromPartial(
           object.submessage.getSettingsPropertyResponse
         ),
       };
     }
     if (
-      object.submessage?.$case === "destinationOfSymbolicLinkResponse" &&
+      object.submessage?.$case === 'destinationOfSymbolicLinkResponse' &&
       object.submessage?.destinationOfSymbolicLinkResponse !== undefined &&
       object.submessage?.destinationOfSymbolicLinkResponse !== null
     ) {
       message.submessage = {
-        $case: "destinationOfSymbolicLinkResponse",
+        $case: 'destinationOfSymbolicLinkResponse',
         destinationOfSymbolicLinkResponse:
           DestinationOfSymbolicLinkResponse.fromPartial(
             object.submessage.destinationOfSymbolicLinkResponse
@@ -1489,12 +1489,12 @@ export const ServerOriginatedMessage = {
       };
     }
     if (
-      object.submessage?.$case === "notification" &&
+      object.submessage?.$case === 'notification' &&
       object.submessage?.notification !== undefined &&
       object.submessage?.notification !== null
     ) {
       message.submessage = {
-        $case: "notification",
+        $case: 'notification',
         notification: Notification.fromPartial(object.submessage.notification),
       };
     }
@@ -1696,14 +1696,14 @@ export const Frame = {
   },
 };
 
-const baseEnvironmentVariable: object = { key: "" };
+const baseEnvironmentVariable: object = { key: '' };
 
 export const EnvironmentVariable = {
   encode(
     message: EnvironmentVariable,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
-    if (message.key !== "") {
+    if (message.key !== '') {
       writer.uint32(10).string(message.key);
     }
     if (message.value !== undefined) {
@@ -2540,10 +2540,10 @@ export const InsertTextRequest = {
     message: InsertTextRequest,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
-    if (message.type?.$case === "text") {
+    if (message.type?.$case === 'text') {
       writer.uint32(10).string(message.type.text);
     }
-    if (message.type?.$case === "update") {
+    if (message.type?.$case === 'update') {
       TextUpdate.encode(message.type.update, writer.uint32(18).fork()).ldelim();
     }
     return writer;
@@ -2557,11 +2557,11 @@ export const InsertTextRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.type = { $case: "text", text: reader.string() };
+          message.type = { $case: 'text', text: reader.string() };
           break;
         case 2:
           message.type = {
-            $case: "update",
+            $case: 'update',
             update: TextUpdate.decode(reader, reader.uint32()),
           };
           break;
@@ -2576,11 +2576,11 @@ export const InsertTextRequest = {
   fromJSON(object: any): InsertTextRequest {
     const message = { ...baseInsertTextRequest } as InsertTextRequest;
     if (object.text !== undefined && object.text !== null) {
-      message.type = { $case: "text", text: String(object.text) };
+      message.type = { $case: 'text', text: String(object.text) };
     }
     if (object.update !== undefined && object.update !== null) {
       message.type = {
-        $case: "update",
+        $case: 'update',
         update: TextUpdate.fromJSON(object.update),
       };
     }
@@ -2589,8 +2589,8 @@ export const InsertTextRequest = {
 
   toJSON(message: InsertTextRequest): unknown {
     const obj: any = {};
-    message.type?.$case === "text" && (obj.text = message.type?.text);
-    message.type?.$case === "update" &&
+    message.type?.$case === 'text' && (obj.text = message.type?.text);
+    message.type?.$case === 'update' &&
       (obj.update = message.type?.update
         ? TextUpdate.toJSON(message.type?.update)
         : undefined);
@@ -2600,19 +2600,19 @@ export const InsertTextRequest = {
   fromPartial(object: DeepPartial<InsertTextRequest>): InsertTextRequest {
     const message = { ...baseInsertTextRequest } as InsertTextRequest;
     if (
-      object.type?.$case === "text" &&
+      object.type?.$case === 'text' &&
       object.type?.text !== undefined &&
       object.type?.text !== null
     ) {
-      message.type = { $case: "text", text: object.type.text };
+      message.type = { $case: 'text', text: object.type.text };
     }
     if (
-      object.type?.$case === "update" &&
+      object.type?.$case === 'update' &&
       object.type?.update !== undefined &&
       object.type?.update !== null
     ) {
       message.type = {
-        $case: "update",
+        $case: 'update',
         update: TextUpdate.fromPartial(object.type.update),
       };
     }
@@ -2627,10 +2627,10 @@ export const PseudoterminalWriteRequest = {
     message: PseudoterminalWriteRequest,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
-    if (message.input?.$case === "text") {
+    if (message.input?.$case === 'text') {
       writer.uint32(10).string(message.input.text);
     }
-    if (message.input?.$case === "octal") {
+    if (message.input?.$case === 'octal') {
       writer.uint32(18).bytes(message.input.octal);
     }
     return writer;
@@ -2649,10 +2649,10 @@ export const PseudoterminalWriteRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.input = { $case: "text", text: reader.string() };
+          message.input = { $case: 'text', text: reader.string() };
           break;
         case 2:
-          message.input = { $case: "octal", octal: reader.bytes() };
+          message.input = { $case: 'octal', octal: reader.bytes() };
           break;
         default:
           reader.skipType(tag & 7);
@@ -2667,18 +2667,18 @@ export const PseudoterminalWriteRequest = {
       ...basePseudoterminalWriteRequest,
     } as PseudoterminalWriteRequest;
     if (object.text !== undefined && object.text !== null) {
-      message.input = { $case: "text", text: String(object.text) };
+      message.input = { $case: 'text', text: String(object.text) };
     }
     if (object.octal !== undefined && object.octal !== null) {
-      message.input = { $case: "octal", octal: bytesFromBase64(object.octal) };
+      message.input = { $case: 'octal', octal: bytesFromBase64(object.octal) };
     }
     return message;
   },
 
   toJSON(message: PseudoterminalWriteRequest): unknown {
     const obj: any = {};
-    message.input?.$case === "text" && (obj.text = message.input?.text);
-    message.input?.$case === "octal" &&
+    message.input?.$case === 'text' && (obj.text = message.input?.text);
+    message.input?.$case === 'octal' &&
       (obj.octal =
         message.input?.octal !== undefined
           ? base64FromBytes(message.input?.octal)
@@ -2693,31 +2693,31 @@ export const PseudoterminalWriteRequest = {
       ...basePseudoterminalWriteRequest,
     } as PseudoterminalWriteRequest;
     if (
-      object.input?.$case === "text" &&
+      object.input?.$case === 'text' &&
       object.input?.text !== undefined &&
       object.input?.text !== null
     ) {
-      message.input = { $case: "text", text: object.input.text };
+      message.input = { $case: 'text', text: object.input.text };
     }
     if (
-      object.input?.$case === "octal" &&
+      object.input?.$case === 'octal' &&
       object.input?.octal !== undefined &&
       object.input?.octal !== null
     ) {
-      message.input = { $case: "octal", octal: object.input.octal };
+      message.input = { $case: 'octal', octal: object.input.octal };
     }
     return message;
   },
 };
 
-const basePseudoterminalExecuteRequest: object = { command: "" };
+const basePseudoterminalExecuteRequest: object = { command: '' };
 
 export const PseudoterminalExecuteRequest = {
   encode(
     message: PseudoterminalExecuteRequest,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
-    if (message.command !== "") {
+    if (message.command !== '') {
       writer.uint32(10).string(message.command);
     }
     if (message.workingDirectory !== undefined) {
@@ -2849,14 +2849,14 @@ export const PseudoterminalExecuteRequest = {
   },
 };
 
-const basePseudoterminalExecuteResponse: object = { stdout: "" };
+const basePseudoterminalExecuteResponse: object = { stdout: '' };
 
 export const PseudoterminalExecuteResponse = {
   encode(
     message: PseudoterminalExecuteResponse,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
-    if (message.stdout !== "") {
+    if (message.stdout !== '') {
       writer.uint32(10).string(message.stdout);
     }
     if (message.stderr !== undefined) {
@@ -3220,10 +3220,10 @@ export const WriteFileRequest = {
     if (message.path !== undefined) {
       FilePath.encode(message.path, writer.uint32(10).fork()).ldelim();
     }
-    if (message.data?.$case === "text") {
+    if (message.data?.$case === 'text') {
       writer.uint32(18).string(message.data.text);
     }
-    if (message.data?.$case === "binary") {
+    if (message.data?.$case === 'binary') {
       writer.uint32(26).bytes(message.data.binary);
     }
     return writer;
@@ -3240,10 +3240,10 @@ export const WriteFileRequest = {
           message.path = FilePath.decode(reader, reader.uint32());
           break;
         case 2:
-          message.data = { $case: "text", text: reader.string() };
+          message.data = { $case: 'text', text: reader.string() };
           break;
         case 3:
-          message.data = { $case: "binary", binary: reader.bytes() };
+          message.data = { $case: 'binary', binary: reader.bytes() };
           break;
         default:
           reader.skipType(tag & 7);
@@ -3259,11 +3259,11 @@ export const WriteFileRequest = {
       message.path = FilePath.fromJSON(object.path);
     }
     if (object.text !== undefined && object.text !== null) {
-      message.data = { $case: "text", text: String(object.text) };
+      message.data = { $case: 'text', text: String(object.text) };
     }
     if (object.binary !== undefined && object.binary !== null) {
       message.data = {
-        $case: "binary",
+        $case: 'binary',
         binary: bytesFromBase64(object.binary),
       };
     }
@@ -3274,8 +3274,8 @@ export const WriteFileRequest = {
     const obj: any = {};
     message.path !== undefined &&
       (obj.path = message.path ? FilePath.toJSON(message.path) : undefined);
-    message.data?.$case === "text" && (obj.text = message.data?.text);
-    message.data?.$case === "binary" &&
+    message.data?.$case === 'text' && (obj.text = message.data?.text);
+    message.data?.$case === 'binary' &&
       (obj.binary =
         message.data?.binary !== undefined
           ? base64FromBytes(message.data?.binary)
@@ -3289,18 +3289,18 @@ export const WriteFileRequest = {
       message.path = FilePath.fromPartial(object.path);
     }
     if (
-      object.data?.$case === "text" &&
+      object.data?.$case === 'text' &&
       object.data?.text !== undefined &&
       object.data?.text !== null
     ) {
-      message.data = { $case: "text", text: object.data.text };
+      message.data = { $case: 'text', text: object.data.text };
     }
     if (
-      object.data?.$case === "binary" &&
+      object.data?.$case === 'binary' &&
       object.data?.binary !== undefined &&
       object.data?.binary !== null
     ) {
-      message.data = { $case: "binary", binary: object.data.binary };
+      message.data = { $case: 'binary', binary: object.data.binary };
     }
     return message;
   },
@@ -3374,7 +3374,7 @@ export const ContentsOfDirectoryRequest = {
   },
 };
 
-const baseContentsOfDirectoryResponse: object = { fileNames: "" };
+const baseContentsOfDirectoryResponse: object = { fileNames: '' };
 
 export const ContentsOfDirectoryResponse = {
   encode(
@@ -4094,43 +4094,43 @@ export const Notification = {
     message: Notification,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
-    if (message.type?.$case === "editBufferNotification") {
+    if (message.type?.$case === 'editBufferNotification') {
       EditBufferChangedNotification.encode(
         message.type.editBufferNotification,
         writer.uint32(10).fork()
       ).ldelim();
     }
-    if (message.type?.$case === "settingsChangedNotification") {
+    if (message.type?.$case === 'settingsChangedNotification') {
       SettingsChangedNotification.encode(
         message.type.settingsChangedNotification,
         writer.uint32(18).fork()
       ).ldelim();
     }
-    if (message.type?.$case === "shellPromptReturnedNotification") {
+    if (message.type?.$case === 'shellPromptReturnedNotification') {
       ShellPromptReturnedNotification.encode(
         message.type.shellPromptReturnedNotification,
         writer.uint32(26).fork()
       ).ldelim();
     }
-    if (message.type?.$case === "locationChangedNotification") {
+    if (message.type?.$case === 'locationChangedNotification') {
       LocationChangedNotification.encode(
         message.type.locationChangedNotification,
         writer.uint32(34).fork()
       ).ldelim();
     }
-    if (message.type?.$case === "processChangeNotification") {
+    if (message.type?.$case === 'processChangeNotification') {
       ProcessChangedNotification.encode(
         message.type.processChangeNotification,
         writer.uint32(42).fork()
       ).ldelim();
     }
-    if (message.type?.$case === "keybindingPressedNotification") {
+    if (message.type?.$case === 'keybindingPressedNotification') {
       KeybindingPressedNotification.encode(
         message.type.keybindingPressedNotification,
         writer.uint32(50).fork()
       ).ldelim();
     }
-    if (message.type?.$case === "windowFocusChangedNotification") {
+    if (message.type?.$case === 'windowFocusChangedNotification') {
       WindowFocusChangedNotification.encode(
         message.type.windowFocusChangedNotification,
         writer.uint32(58).fork()
@@ -4148,7 +4148,7 @@ export const Notification = {
       switch (tag >>> 3) {
         case 1:
           message.type = {
-            $case: "editBufferNotification",
+            $case: 'editBufferNotification',
             editBufferNotification: EditBufferChangedNotification.decode(
               reader,
               reader.uint32()
@@ -4157,7 +4157,7 @@ export const Notification = {
           break;
         case 2:
           message.type = {
-            $case: "settingsChangedNotification",
+            $case: 'settingsChangedNotification',
             settingsChangedNotification: SettingsChangedNotification.decode(
               reader,
               reader.uint32()
@@ -4166,14 +4166,14 @@ export const Notification = {
           break;
         case 3:
           message.type = {
-            $case: "shellPromptReturnedNotification",
+            $case: 'shellPromptReturnedNotification',
             shellPromptReturnedNotification:
               ShellPromptReturnedNotification.decode(reader, reader.uint32()),
           };
           break;
         case 4:
           message.type = {
-            $case: "locationChangedNotification",
+            $case: 'locationChangedNotification',
             locationChangedNotification: LocationChangedNotification.decode(
               reader,
               reader.uint32()
@@ -4182,7 +4182,7 @@ export const Notification = {
           break;
         case 5:
           message.type = {
-            $case: "processChangeNotification",
+            $case: 'processChangeNotification',
             processChangeNotification: ProcessChangedNotification.decode(
               reader,
               reader.uint32()
@@ -4191,7 +4191,7 @@ export const Notification = {
           break;
         case 6:
           message.type = {
-            $case: "keybindingPressedNotification",
+            $case: 'keybindingPressedNotification',
             keybindingPressedNotification: KeybindingPressedNotification.decode(
               reader,
               reader.uint32()
@@ -4200,7 +4200,7 @@ export const Notification = {
           break;
         case 7:
           message.type = {
-            $case: "windowFocusChangedNotification",
+            $case: 'windowFocusChangedNotification',
             windowFocusChangedNotification:
               WindowFocusChangedNotification.decode(reader, reader.uint32()),
           };
@@ -4220,7 +4220,7 @@ export const Notification = {
       object.editBufferNotification !== null
     ) {
       message.type = {
-        $case: "editBufferNotification",
+        $case: 'editBufferNotification',
         editBufferNotification: EditBufferChangedNotification.fromJSON(
           object.editBufferNotification
         ),
@@ -4231,7 +4231,7 @@ export const Notification = {
       object.settingsChangedNotification !== null
     ) {
       message.type = {
-        $case: "settingsChangedNotification",
+        $case: 'settingsChangedNotification',
         settingsChangedNotification: SettingsChangedNotification.fromJSON(
           object.settingsChangedNotification
         ),
@@ -4242,7 +4242,7 @@ export const Notification = {
       object.shellPromptReturnedNotification !== null
     ) {
       message.type = {
-        $case: "shellPromptReturnedNotification",
+        $case: 'shellPromptReturnedNotification',
         shellPromptReturnedNotification:
           ShellPromptReturnedNotification.fromJSON(
             object.shellPromptReturnedNotification
@@ -4254,7 +4254,7 @@ export const Notification = {
       object.locationChangedNotification !== null
     ) {
       message.type = {
-        $case: "locationChangedNotification",
+        $case: 'locationChangedNotification',
         locationChangedNotification: LocationChangedNotification.fromJSON(
           object.locationChangedNotification
         ),
@@ -4265,7 +4265,7 @@ export const Notification = {
       object.processChangeNotification !== null
     ) {
       message.type = {
-        $case: "processChangeNotification",
+        $case: 'processChangeNotification',
         processChangeNotification: ProcessChangedNotification.fromJSON(
           object.processChangeNotification
         ),
@@ -4276,7 +4276,7 @@ export const Notification = {
       object.keybindingPressedNotification !== null
     ) {
       message.type = {
-        $case: "keybindingPressedNotification",
+        $case: 'keybindingPressedNotification',
         keybindingPressedNotification: KeybindingPressedNotification.fromJSON(
           object.keybindingPressedNotification
         ),
@@ -4287,7 +4287,7 @@ export const Notification = {
       object.windowFocusChangedNotification !== null
     ) {
       message.type = {
-        $case: "windowFocusChangedNotification",
+        $case: 'windowFocusChangedNotification',
         windowFocusChangedNotification: WindowFocusChangedNotification.fromJSON(
           object.windowFocusChangedNotification
         ),
@@ -4298,47 +4298,47 @@ export const Notification = {
 
   toJSON(message: Notification): unknown {
     const obj: any = {};
-    message.type?.$case === "editBufferNotification" &&
+    message.type?.$case === 'editBufferNotification' &&
       (obj.editBufferNotification = message.type?.editBufferNotification
         ? EditBufferChangedNotification.toJSON(
             message.type?.editBufferNotification
           )
         : undefined);
-    message.type?.$case === "settingsChangedNotification" &&
+    message.type?.$case === 'settingsChangedNotification' &&
       (obj.settingsChangedNotification = message.type
         ?.settingsChangedNotification
         ? SettingsChangedNotification.toJSON(
             message.type?.settingsChangedNotification
           )
         : undefined);
-    message.type?.$case === "shellPromptReturnedNotification" &&
+    message.type?.$case === 'shellPromptReturnedNotification' &&
       (obj.shellPromptReturnedNotification = message.type
         ?.shellPromptReturnedNotification
         ? ShellPromptReturnedNotification.toJSON(
             message.type?.shellPromptReturnedNotification
           )
         : undefined);
-    message.type?.$case === "locationChangedNotification" &&
+    message.type?.$case === 'locationChangedNotification' &&
       (obj.locationChangedNotification = message.type
         ?.locationChangedNotification
         ? LocationChangedNotification.toJSON(
             message.type?.locationChangedNotification
           )
         : undefined);
-    message.type?.$case === "processChangeNotification" &&
+    message.type?.$case === 'processChangeNotification' &&
       (obj.processChangeNotification = message.type?.processChangeNotification
         ? ProcessChangedNotification.toJSON(
             message.type?.processChangeNotification
           )
         : undefined);
-    message.type?.$case === "keybindingPressedNotification" &&
+    message.type?.$case === 'keybindingPressedNotification' &&
       (obj.keybindingPressedNotification = message.type
         ?.keybindingPressedNotification
         ? KeybindingPressedNotification.toJSON(
             message.type?.keybindingPressedNotification
           )
         : undefined);
-    message.type?.$case === "windowFocusChangedNotification" &&
+    message.type?.$case === 'windowFocusChangedNotification' &&
       (obj.windowFocusChangedNotification = message.type
         ?.windowFocusChangedNotification
         ? WindowFocusChangedNotification.toJSON(
@@ -4351,36 +4351,36 @@ export const Notification = {
   fromPartial(object: DeepPartial<Notification>): Notification {
     const message = { ...baseNotification } as Notification;
     if (
-      object.type?.$case === "editBufferNotification" &&
+      object.type?.$case === 'editBufferNotification' &&
       object.type?.editBufferNotification !== undefined &&
       object.type?.editBufferNotification !== null
     ) {
       message.type = {
-        $case: "editBufferNotification",
+        $case: 'editBufferNotification',
         editBufferNotification: EditBufferChangedNotification.fromPartial(
           object.type.editBufferNotification
         ),
       };
     }
     if (
-      object.type?.$case === "settingsChangedNotification" &&
+      object.type?.$case === 'settingsChangedNotification' &&
       object.type?.settingsChangedNotification !== undefined &&
       object.type?.settingsChangedNotification !== null
     ) {
       message.type = {
-        $case: "settingsChangedNotification",
+        $case: 'settingsChangedNotification',
         settingsChangedNotification: SettingsChangedNotification.fromPartial(
           object.type.settingsChangedNotification
         ),
       };
     }
     if (
-      object.type?.$case === "shellPromptReturnedNotification" &&
+      object.type?.$case === 'shellPromptReturnedNotification' &&
       object.type?.shellPromptReturnedNotification !== undefined &&
       object.type?.shellPromptReturnedNotification !== null
     ) {
       message.type = {
-        $case: "shellPromptReturnedNotification",
+        $case: 'shellPromptReturnedNotification',
         shellPromptReturnedNotification:
           ShellPromptReturnedNotification.fromPartial(
             object.type.shellPromptReturnedNotification
@@ -4388,36 +4388,36 @@ export const Notification = {
       };
     }
     if (
-      object.type?.$case === "locationChangedNotification" &&
+      object.type?.$case === 'locationChangedNotification' &&
       object.type?.locationChangedNotification !== undefined &&
       object.type?.locationChangedNotification !== null
     ) {
       message.type = {
-        $case: "locationChangedNotification",
+        $case: 'locationChangedNotification',
         locationChangedNotification: LocationChangedNotification.fromPartial(
           object.type.locationChangedNotification
         ),
       };
     }
     if (
-      object.type?.$case === "processChangeNotification" &&
+      object.type?.$case === 'processChangeNotification' &&
       object.type?.processChangeNotification !== undefined &&
       object.type?.processChangeNotification !== null
     ) {
       message.type = {
-        $case: "processChangeNotification",
+        $case: 'processChangeNotification',
         processChangeNotification: ProcessChangedNotification.fromPartial(
           object.type.processChangeNotification
         ),
       };
     }
     if (
-      object.type?.$case === "keybindingPressedNotification" &&
+      object.type?.$case === 'keybindingPressedNotification' &&
       object.type?.keybindingPressedNotification !== undefined &&
       object.type?.keybindingPressedNotification !== null
     ) {
       message.type = {
-        $case: "keybindingPressedNotification",
+        $case: 'keybindingPressedNotification',
         keybindingPressedNotification:
           KeybindingPressedNotification.fromPartial(
             object.type.keybindingPressedNotification
@@ -4425,12 +4425,12 @@ export const Notification = {
       };
     }
     if (
-      object.type?.$case === "windowFocusChangedNotification" &&
+      object.type?.$case === 'windowFocusChangedNotification' &&
       object.type?.windowFocusChangedNotification !== undefined &&
       object.type?.windowFocusChangedNotification !== null
     ) {
       message.type = {
-        $case: "windowFocusChangedNotification",
+        $case: 'windowFocusChangedNotification',
         windowFocusChangedNotification:
           WindowFocusChangedNotification.fromPartial(
             object.type.windowFocusChangedNotification
@@ -5250,16 +5250,16 @@ export const Constants = {
 declare var self: any | undefined;
 declare var window: any | undefined;
 var globalThis: any = (() => {
-  if (typeof globalThis !== "undefined") return globalThis;
-  if (typeof self !== "undefined") return self;
-  if (typeof window !== "undefined") return window;
-  if (typeof global !== "undefined") return global;
-  throw "Unable to locate global object";
+  if (typeof globalThis !== 'undefined') return globalThis;
+  if (typeof self !== 'undefined') return self;
+  if (typeof window !== 'undefined') return window;
+  if (typeof global !== 'undefined') return global;
+  throw 'Unable to locate global object';
 })();
 
 const atob: (b64: string) => string =
   globalThis.atob ||
-  ((b64) => globalThis.Buffer.from(b64, "base64").toString("binary"));
+  ((b64) => globalThis.Buffer.from(b64, 'base64').toString('binary'));
 function bytesFromBase64(b64: string): Uint8Array {
   const bin = atob(b64);
   const arr = new Uint8Array(bin.length);
@@ -5271,13 +5271,13 @@ function bytesFromBase64(b64: string): Uint8Array {
 
 const btoa: (bin: string) => string =
   globalThis.btoa ||
-  ((bin) => globalThis.Buffer.from(bin, "binary").toString("base64"));
+  ((bin) => globalThis.Buffer.from(bin, 'binary').toString('base64'));
 function base64FromBytes(arr: Uint8Array): string {
   const bin: string[] = [];
   for (const byte of arr) {
     bin.push(String.fromCharCode(byte));
   }
-  return btoa(bin.join(""));
+  return btoa(bin.join(''));
 }
 
 type Builtin =
@@ -5295,8 +5295,8 @@ export type DeepPartial<T> = T extends Builtin
   : T extends ReadonlyArray<infer U>
   ? ReadonlyArray<DeepPartial<U>>
   : T extends { $case: string }
-  ? { [K in keyof Omit<T, "$case">]?: DeepPartial<T[K]> } & {
-      $case: T["$case"];
+  ? { [K in keyof Omit<T, '$case'>]?: DeepPartial<T[K]> } & {
+      $case: T['$case'];
     }
   : T extends {}
   ? { [K in keyof T]?: DeepPartial<T[K]> }
@@ -5304,7 +5304,7 @@ export type DeepPartial<T> = T extends Builtin
 
 function longToNumber(long: Long): number {
   if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+    throw new globalThis.Error('Value is larger than Number.MAX_SAFE_INTEGER');
   }
   return long.toNumber();
 }

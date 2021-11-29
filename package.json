@@ -19,9 +19,9 @@
     "size": "size-limit",
     "analyze": "size-limit --why",
     "generate-requests": "npx ts-node -O '{\"module\":\"commonjs\"}' codegen/generate-requests.ts",
+    "style": "npx prettier -w .",
     "serve": ""
   },
-  "peerDependencies": {},
   "husky": {
     "hooks": {
       "pre-commit": "tsdx lint"
@@ -49,6 +49,7 @@
   "devDependencies": {
     "@size-limit/preset-small-lib": "^5.0.3",
     "husky": "^7.0.2",
+    "prettier": "^2.5.0",
     "size-limit": "^5.0.3",
     "ts-morph": "^12.0.0",
     "ts-node": "^10.3.0",
