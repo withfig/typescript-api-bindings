@@ -19,7 +19,7 @@
     "size": "size-limit",
     "analyze": "size-limit --why",
     "generate-requests": "npx ts-node -O '{\"module\":\"commonjs\"}' codegen/generate-requests.ts",
-    "style": "npx prettier -w .",
+    "style": "prettier -w .",
     "serve": ""
   },
   "husky": {
