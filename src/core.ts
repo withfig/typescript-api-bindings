@@ -52,7 +52,7 @@ export const sendMessage = (
   window.webkit.messageHandlers.proto.postMessage(b64);
 };
 
-const recievedMessage = (response: ServerOriginatedMessage): void => {
+const receivedMessage = (response: ServerOriginatedMessage): void => {
   if (response.id === undefined) {
     return;
   }
@@ -83,7 +83,7 @@ const setupEventListeners = (): void => {
 
     const message = ServerOriginatedMessage.decode(bytes);
 
-    recievedMessage(message);
+    receivedMessage(message);
   });
 };
 

@@ -1,6 +1,13 @@
 import { KeybindingPressedNotification, NotificationType } from './fig';
 import { _subscribe } from './notifications';
 
+/**
+ * Subscribe to keyboard key pressed notifications
+ * @remarks 
+ * This is emitted each time a user presses a key on the keyboard
+ * @param handler
+ * @returns 
+ */
 export const pressed = (
   handler: (notification: KeybindingPressedNotification) => boolean | undefined
 ) => {

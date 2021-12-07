@@ -6,7 +6,10 @@ import {
 import { sendInsertTextRequest } from './requests';
 import { _subscribe } from './notifications';
 
-export const promptDidReturn = {
+/**
+ * Subscribe to notifications emitted when the process changes.
+ */
+export const processDidChange = {
   subscribe: (
     handler: (notification: ProcessChangedNotification) => boolean | undefined
   ) => {
@@ -26,7 +29,10 @@ export const promptDidReturn = {
   },
 };
 
-export const processDidChange = {
+/**
+ * Subscribe to notifications emitted when the prompt returned.
+ */
+export const promptDidReturn = {
   subscibe: (
     handler: (
       notification: ShellPromptReturnedNotification

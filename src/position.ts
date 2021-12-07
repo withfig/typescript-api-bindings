@@ -1,6 +1,10 @@
 import { sendPositionWindowRequest } from './requests';
 
-// Developer Facing API
+/**
+ * Get info about the autocomplete view frame and position on the screen.
+ * @param frame 
+ * @returns A response object containing info about the specified frame.
+ */
 export const isValidFrame = async (frame: {
   width: number;
   height: number;
